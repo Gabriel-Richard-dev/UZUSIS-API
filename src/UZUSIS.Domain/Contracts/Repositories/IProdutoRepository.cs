@@ -1,6 +1,8 @@
-﻿namespace UZUSIS.Domain.Contracts.Repositories;
+﻿using UZUSIS.Domain.Entities;
 
-public interface IProdutoRepository
+namespace UZUSIS.Domain.Contracts.Repositories;
+
+public interface IProdutoRepository : IBaseRepository<Produto>
 {
     
 }

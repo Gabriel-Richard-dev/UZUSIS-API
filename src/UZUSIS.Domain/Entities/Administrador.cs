@@ -9,5 +9,8 @@ public class Administrador : Usuario
     {
         TipoUsuario = ETipoUsuario.Administrador;
     }
+
+
+   
     
 }

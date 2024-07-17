@@ -1,6 +1,8 @@
-﻿namespace UZUSIS.Domain.Contracts.Repositories;
+﻿using UZUSIS.Domain.Entities;
 
-public interface IClienteRepository
+namespace UZUSIS.Domain.Contracts.Repositories;
+
+public interface IClienteRepository : IBaseRepository<Cliente>
 {
     
 }

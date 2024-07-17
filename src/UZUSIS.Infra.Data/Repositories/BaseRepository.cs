@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UZUSIS.Domain.Abstractions;
+using UZUSIS.Domain.Contracts;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Infra.Data.Context;
 
@@ -9,11 +10,14 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
 {
     protected readonly ApplicationContext Context;
     private DbSet<T> _dbSet;
+    
     public BaseRepository(ApplicationContext context)
     {
         Context = context;
         _dbSet = context.Set<T>();
     }
+    
+    public IUnitOfWork UnitOfWork => Context;
 
     public async Task<T> Adicionar(T entity)
     {

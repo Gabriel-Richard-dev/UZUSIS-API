@@ -10,4 +10,20 @@ public class AdministradorRepository : BaseRepository<Administrador>, IAdministr
     public AdministradorRepository(ApplicationContext context) : base(context)
     {
     }
+
+    public async Task<Administrador?> Obter(string email)
+    {
+
+        var queryAdmin = 
+            Context.Administradores;
+
+        var admin = await
+            queryAdmin
+                .FirstOrDefaultAsync(c => c.Email.Equals(email));
+        
+        return admin;
+
+    }
+    
+    
 }

@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder
     .Services
-    .AdicionarDbContext(builder.Configuration);
+    .ConfigureApplication(builder.Configuration);
 
 builder
     .Services

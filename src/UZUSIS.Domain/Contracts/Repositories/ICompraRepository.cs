@@ -1,6 +1,8 @@
-﻿namespace UZUSIS.Domain.Contracts.Repositories;
+﻿using UZUSIS.Domain.Entities;
 
-public interface ICompraRepository
+namespace UZUSIS.Domain.Contracts.Repositories;
+
+public interface ICompraRepository : IBaseRepository<Compra>
 {
     
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Infra.Data.Context;
 using UZUSIS.Infra.Data.Repositories;
@@ -16,4 +17,7 @@ public static class DependencyInjection
             .AddScoped<IClienteRepository, ClienteRepository>()
             .AddScoped<ICarrinhoRepository, CarrinhoRepository>();
     }
+    
+    
+  
 }

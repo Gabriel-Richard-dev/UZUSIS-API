@@ -6,14 +6,14 @@ using UZUSIS.Domain.Entities;
 
 namespace UZUSIS.Infra.Data.Context;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : DbContext, IUnitOfWork
 {
-    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
+    public ApplicationContext(DbContextOptions options) : base(options) { }
 
-    protected DbSet<Administrador> Administradores { get; set; }
-    protected DbSet<Cliente> Clientes { get; set; }
-    protected DbSet<Produto> Produtos { get; set; }
-    protected DbSet<Carrinho> Carrinhos { get; set; }
+    public DbSet<Administrador> Administradores { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Produto> Produtos { get; set; }
+    public DbSet<Carrinho> Carrinhos { get; set; }
 
     public async Task<bool> Commit() => await SaveChangesAsync() > 0;
 
@@ -22,4 +22,6 @@ public class ApplicationContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
+
+   
 } 

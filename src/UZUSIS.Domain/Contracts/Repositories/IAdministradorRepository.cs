@@ -1,6 +1,8 @@
-﻿namespace UZUSIS.Domain.Contracts.Repositories;
+﻿using UZUSIS.Domain.Entities;
 
-public interface IAdministradorRepository
+namespace UZUSIS.Domain.Contracts.Repositories;
+
+public interface IAdministradorRepository : IBaseRepository<Administrador>
 {
-    
+    Task<Administrador?> Obter(string email);
 }

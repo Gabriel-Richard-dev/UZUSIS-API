@@ -17,7 +17,7 @@ public abstract class BaseController : ControllerBase
 
     protected ActionResult CustomResponse(object? reponse = null)
     {
-        if (IsValidOperation())
+        if (IsValidOperation)
         {
             return Ok(reponse);
         }
@@ -27,10 +27,10 @@ public abstract class BaseController : ControllerBase
             return NotFound();
         }
 
-        return BadRequest(_notificator.GetNotifications());
+        return BadRequest(_notificator.GetNotifications().ToList());
     }
 
 
-    private bool IsValidOperation() => !_notificator.HasNotification || !_notificator.IsNotFoundResource;
+    private bool IsValidOperation => !(_notificator.HasNotification || _notificator.IsNotFoundResource);
 
 }

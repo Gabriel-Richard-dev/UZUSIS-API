@@ -1,6 +1,6 @@
 ﻿namespace UZUSIS.Domain.Contracts;
 
-public interface IUnityOfWork
+public interface IUnitOfWork
 {
     Task<bool> Commit();
 }
