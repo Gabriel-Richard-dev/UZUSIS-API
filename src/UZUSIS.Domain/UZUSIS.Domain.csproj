@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UZUSIS.Core\UZUSIS.Core.csproj" />
+  </ItemGroup>
+
 </Project>
