@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,9 @@ using UZUSIS.Infra.Data.Configuration;
 using UZUSIS.Infra.Data.Context;
 using Pomelo.EntityFrameworkCore.MySql;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Services;
+using UZUSIS.Core.Settings;
 
 namespace UZUSIS.Application.Configuration;
 
@@ -26,8 +29,8 @@ public static class DependencyInjection
         });
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        
-        
+
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
     }
 
 
@@ -38,8 +41,11 @@ public static class DependencyInjection
 
         services
             .AddScoped<INotificator, Notificator>();
+        
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services
-            .AddScoped<IAdministradorService, AdministradorService>();
+            .AddScoped<IAdministradorService, AdministradorService>()
+            .AddScoped<IAdminAuthService, AdminAuthService>();
     }
 }

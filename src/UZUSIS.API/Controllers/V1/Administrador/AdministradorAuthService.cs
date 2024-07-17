@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 
 namespace UZUSIS.API.Controllers.V1.Administrador;
 
 [AllowAnonymous]
-public class AdministradorController : BaseController
+public class AdministradorAuthService : BaseController
 {
 
     private readonly IAdministradorService _administradorService;
-    public AdministradorController(INotificator notificator, IAdministradorService administradorService) : base(notificator)
+    private readonly IAdminAuthService _adminAuth;
+    public AdministradorAuthService(INotificator notificator, IAdministradorService administradorService, IAdminAuthService adminAuth) : base(notificator)
     {
         _administradorService = administradorService;
+        _adminAuth = adminAuth;
     }
 
 
@@ -24,5 +27,12 @@ public class AdministradorController : BaseController
     {
         return CustomResponse(await _administradorService.Criar(user));
     }
-    
+
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("Login")]
+    public async Task<IActionResult> Login(LoginUsuarioDto user)
+    {
+        return CustomResponse(await _adminAuth.Login(user));
+    }    
 }

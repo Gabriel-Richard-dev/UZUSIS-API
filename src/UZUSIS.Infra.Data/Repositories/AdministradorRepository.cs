@@ -13,12 +13,8 @@ public class AdministradorRepository : BaseRepository<Administrador>, IAdministr
 
     public async Task<Administrador?> Obter(string email)
     {
-
-        var queryAdmin = 
-            Context.Administradores;
-
-        var admin = await
-            queryAdmin
+        var admin = await 
+            Context.Administradores
                 .FirstOrDefaultAsync(c => c.Email.Equals(email));
         
         return admin;
