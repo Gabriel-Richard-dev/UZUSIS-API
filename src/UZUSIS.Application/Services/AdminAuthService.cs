@@ -41,10 +41,11 @@ public class AdminAuthService : BaseService, IAdminAuthService
             Notificator.Handle("Admin nao existe");
             return string.Empty;
         }
-        if(_hasher.VerifyHashedPassword(admin, admin.Senha, adminDto.Senha) != PasswordVerificationResult.Failed)
+        if(_hasher.VerifyHashedPassword(admin, admin.Senha, adminDto.Senha) 
+           != PasswordVerificationResult.Failed)
             return await GenerateToken(admin);
 
-        throw new InvalidCredentialException("entrei na exception");
+        return string.Empty;
     }
 
     private async Task<string> GenerateToken(Administrador admin)
