@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YMNcoVW1t1Buxo4Wv6H/vzQ53qduc5kbQklRvpdz9rxkYBYXWWvhiykkg8RcrSb5vz3WXdZUqvrdKsbh0QX5sg==",
+  "dgSpecHash": "E4cJ2zKOvre7TkHGDTgfp1XW1ooRT4eASXVcYYY0wjgKuR/Uz+F1LmEPB3mTv+mHaleN2CbVv55NhysR7PxLMQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\UZUSIS.Core.csproj",
+  "projectFilePath": "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/UZUSIS.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

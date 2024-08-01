@@ -21,18 +21,16 @@ public class AdministradorAuthService : BaseController
 
 
     [AllowAnonymous]
-    [HttpPost]
-    [Route("Adicionar")]
+    [HttpPost("Adicionar")]
     public async Task<IActionResult> Criar(AdicionarUsuarioDto user)
     {
         return CustomResponse(await _administradorService.Criar(user));
     }
 
     [AllowAnonymous]
-    [HttpPost]
-    [Route("Login")]
+    [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginUsuarioDto user)
     {
         return CustomResponse(await _adminAuth.Login(user));
-    }    
+    }
 }

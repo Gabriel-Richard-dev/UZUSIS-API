@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Dtos.Usuario;
@@ -11,9 +12,13 @@ namespace UZUSIS.Application.Services;
 public class AdministradorService : BaseService, IAdministradorService
 {
     private readonly IAdministradorRepository _administradorRepository;
-    public AdministradorService(INotificator notificator, IMapper mapper, IAdministradorRepository administradorRepository) : base(notificator, mapper)
+    private readonly IPasswordHasher<Administrador> _hasher;
+    
+    
+    public AdministradorService(INotificator notificator, IMapper mapper, IAdministradorRepository administradorRepository, IPasswordHasher<Administrador> hasher) : base(notificator, mapper)
     {
         _administradorRepository = administradorRepository;
+        _hasher = hasher;
     }
 
     public async Task<AdministradorDto?> Criar(AdicionarUsuarioDto addAdminDto)
@@ -25,9 +30,10 @@ public class AdministradorService : BaseService, IAdministradorService
             Notificator.Handle("Email já cadastrado no sistema");
             return null;
         }
-
+        
         var admin = Mapper.Map<Administrador>(addAdminDto);
-
+        admin.Senha = _hasher.HashPassword(admin, admin.Senha);
+        
         var adminCriado = await _administradorRepository.Adicionar(admin);
 
         if (await CommitChanges())
