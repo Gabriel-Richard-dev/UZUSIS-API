@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\UZUSIS.Core.csproj": {}
+    "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/UZUSIS.Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\UZUSIS.Core.csproj": {
+    "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/UZUSIS.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\UZUSIS.Core.csproj",
+        "projectUniqueName": "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/UZUSIS.Core.csproj",
         "projectName": "UZUSIS.Core",
-        "projectPath": "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\UZUSIS.Core.csproj",
-        "packagesPath": "C:\\Users\\Gabri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gabri\\Code\\UZUSIS\\UZUSIS-API\\src\\UZUSIS.Core\\obj\\",
+        "projectPath": "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/UZUSIS.Core.csproj",
+        "packagesPath": "/home/gabrielrichard/.nuget/packages/",
+        "outputPath": "/home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Gabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/gabrielrichard/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -56,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

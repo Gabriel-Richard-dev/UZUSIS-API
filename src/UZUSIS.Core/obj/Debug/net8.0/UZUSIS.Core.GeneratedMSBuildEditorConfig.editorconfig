@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = UZUSIS.Core
-build_property.ProjectDir = C:\Users\Gabri\Code\UZUSIS\UZUSIS-API\src\UZUSIS.Core\
+build_property.ProjectDir = /home/gabrielrichard/Documentos/UZUSIS-API/src/UZUSIS.Core/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
