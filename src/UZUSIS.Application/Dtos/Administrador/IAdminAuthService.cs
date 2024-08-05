@@ -1,8 +1,9 @@
+using UZUSIS.Application.Dtos.Token;
 using UZUSIS.Application.Dtos.Usuario;
 
 namespace UZUSIS.Application.Dtos.Administrador;
 
 public interface IAdminAuthService
 {
-    Task<string> Login(LoginUsuarioDto admin);
+    Task<TokenDto?> Login(LoginUsuarioDto admin);
 }

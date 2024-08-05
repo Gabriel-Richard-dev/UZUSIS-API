@@ -18,7 +18,6 @@ public class AdministradorRepository : BaseRepository<Administrador>, IAdministr
                 .FirstOrDefaultAsync(c => c.Email.Equals(email));
         
         return admin;
-
     }
     
     

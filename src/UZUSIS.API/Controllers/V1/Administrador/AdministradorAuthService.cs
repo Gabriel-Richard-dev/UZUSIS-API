@@ -31,6 +31,8 @@ public class AdministradorAuthService : BaseController
     [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginUsuarioDto user)
     {
-        return CustomResponse(await _adminAuth.Login(user));
+        var token = await _adminAuth.Login(user);
+
+        return token != null ? Ok(token) : Unauthorized(new[] { "Email ou senha incorretos"});
     }
 }

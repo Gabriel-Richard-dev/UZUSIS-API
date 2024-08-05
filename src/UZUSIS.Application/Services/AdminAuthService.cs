@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.Jwt.Core.Interfaces;
 using UZUSIS.Application.Dtos.Administrador;
+using UZUSIS.Application.Dtos.Token;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
@@ -25,27 +26,36 @@ public class AdminAuthService : BaseService, IAdminAuthService
     private readonly IPasswordHasher<Administrador> _hasher;
     public AdminAuthService(INotificator notificator, IMapper mapper, 
         IAdministradorRepository administradorRepository,
-        IJwtService jwtService, IOptions<JwtSettings> jwtSettings) : base(notificator, mapper)
+        IJwtService jwtService, IOptions<JwtSettings> jwtSettings, IPasswordHasher<Administrador> hasher) : base(notificator, mapper)
     {
         _administradorRepository = administradorRepository;
         _jwtService = jwtService;
+        _hasher = hasher;
         _jwtSettings = jwtSettings.Value;
     }
 
-    public async Task<string> Login(LoginUsuarioDto adminDto)
+    public async Task<TokenDto?> Login(LoginUsuarioDto adminDto)
     {
-        var admin = await _administradorRepository.Obter(adminDto.Email);
+        var admin = await _administradorRepository.Obter(adminDto.Email)!;
         
         if (admin is null)
         {
             Notificator.Handle("Admin nao existe");
-            return string.Empty;
+            return null;
         }
-        if(_hasher.VerifyHashedPassword(admin, admin.Senha, adminDto.Senha) 
-           != PasswordVerificationResult.Failed)
-            return await GenerateToken(admin);
 
-        return string.Empty;
+        var validation = _hasher.VerifyHashedPassword(admin, admin.Senha, adminDto.Senha)
+                          != PasswordVerificationResult.Failed;
+        
+        if(validation)
+        {
+            return new TokenDto()
+            {
+                Token = await GenerateToken(admin)
+            };
+        }
+        
+        return null;
     }
 
     private async Task<string> GenerateToken(Administrador admin)
