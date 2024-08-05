@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UZUSIS.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2fa2c5c856f7a623bc402e783794a6acef91031")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49283ab168fa212a33d790343fb0c73d7c47a66b")]
 [assembly: System.Reflection.AssemblyProductAttribute("UZUSIS.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UZUSIS.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

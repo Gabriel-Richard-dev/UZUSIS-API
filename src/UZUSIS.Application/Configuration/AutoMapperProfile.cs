@@ -1,5 +1,6 @@
 using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
+using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Domain.Entities;
 
@@ -18,5 +19,10 @@ public class AutoMapperProfile : Profile
 
         #endregion
 
+        #region Produto
+
+        CreateMap<ProdutoDto, Produto>().ReverseMap();
+
+        #endregion
     }
 }
