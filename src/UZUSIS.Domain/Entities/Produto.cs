@@ -10,4 +10,7 @@ public class Produto : Entity
     public int Quantidade { get; set; }
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
+    
+    public List<Pedido> Pedidos { get; set; }
+    
 }

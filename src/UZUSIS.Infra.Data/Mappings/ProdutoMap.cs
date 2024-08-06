@@ -21,5 +21,8 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
         builder.Property(c => c.CriadoEm);
         builder.Property(c => c.AtualizadoEm);
 
+        builder.HasMany(c => c.Pedidos)
+            .WithOne(c => c.Produto);
+
     }
 }
