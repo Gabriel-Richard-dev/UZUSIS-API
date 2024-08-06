@@ -12,6 +12,12 @@ src/UZUSIS.Core/obj
 src/UZUSIS.Domain/obj
 src/UZUSIS.Infra.Data/obj
 
+src/UZUSIS.API/bin
+src/UZUSIS.Application/bin
+src/UZUSIS.Core/bin
+src/UZUSIS.Domain/bin
+src/UZUSIS.Infra.Data/bin
+
 # User-specific files
 *.rsuser
 *.suo
