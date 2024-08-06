@@ -12,8 +12,8 @@ using UZUSIS.Infra.Data.Context;
 namespace UZUSIS.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240717183151_Initial")]
-    partial class Initial
+    [Migration("20240806005518_Produto_Quantidade_Update")]
+    partial class Produto_Quantidade_Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,8 +123,26 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(2000)");
+
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(120)");
+
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

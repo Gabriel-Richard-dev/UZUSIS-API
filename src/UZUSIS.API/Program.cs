@@ -14,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigurarSwagger();
+
 builder
     .Services
     .ConfigurarAutenticacao(builder.Configuration);

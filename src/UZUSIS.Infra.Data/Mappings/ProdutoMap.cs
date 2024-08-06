@@ -16,6 +16,8 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
         builder.Property(c => c.Categoria)
             .HasColumnType("VARCHAR(2000)");
 
+        builder.Property(c => c.Quantidade);
+        
         builder.Property(c => c.CriadoEm);
         builder.Property(c => c.AtualizadoEm);
 
