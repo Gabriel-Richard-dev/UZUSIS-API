@@ -5,6 +5,12 @@
 
 # dotenv files
 .env
+#obj
+src/UZUSIS.API/obj
+src/UZUSIS.Application/obj
+src/UZUSIS.Core/obj
+src/UZUSIS.Domain/obj
+src/UZUSIS.Infra.Data/obj
 
 # User-specific files
 *.rsuser
