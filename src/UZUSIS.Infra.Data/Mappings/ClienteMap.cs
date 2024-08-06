@@ -17,11 +17,11 @@ public class ClienteMap : IEntityTypeConfiguration<Cliente>
 
 
         builder.HasOne(c => c.Carrinho)
-            .WithOne(c => c.Cliente);
+            .WithOne(c => c.Cliente)
+            .HasForeignKey<Cliente>(c => c.Id);
 
         builder.HasMany(c => c.Compras)
-            .WithOne(c => c.Cliente)
-            .HasForeignKey(c => c.Id);
+            .WithOne(c => c.Cliente);
         
     } 
 }

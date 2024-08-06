@@ -34,4 +34,8 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
     {
         return await _dbSet.ToListAsync();
     }
+    public async Task<T?> Obter(long id)
+    {
+        return await _dbSet.FirstOrDefaultAsync(c => c.Id == id);
+    }
 }

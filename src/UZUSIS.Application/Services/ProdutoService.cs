@@ -51,8 +51,38 @@ public class ProdutoService : BaseService, IProdutoService
     }
 
 
+    public async Task Atualizar(int produtoId, ProdutoDto produtoDto)
+    {
 
-private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
+        var produto = await _produtoRepository.Obter(produtoId);
+        var produtoAtualizado = Mapper.Map<Produto>(produtoDto);
+
+        if (produto is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return;
+        }
+        
+        produto.Nome = produtoAtualizado.Nome;
+        produto.Quantidade = produtoAtualizado.Quantidade;
+        produto.Categoria = produtoAtualizado.Categoria;
+        produto.Descricao = produtoAtualizado.Descricao;
+
+        await _produtoRepository.Atualizar(produto);
+
+        if (await CommitChanges())
+        {
+            return;
+        }
+        
+        Notificator.Handle("Não foi possivel atualizar produto");
+   
+
+    }
+
+
+
+    private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
 }

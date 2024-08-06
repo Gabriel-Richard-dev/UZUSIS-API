@@ -7,6 +7,7 @@ public interface IBaseRepository<T> where T : Entity
     Task<T> Adicionar(T entity);
     Task Atualizar(T entity);
     Task<List<T>> Obter();
+    Task<T?> Obter(long id);
 
     IUnitOfWork UnitOfWork { get; }
 }

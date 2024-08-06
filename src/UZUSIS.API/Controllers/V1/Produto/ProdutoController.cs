@@ -32,4 +32,12 @@ public class ProdutoController : BaseController
         return CustomResponse(await _produtoService.Obter(categoriaProduto));
     }
 
+    [AllowAnonymous]
+    [HttpPut("atualizar")]
+    public async Task<IActionResult> Atualizar(int produtoId, ProdutoDto produtoDto)
+    {
+       
+        return CustomResponse( _produtoService.Atualizar(produtoId, produtoDto));
+    }
+
 }
