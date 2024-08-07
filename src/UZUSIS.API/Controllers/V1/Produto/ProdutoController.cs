@@ -22,22 +22,29 @@ public class ProdutoController : BaseController
     [HttpPost("adicionar")]
     public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoDto produtoDto)
     {
-        return CustomResponse(await _produtoService.Adicionar(produtoDto));
+        return CustomResponse(_produtoService.Adicionar(produtoDto));
     }
 
     [AllowAnonymous]
     [HttpGet("")]
     public async Task<IActionResult> ObterProdutos([FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
-        return CustomResponse(await _produtoService.Obter(categoriaProduto));
+        return CustomResponse(_produtoService.Obter(categoriaProduto));
     }
 
     [AllowAnonymous]
     [HttpPut("atualizar")]
-    public async Task<IActionResult> Atualizar(int produtoId, ProdutoDto produtoDto)
+    public async Task<IActionResult> Atualizar(int produtoId, AtualizarProdutoDto produtoDto)
     {
        
-        return CustomResponse( _produtoService.Atualizar(produtoId, produtoDto));
+        return CustomResponse( await _produtoService.Atualizar(produtoId, produtoDto));
+    }
+
+    [AllowAnonymous]
+    [HttpPatch]
+    public async Task<IActionResult> AtualizarParcial(int produtoId, AtualizarProdutoDto produtoDto)
+    {
+        return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
     }
 
 }

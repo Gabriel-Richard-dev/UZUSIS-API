@@ -7,5 +7,5 @@ public interface IProdutoService
 {
     Task<ProdutoDto?> Adicionar(ProdutoDto produtoDto);
     Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null);
-    Task Atualizar(int produtoId, ProdutoDto produtoDto);
+    Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);
 }

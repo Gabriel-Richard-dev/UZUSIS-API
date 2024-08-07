@@ -22,6 +22,7 @@ public class AutoMapperProfile : Profile
         #region Produto
 
         CreateMap<ProdutoDto, Produto>().ReverseMap();
+        CreateMap<AtualizarProdutoDto, Produto>().ReverseMap();
 
         #endregion
     }

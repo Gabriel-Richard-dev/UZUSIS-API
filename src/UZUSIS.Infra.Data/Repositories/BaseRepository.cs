@@ -27,6 +27,7 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
 
     public async Task Atualizar(T entity)
     {
+        _dbSet.Entry(entity).State = EntityState.Modified;
         _dbSet.Update(entity);
     }
 
