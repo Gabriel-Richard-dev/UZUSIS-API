@@ -49,7 +49,7 @@ public class ProdutoService : BaseService, IProdutoService
     public async Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
         var produtos = await _produtoRepository.Obter(categoriaProduto);
-
+        
         return Mapper.Map<List<ProdutoDto>>(produtos);
 
     }

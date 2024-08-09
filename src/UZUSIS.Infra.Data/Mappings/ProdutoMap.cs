@@ -8,6 +8,10 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
 {
     public void Configure(EntityTypeBuilder<Produto> builder)
     {
+        
+        builder.ToTable("Produto");
+
+        
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Nome)

@@ -28,4 +28,8 @@
     <ProjectReference Include="..\UZUSIS.Application\UZUSIS.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\V1\Cliente\" />
+  </ItemGroup>
+
 </Project>

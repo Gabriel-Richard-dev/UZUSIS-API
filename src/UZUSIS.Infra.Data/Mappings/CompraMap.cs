@@ -8,6 +8,8 @@ public class CompraMap : IEntityTypeConfiguration<Compra>
 {
     public void Configure(EntityTypeBuilder<Compra> builder)
     {
+        builder.ToTable("Compra");
+
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.ValorTotal);
@@ -16,6 +18,9 @@ public class CompraMap : IEntityTypeConfiguration<Compra>
             .WithMany(c => c.Compras);
 
         builder.HasMany(c => c.Pedidos)
-            .WithOne(c => c.Compra);
+            .WithOne(c => c.Compra)
+            .HasForeignKey(c => c.CompraId);
+        
+        
     }
 }

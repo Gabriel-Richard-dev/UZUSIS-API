@@ -8,6 +8,9 @@ public class CarrinhoMap : IEntityTypeConfiguration<Carrinho>
 {
     public void Configure(EntityTypeBuilder<Carrinho> builder)
     {
+        builder.ToTable("Carrinho");
+        
+        
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.ClienteId);

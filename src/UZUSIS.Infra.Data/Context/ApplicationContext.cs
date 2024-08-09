@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext, IUnitOfWork
     public ApplicationContext(DbContextOptions options) : base(options) { }
 
     public DbSet<Administrador> Administradores { get; set; }
+    public DbSet<Tamanho> Tamanhos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Carrinho> Carrinhos { get; set; }

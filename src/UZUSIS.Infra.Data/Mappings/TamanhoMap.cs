@@ -8,6 +8,10 @@ public class TamanhoMap : IEntityTypeConfiguration<Tamanho>
 {
     public void Configure(EntityTypeBuilder<Tamanho> builder)
     {
+        
+        builder.ToTable("Tamanho");
+
+        
         builder.HasKey(c => c.Id);
         
         builder.Property(c => c.Sigla);
