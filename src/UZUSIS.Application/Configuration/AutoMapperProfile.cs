@@ -1,5 +1,7 @@
 using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
+using UZUSIS.Application.Dtos.Produto;
+using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Domain.Entities;
 
@@ -15,6 +17,19 @@ public class AutoMapperProfile : Profile
         CreateMap<Administrador, AdministradorDto>().ReverseMap();
         CreateMap<Administrador, AdicionarUsuarioDto>().ReverseMap();
         CreateMap<Administrador, LoginUsuarioDto>().ReverseMap();
+
+        #endregion
+        
+        #region Tamanho
+
+        CreateMap<TamanhoDto, Tamanho>().ReverseMap();
+
+        #endregion
+        
+        #region Produto
+
+        CreateMap<ProdutoDto, Produto>().ReverseMap();
+        CreateMap<AtualizarProdutoDto, Produto>().ReverseMap();
 
         #endregion
 

@@ -7,6 +7,12 @@ public class Produto : Entity
 {
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
+    
+    public List<Tamanho> Tamanhos { get; set; }
+
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
+    
+    public List<Pedido> Pedidos { get; set; }
+    
 }
