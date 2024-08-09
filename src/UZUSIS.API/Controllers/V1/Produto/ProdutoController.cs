@@ -29,7 +29,7 @@ public class ProdutoController : BaseController
     [HttpGet("")]
     public async Task<IActionResult> ObterProdutos([FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
-        return CustomResponse(_produtoService.Obter(categoriaProduto));
+        return CustomResponse(await _produtoService.Obter(categoriaProduto));
     }
 
     [AllowAnonymous]
