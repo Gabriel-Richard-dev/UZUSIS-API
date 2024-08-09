@@ -15,13 +15,14 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
         builder.Property(c => c.Preco);
         builder.Property(c => c.Categoria)
             .HasColumnType("VARCHAR(2000)");
-
-        builder.Property(c => c.Quantidade);
         
         builder.Property(c => c.CriadoEm);
         builder.Property(c => c.AtualizadoEm);
 
         builder.HasMany(c => c.Pedidos)
+            .WithOne(c => c.Produto);
+
+        builder.HasMany(c => c.Tamanhos)
             .WithOne(c => c.Produto);
 
     }

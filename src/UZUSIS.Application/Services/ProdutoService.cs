@@ -23,12 +23,16 @@ public class ProdutoService : BaseService, IProdutoService
     {
 
         var produto = Mapper.Map<Produto>(produtoDto);
-
+        
         if (produto is null)
         {
             Notificator.HandleNotFoundResource();
             return null;
         }
+        
+        var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
+        produto.Tamanhos = tamanhos;
+
 
         await _produtoRepository.Adicionar(produto);
 

@@ -1,4 +1,5 @@
-﻿using UZUSIS.Domain.Abstractions;
+﻿using System.Collections.Generic;
+using UZUSIS.Domain.Abstractions;
 
 namespace UZUSIS.Domain.Entities;
 

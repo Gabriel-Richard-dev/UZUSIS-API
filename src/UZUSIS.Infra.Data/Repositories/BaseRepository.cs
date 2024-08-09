@@ -33,10 +33,10 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
 
     public async Task<List<T>> Obter()
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet.AsNoTracking().ToListAsync();
     }
     public async Task<T?> Obter(long id)
     {
-        return await _dbSet.FirstOrDefaultAsync(c => c.Id == id);
+        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
     }
 }

@@ -7,22 +7,8 @@ public class Produto : Entity
 {
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
-    public int Quantidade { get; set; }
-
-    public string Status
-    {
-        get
-        {
-
-            if (Quantidade == 0)
-            {
-                return EStatusProduto.Indisponivel.ToString();
-            }
-
-            return EStatusProduto.Disponivel.ToString();
-
-        }
-    }
+    
+    public List<Tamanho> Tamanhos { get; set; }
 
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
