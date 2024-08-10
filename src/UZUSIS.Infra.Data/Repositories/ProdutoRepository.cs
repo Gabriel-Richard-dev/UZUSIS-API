@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.VisualBasic.CompilerServices;
 using UZUSIS.Core.Enums;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
@@ -15,18 +18,30 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
     public async Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
-        var produto = 
-            (from p in Context.Produtos
-            join t in Context.Tamanhos 
-                on p.Id equals t.ProdutoId
-                select p);
-        
-        if (categoriaProduto is not null)
+        var query = (from p in Context.Produtos
+            join t in Context.Tamanhos on p.Id equals t.ProdutoId into tamanhos
+            select new
+            {
+                Produto = p,
+                Tamanhos = tamanhos
+            });
+
+       
+        foreach (var q in query)
         {
-            return await produto.Where(c => c.Categoria == categoriaProduto).ToListAsync();
+            var tamanhos = q.Tamanhos.Where(c => c.ProdutoId == q.Produto.Id).OrderByDescending(c => c.Sigla);
+            if (tamanhos is not null)
+            {
+                q.Produto.Tamanhos = tamanhos.ToList();
+            }
         }
 
-        return await produto.ToListAsync();
+        var produto = await query.Select(c => c.Produto).ToListAsync();
+        if (categoriaProduto is not null)
+            return produto.Where(c => c.Categoria == categoriaProduto).ToList();
+
+        return produto;
+
     }
 
 }
