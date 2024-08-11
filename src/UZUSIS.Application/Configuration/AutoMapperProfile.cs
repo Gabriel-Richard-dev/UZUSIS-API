@@ -1,5 +1,6 @@
 using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
+using UZUSIS.Application.Dtos.Foto;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Application.Dtos.Usuario;
@@ -30,6 +31,12 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ProdutoDto, Produto>().ReverseMap();
         CreateMap<AtualizarProdutoDto, Produto>().ReverseMap();
+
+        #endregion
+
+        #region Foto
+
+        CreateMap<Foto, FotoProdutoDto>().ReverseMap();
 
         #endregion
 

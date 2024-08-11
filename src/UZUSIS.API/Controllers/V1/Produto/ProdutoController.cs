@@ -47,4 +47,6 @@ public class ProdutoController : BaseController
         return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
     }
 
+    
+
 }

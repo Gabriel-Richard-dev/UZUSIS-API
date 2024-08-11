@@ -29,5 +29,9 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
         builder.HasMany(c => c.Tamanhos)
             .WithOne(c => c.Produto);
 
+        builder.HasMany(c => c.Fotos)
+            .WithOne(c => c.Produto);
+
+
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.VisualBasic.CompilerServices;
@@ -18,30 +20,47 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
     public async Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
-        var query = (from p in Context.Produtos
-            join t in Context.Tamanhos on p.Id equals t.ProdutoId into tamanhos
-            select new
-            {
-                Produto = p,
-                Tamanhos = tamanhos
-            });
 
-       
-        foreach (var q in query)
-        {
-            var tamanhos = q.Tamanhos.Where(c => c.ProdutoId == q.Produto.Id).OrderByDescending(c => c.Sigla);
-            if (tamanhos is not null)
-            {
-                q.Produto.Tamanhos = tamanhos.ToList();
-            }
-        }
+        List<Produto> produtos;
+        var prods = Context.Produtos;
 
-        var produto = await query.Select(c => c.Produto).ToListAsync();
+        
         if (categoriaProduto is not null)
-            return produto.Where(c => c.Categoria == categoriaProduto).ToList();
+            produtos = prods.Where(c => c.Categoria == categoriaProduto).ToList();
+        else
+            produtos = prods.ToList();
+        
+        
+     
+        foreach (var produto in produtos)
+        {
+            var tamanhos = Context.Tamanhos.Where(c 
+                => c.ProdutoId == produto.Id)
+                .OrderByDescending(c => c.Sigla);
+            
+            produto.Tamanhos = tamanhos.ToList();
+            
+            var fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id);
+            produto.Fotos = fotos.ToList();
+
+        }
+        
+        
+        
+        
+        return produtos;
+
+    }
+
+
+    public async Task<Produto> Obter(long id)
+    {
+        var produto  = await Context.Produtos.FirstOrDefaultAsync(c=> c.Id == id);
+
+        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+        produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
 
         return produto;
 
     }
-
 }
