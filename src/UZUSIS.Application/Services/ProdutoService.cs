@@ -41,7 +41,7 @@ public class ProdutoService : BaseService, IProdutoService
 
         if (await CommitChanges())
         {
-            SalvarFotos(produtoDto.FotoFiles);
+            await SalvarFotos(produtoDto.FotoFiles);
             
             return Mapper.Map<ProdutoDto>(produto);
         }
@@ -59,7 +59,36 @@ public class ProdutoService : BaseService, IProdutoService
 
     }
 
-  
+    public async Task<List<byte[]>> ObterFoto(long produtoId)
+    {
+        var produto = await _produtoRepository.Obter(produtoId);
+
+        if (produto is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+
+        List<string> fotoPaths = new List<string>();
+        
+        foreach (var path in produto.Fotos)
+        {
+            fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +path.FotoUrl);
+        }
+
+        List<byte[]> fotos = new();
+
+        foreach (var path in fotoPaths)
+        {
+            var reader = await File.ReadAllBytesAsync(path);
+            fotos.Add(reader);
+        }
+
+        return fotos;
+
+
+    }
+
 
     public async Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto)
     {

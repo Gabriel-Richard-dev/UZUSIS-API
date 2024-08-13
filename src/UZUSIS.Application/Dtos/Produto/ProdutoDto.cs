@@ -6,6 +6,7 @@ namespace UZUSIS.Application.Dtos.Produto;
 
 public class ProdutoDto
 {
+    public long Id { get; set; }
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
     public List<TamanhoDto> Tamanhos { get; set; }

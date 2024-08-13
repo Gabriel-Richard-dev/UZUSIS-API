@@ -39,9 +39,6 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
                 .OrderByDescending(c => c.Sigla);
             
             produto.Tamanhos = tamanhos.ToList();
-            
-            var fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id);
-            produto.Fotos = fotos.ToList();
 
         }
         
@@ -56,10 +53,11 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     public async Task<Produto> Obter(long id)
     {
         var produto  = await Context.Produtos.FirstOrDefaultAsync(c=> c.Id == id);
-
+        
         produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
         produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
-
+        
+        
         return produto;
 
     }

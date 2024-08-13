@@ -1,3 +1,6 @@
+using System.Drawing;
+using System.Net.Mime;
+using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +42,20 @@ public class ProdutoController : BaseController
        
         return CustomResponse( await _produtoService.Atualizar(produtoId, produtoDto));
     }
+
+    [AllowAnonymous]
+    [HttpGet("foto/{id}")]
+    public async Task<IActionResult> ObterFotos(long id)
+    {
+        var fotoBytes = await _produtoService.ObterFoto(id);
+        List<System.Drawing.Image> Images = new List<Image>();
+        
+        
+        return CustomResponse(Images);
+    }
+    
+    
+    
 
     [AllowAnonymous]
     [HttpPatch]

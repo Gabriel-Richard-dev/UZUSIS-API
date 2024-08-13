@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Core.Enums;
 
@@ -7,6 +8,7 @@ public interface IProdutoService
 {
     Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto);
     Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null);
+    Task<List<byte[]>> ObterFoto(long produtoId);
   
     Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);
 }
