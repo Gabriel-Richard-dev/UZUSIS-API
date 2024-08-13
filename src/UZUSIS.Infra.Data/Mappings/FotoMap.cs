@@ -10,10 +10,13 @@ public class FotoMap : IEntityTypeConfiguration<Foto>
 {
     public void Configure(EntityTypeBuilder<Foto> builder)
     {
+
+        builder.ToTable("Foto");
+        
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.FotoBytes);
-
+        builder.Property(c => c.FotoUrl);
+        
         builder.HasOne(c => c.Produto)
             .WithMany(c => c.Fotos);
 

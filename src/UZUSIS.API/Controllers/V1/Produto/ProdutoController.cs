@@ -20,7 +20,7 @@ public class ProdutoController : BaseController
 
     [AllowAnonymous]
     [HttpPost("adicionar")]
-    public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoDto produtoDto)
+    public async Task<IActionResult> AdicionarProduto([FromForm] AdicionarProdutoDto produtoDto)
     {
         return CustomResponse(await _produtoService.Adicionar(produtoDto));
     }

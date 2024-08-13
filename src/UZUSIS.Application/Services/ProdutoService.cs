@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
@@ -19,10 +21,11 @@ public class ProdutoService : BaseService, IProdutoService
         _produtoRepository = produtoRepository;
     }
 
-    public async Task<ProdutoDto?> Adicionar(ProdutoDto produtoDto)
+    public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
-
+        
         var produto = Mapper.Map<Produto>(produtoDto);
+        
         
         if (produto is null)
         {
@@ -32,13 +35,15 @@ public class ProdutoService : BaseService, IProdutoService
         
         var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
         produto.Tamanhos = tamanhos;
-
+        // produto.Fotos.Add(Mapper.Map<List<Foto>>(produtoDto.GetFotos()));
 
         await _produtoRepository.Adicionar(produto);
 
         if (await CommitChanges())
         {
-            return produtoDto;
+            SalvarFotos(produtoDto.FotoFiles);
+            
+            return Mapper.Map<ProdutoDto>(produto);
         }
 
         Notificator.Handle("Não foi possível adicionar o produto");
@@ -84,5 +89,16 @@ public class ProdutoService : BaseService, IProdutoService
 
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
+
+    private async Task SalvarFotos(List<IFormFile> fotos)
+    {
+        foreach (var foto in fotos)
+        {
+            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" + foto.FileName))
+            {
+                await foto.CopyToAsync(stream);
+            }
+        }        
+    }
 
 }

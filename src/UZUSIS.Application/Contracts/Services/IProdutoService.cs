@@ -5,7 +5,7 @@ namespace UZUSIS.Application.Contracts.Services;
 
 public interface IProdutoService
 {
-    Task<ProdutoDto?> Adicionar(ProdutoDto produtoDto);
+    Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto);
     Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null);
   
     Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);

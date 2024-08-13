@@ -31,7 +31,9 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ProdutoDto, Produto>().ReverseMap();
         CreateMap<AtualizarProdutoDto, Produto>().ReverseMap();
-
+        CreateMap<AdicionarProdutoDto, Produto>().ReverseMap();
+        CreateMap<AdicionarProdutoDto, ProdutoDto>().ReverseMap();
+        
         #endregion
 
         #region Foto
