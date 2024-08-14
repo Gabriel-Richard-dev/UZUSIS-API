@@ -16,6 +16,18 @@ public abstract class BaseController : ControllerBase
         _notificator = notificator;
     }
 
+    // protected List<ActionResult> FotoCustomReponse(List<byte[]> reponse)
+    // {
+    //     List<FileContentResult> result = new(); 
+    //     
+    //     foreach (var bytes in reponse)
+    //     {
+    //          result.Add(File(bytes, "image/png"));
+    //     }
+    //     
+    //     
+    // }
+    
     protected ActionResult CustomResponse(object? reponse = null)
     {
         if (IsValidOperation)

@@ -1,9 +1,10 @@
 using System.Drawing;
 using System.Net.Mime;
-using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
@@ -47,14 +48,18 @@ public class ProdutoController : BaseController
     [HttpGet("foto/{id}")]
     public async Task<IActionResult> ObterFotos(long id)
     {
-        var fotoBytes = await _produtoService.ObterFoto(id);
-        List<System.Drawing.Image> Images = new List<Image>();
-        
-        
-        return CustomResponse(Images);
+        var fotos = await _produtoService.ObterFoto(id);
+        List<dynamic> Images = new List<dynamic>();
+
+        foreach (var bytes in fotos)
+        {
+            Images.Add(bytes);
+        }
+
+
+        return File(fotos.FirstOrDefault(), "image/png");
+
     }
-    
-    
     
 
     [AllowAnonymous]
