@@ -1,11 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
+using UZUSIS.Core.ViewModel;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
 
@@ -14,11 +16,12 @@ namespace UZUSIS.Application.Services;
 public class ProdutoService : BaseService, IProdutoService
 {
     private readonly IProdutoRepository _produtoRepository;
-
-    public ProdutoService(INotificator notificator, IMapper mapper, IProdutoRepository produtoRepository) : base(
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public ProdutoService(INotificator notificator, IMapper mapper, IProdutoRepository produtoRepository, IHttpContextAccessor httpContextAccessor) : base(
         notificator, mapper)
     {
         _produtoRepository = produtoRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
@@ -54,12 +57,28 @@ public class ProdutoService : BaseService, IProdutoService
     public async Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
         var produtos = await _produtoRepository.Obter(categoriaProduto);
+
+        foreach (var produto in produtos)
+        {
+            var fotos = await GetUrlsFotos((int)produto.Id);
+            produto.Fotos.Clear();
+
+            for (int i = 0; i < fotos.Urls.Count; i++)
+            {
+                
+                produto.Fotos.Add(new Foto()
+                {
+                    FotoUrl = fotos.Urls[i]
+                });
+            }
+        }
+        
         
         return Mapper.Map<List<ProdutoDto>>(produtos);
 
     }
 
-    public async Task<List<byte[]>> ObterFoto(long produtoId)
+    public async Task<List<byte[]?>> ObterFoto(long produtoId)
     {
         var produto = await _produtoRepository.Obter(produtoId);
 
@@ -76,7 +95,7 @@ public class ProdutoService : BaseService, IProdutoService
             fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +path.FotoUrl);
         }
 
-        List<byte[]> fotos = new();
+        List<byte[]?> fotos = new();
 
         foreach (var path in fotoPaths)
         {
@@ -128,6 +147,28 @@ public class ProdutoService : BaseService, IProdutoService
                 await foto.CopyToAsync(stream);
             }
         }        
+    }
+    
+    private async Task<FotoViewModel> GetUrlsFotos(int id)
+    {
+        int quantidadeFotos = (await ObterFoto(id)).Count();
+
+        var apiUrl = _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
+        
+        List<string> apiUrls = new();
+        for (int i = 0; i < quantidadeFotos; i ++)
+        {
+            
+            apiUrls.Add(apiUrl+$"/{id}/foto/{i}");
+     
+        }
+        
+        return new FotoViewModel()
+        {
+            Urls = apiUrls
+        };
+
+
     }
 
 }
