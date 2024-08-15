@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic.FileIO;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
@@ -73,7 +74,7 @@ public class ProdutoService : BaseService, IProdutoService
         
         foreach (var path in produto.Fotos)
         {
-            fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +path.FotoUrl);
+            fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" + path.FotoUrl);
         }
 
         List<byte[]> fotos = new();
@@ -119,13 +120,17 @@ public class ProdutoService : BaseService, IProdutoService
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
-    private async Task SalvarFotos(List<IFormFile> fotos)
+    private async Task SalvarFotos(Produto prod, List<IFormFile> fotos)
     {
+        prod.Fotos.Clear();
+        var path = "../UZUSIS.Infra.Data/Uploads/FotoProduto/" + 
+                   Guid.NewGuid().ToString().Replace("-", string.Empty);
         foreach (var foto in fotos)
         {
-            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" + foto.FileName))
+            using (var stream = File.Create(path + Path.GetExtension(foto.FileName))) 
             {
-                await foto.CopyToAsync(stream);
+                prod.Fotos.Add(path + Path.GetExtension(foto.FileName));
+                   await foto.CopyToAsync(stream);
             }
         }        
     }
