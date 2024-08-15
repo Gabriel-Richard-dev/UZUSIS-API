@@ -15,7 +15,8 @@ public abstract class BaseController : ControllerBase
     {
         _notificator = notificator;
     }
-
+    
+    
     protected ActionResult CustomResponse(object? reponse = null)
     {
         if (IsValidOperation)
