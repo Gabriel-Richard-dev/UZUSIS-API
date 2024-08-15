@@ -26,9 +26,7 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
-        
         var produto = Mapper.Map<Produto>(produtoDto);
-        
         
         if (produto is null)
         {
@@ -38,14 +36,12 @@ public class ProdutoService : BaseService, IProdutoService
         
         var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
         produto.Tamanhos = tamanhos;
-        // produto.Fotos.Add(Mapper.Map<List<Foto>>(produtoDto.GetFotos()));
 
         await _produtoRepository.Adicionar(produto);
 
         if (await CommitChanges())
         {
             await SalvarFotos(produtoDto.FotoFiles);
-            
             return Mapper.Map<ProdutoDto>(produto);
         }
 
@@ -92,7 +88,7 @@ public class ProdutoService : BaseService, IProdutoService
         
         foreach (var path in produto.Fotos)
         {
-            fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +path.FotoUrl);
+            fotoPaths.Add("../UZUSIS.Infra.Data/Uploads/FotoProduto/" + path.FotoUrl);
         }
 
         List<byte[]?> fotos = new();
@@ -140,10 +136,15 @@ public class ProdutoService : BaseService, IProdutoService
 
     private async Task SalvarFotos(List<IFormFile> fotos)
     {
+        
         foreach (var foto in fotos)
         {
-            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" + foto.FileName))
+            string name = foto.FileName;
+            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" 
+                                            + Guid.NewGuid().ToString().Replace("-", string.Empty)
+                                            + Path.GetExtension(name)))
             {
+                
                 await foto.CopyToAsync(stream);
             }
         }        
@@ -153,13 +154,13 @@ public class ProdutoService : BaseService, IProdutoService
     {
         int quantidadeFotos = (await ObterFoto(id)).Count();
 
-        var apiUrl = _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
+        var apiUrl = _httpContextAccessor.HttpContext.Request.Host;
         
         List<string> apiUrls = new();
         for (int i = 0; i < quantidadeFotos; i ++)
         {
             
-            apiUrls.Add(apiUrl+$"/{id}/foto/{i}");
+            apiUrls.Add(apiUrl+$"/produto/{id}/foto/{i}");
      
         }
         

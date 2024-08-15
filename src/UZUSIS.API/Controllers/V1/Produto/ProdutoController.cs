@@ -50,6 +50,7 @@ public class ProdutoController : BaseController
     
     
     [AllowAnonymous]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("{id}/foto/{index}")]
     public async Task<IActionResult> ObterFotos(long id, int index)
     {
