@@ -9,6 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true,true);
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -28,15 +39,7 @@ builder
     .Services
     .ConfigurarDependencias();
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+
 
 
 var app = builder.Build();

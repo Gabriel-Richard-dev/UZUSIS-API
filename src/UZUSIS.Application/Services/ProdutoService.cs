@@ -53,7 +53,7 @@ public class ProdutoService : BaseService, IProdutoService
     public async Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
         var produtos = await _produtoRepository.Obter(categoriaProduto);
-
+        
         foreach (var produto in produtos)
         {
             var fotos = await GetUrlsFotos((int)produto.Id);
