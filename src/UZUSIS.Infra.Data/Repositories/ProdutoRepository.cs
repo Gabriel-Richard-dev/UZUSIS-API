@@ -42,9 +42,6 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
         }
         
-        
-        
-        
         return produtos;
 
     }

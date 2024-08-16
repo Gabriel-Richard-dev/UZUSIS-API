@@ -36,12 +36,11 @@ public class ProdutoService : BaseService, IProdutoService
         
         var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
         produto.Tamanhos = tamanhos;
-
+        
         await _produtoRepository.Adicionar(produto);
-
-        if (await CommitChanges())
+        
+        if (await SalvarFotos(produtoDto, produto) && await CommitChanges())
         {
-            await SalvarFotos(produtoDto.FotoFiles);
             return Mapper.Map<ProdutoDto>(produto);
         }
 
@@ -134,27 +133,25 @@ public class ProdutoService : BaseService, IProdutoService
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
-    private async Task SalvarFotos(List<IFormFile> fotos)
+    private async Task<bool> SalvarFotos(AdicionarProdutoDto dto, Produto prod)
     {
-        
-        foreach (var foto in fotos)
+        foreach (var foto in dto.FotoFiles)
         {
-            string name = foto.FileName;
-            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" 
-                                            + Guid.NewGuid().ToString().Replace("-", string.Empty)
-                                            + Path.GetExtension(name)))
+            var photoName = Guid.NewGuid().ToString().Replace("-", string.Empty) + Path.GetExtension(foto.FileName);
+            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +  photoName))
             {
-                
+                prod.Fotos.Find(c => c.FotoUrl == foto.FileName)!.FotoUrl = photoName;
                 await foto.CopyToAsync(stream);
             }
-        }        
+        }
+        return true;
     }
     
     private async Task<FotoViewModel> GetUrlsFotos(int id)
     {
         int quantidadeFotos = (await ObterFoto(id)).Count();
 
-        var apiUrl = _httpContextAccessor.HttpContext.Request.Host;
+        var apiUrl = _httpContextAccessor.HttpContext!.Request.Host;
         
         List<string> apiUrls = new();
         for (int i = 0; i < quantidadeFotos; i ++)

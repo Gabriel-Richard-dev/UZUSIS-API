@@ -10,22 +10,10 @@ public class ProdutoDto
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
     public List<TamanhoDto> Tamanhos { get; set; }
-    public List<FotoProdutoDto> Fotos { get; set; }
-
-    public List<string> FotoUrls
-    {
-        get
-        {
-            var urls = new List<string>();
-            foreach (var foto in Fotos)
-            {
-                urls.Add(foto.FotoUrl);
-            }
-
-            return urls;
-        }
-    }
-
+    
+    
+    public List<string> FotoUrls { get; set; }
+    
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
 }

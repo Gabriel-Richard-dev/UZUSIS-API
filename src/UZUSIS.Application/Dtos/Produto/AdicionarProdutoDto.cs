@@ -21,7 +21,7 @@ public class AdicionarProdutoDto
             
             Fotos.Add(new FotoProdutoDto()
             {
-                FotoUrl = foto.FileName.ToString()
+                FotoUrl = foto.FileName
             });
         }
 
