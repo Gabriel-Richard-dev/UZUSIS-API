@@ -50,7 +50,7 @@ public class ProdutoController : BaseController
     
     
     [AllowAnonymous]
-    // [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("{id}/foto/{index}")]
     public async Task<IActionResult> ObterFotos(long id, int index)
     {
@@ -61,8 +61,8 @@ public class ProdutoController : BaseController
         {
             Images.Add(bytes);
         }
-
-
+        
+        
         return File(fotos[index]!, "image/png");
 
     }
