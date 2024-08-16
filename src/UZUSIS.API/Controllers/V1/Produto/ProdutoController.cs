@@ -30,14 +30,34 @@ public class ProdutoController : BaseController
     [HttpPost("adicionar")]
     public async Task<IActionResult> AdicionarProduto([FromForm] AdicionarProdutoDto produtoDto)
     {
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
         return CustomResponse(await _produtoService.Adicionar(produtoDto));
     }
 
     [AllowAnonymous]
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IActionResult> ObterProdutos([FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
-        return CustomResponse(await _produtoService.Obter(categoriaProduto));
+        return CustomResponse((await _produtoService.Obter(categoriaProduto)));
     }
 
     [AllowAnonymous]

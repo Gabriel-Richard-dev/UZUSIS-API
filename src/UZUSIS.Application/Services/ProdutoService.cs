@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
+using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
 using UZUSIS.Core.ViewModel;
@@ -26,6 +27,24 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
+
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        Console.WriteLine(produtoDto.Tamanhos.Count);
+        
         var produto = Mapper.Map<Produto>(produtoDto);
         
         if (produto is null)
@@ -33,14 +52,16 @@ public class ProdutoService : BaseService, IProdutoService
             Notificator.HandleNotFoundResource();
             return null;
         }
-        
+
         var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
-        produto.Tamanhos = tamanhos;
+        produto.Tamanhos= tamanhos;
+        
         
         await _produtoRepository.Adicionar(produto);
-        
-        if (await SalvarFotos(produtoDto, produto) && await CommitChanges())
+
+        if (await CommitChanges())
         {
+            await SalvarFotos(produtoDto, produto); 
             return Mapper.Map<ProdutoDto>(produto);
         }
 
@@ -157,7 +178,7 @@ public class ProdutoService : BaseService, IProdutoService
         for (int i = 0; i < quantidadeFotos; i ++)
         {
             
-            apiUrls.Add(apiUrl+$"/produto/{id}/foto/{i}");
+            apiUrls.Add("http://" + apiUrl+$"/produto/{id}/foto/{i}");
      
         }
         
