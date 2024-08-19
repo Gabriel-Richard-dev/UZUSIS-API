@@ -14,8 +14,7 @@ public class ProdutoDto
 
     public List<TamanhoDto> Tamanhos { get; set; } = new();
     
-    
-    public List<string> FotoUrls { get; set; }
+    public List<string> FotoUrls { get; set; } = new();
     
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;

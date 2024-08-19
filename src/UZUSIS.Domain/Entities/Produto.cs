@@ -44,20 +44,7 @@ public class Produto : Entity
     public List<Tamanho> Tamanhos { get; set; }
     public List<Foto> Fotos { get; set; }
 
-    public List<String> FotoUrls
-    {
-        get
-        {
-            var urls = new List<string>();
-
-            foreach (var foto in Fotos)
-            {
-                urls.Add(foto.FotoUrl);
-            }
-
-            return urls;
-        }
-    }
+    List<string> FotoUrls { get; set; } = new();
 
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;

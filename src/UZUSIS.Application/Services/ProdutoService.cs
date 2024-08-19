@@ -27,23 +27,6 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
-
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
         
         var produto = Mapper.Map<Produto>(produtoDto);
         
@@ -58,11 +41,13 @@ public class ProdutoService : BaseService, IProdutoService
         
         
         await _produtoRepository.Adicionar(produto);
-
+        
         if (await CommitChanges())
         {
-            await SalvarFotos(produtoDto, produto); 
-            return Mapper.Map<ProdutoDto>(produto);
+            var fotoUrls = await SalvarFotos(produtoDto); 
+            var dto = Mapper.Map<ProdutoDto>(produto);
+            dto.FotoUrls = fotoUrls;
+            return dto;
         }
 
         Notificator.Handle("Não foi possível adicionar o produto");
@@ -73,25 +58,19 @@ public class ProdutoService : BaseService, IProdutoService
     public async Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
         var produtos = await _produtoRepository.Obter(categoriaProduto);
-        
-        foreach (var produto in produtos)
+        var produtoRetorno =  Mapper.Map<List<ProdutoDto>>(produtos);
+        foreach (var produto in produtoRetorno)
         {
-            var fotos = await GetUrlsFotos((int)produto.Id);
-            produto.Fotos.Clear();
+            var fotos = await GetUrlsFotos(produto.Id);
+            
 
             for (int i = 0; i < fotos.Urls.Count; i++)
             {
-                
-                produto.Fotos.Add(new Foto()
-                {
-                    FotoUrl = fotos.Urls[i]
-                });
+                produto.FotoUrls.Add(fotos.Urls[i]);
             }
         }
         
-        
-        return Mapper.Map<List<ProdutoDto>>(produtos);
-
+        return produtoRetorno;
     }
 
     public async Task<List<byte[]?>> ObterFoto(long produtoId)
@@ -154,21 +133,23 @@ public class ProdutoService : BaseService, IProdutoService
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
-    private async Task<bool> SalvarFotos(AdicionarProdutoDto dto, Produto prod)
+    private async Task<List<string>> SalvarFotos(AdicionarProdutoDto dto)
     {
+       
+        var fotoReturn = new List<string>();
         foreach (var foto in dto.FotoFiles)
         {
             var photoName = Guid.NewGuid().ToString().Replace("-", string.Empty) + Path.GetExtension(foto.FileName);
+            fotoReturn.Add(photoName);
             using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +  photoName))
             {
-                prod.Fotos.Find(c => c.FotoUrl == foto.FileName)!.FotoUrl = photoName;
                 await foto.CopyToAsync(stream);
             }
         }
-        return true;
+        return fotoReturn;
     }
     
-    private async Task<FotoViewModel> GetUrlsFotos(int id)
+    private async Task<FotoViewModel> GetUrlsFotos(long id)
     {
         int quantidadeFotos = (await ObterFoto(id)).Count();
 
