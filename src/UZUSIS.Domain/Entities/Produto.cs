@@ -41,7 +41,7 @@ public class Produto : Entity
     //     
     // }
     //
-    public List<Tamanho> Tamanhos { get; set; }
+    public List<Tamanho> Tamanhos { get; set; } = new();
     public List<Foto> Fotos { get; set; }
 
     List<string> FotoUrls { get; set; } = new();

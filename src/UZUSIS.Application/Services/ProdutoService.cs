@@ -27,6 +27,11 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
+        
+        foreach (var tamanho in produtoDto.Tamanhos)
+        {
+            Console.WriteLine(tamanho.Sigla);
+        }
         var produto = Mapper.Map<Produto>(produtoDto);
         
         if (produto is null)
@@ -35,7 +40,7 @@ public class ProdutoService : BaseService, IProdutoService
             return null;
         }
 
-        var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
+        List<Tamanho> tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
         produto.Tamanhos= tamanhos;
 
         List<Foto> fotosProduto = new();

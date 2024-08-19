@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Swagger.Api;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
+using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
 using UZUSIS.Core.ViewModel;
@@ -30,26 +31,6 @@ public class ProdutoController : BaseController
     [HttpPost("adicionar")]
     public async Task<IActionResult> AdicionarProduto([FromForm] AdicionarProdutoDto produtoDto)
     {
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
-        Console.WriteLine(produtoDto.Tamanhos.Count);
         return CustomResponse(await _produtoService.Adicionar(produtoDto));
     }
 
