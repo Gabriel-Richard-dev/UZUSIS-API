@@ -27,7 +27,6 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
-        
         var produto = Mapper.Map<Produto>(produtoDto);
         
         if (produto is null)
@@ -38,13 +37,23 @@ public class ProdutoService : BaseService, IProdutoService
 
         var tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
         produto.Tamanhos= tamanhos;
-        
-        
+
+        List<Foto> fotosProduto = new();
+        foreach (var foto in produtoDto.FotoFiles)
+        {
+            fotosProduto.Add(new Foto()
+            {
+                FotoUrl = Guid.NewGuid().ToString().Replace("-", string.Empty) + Path.GetExtension(foto.FileName)
+            });
+        }
+
+        produto.Fotos = fotosProduto;
+    
         await _produtoRepository.Adicionar(produto);
         
         if (await CommitChanges())
         {
-            var fotoUrls = await SalvarFotos(produtoDto); 
+            var fotoUrls = await SalvarFotos(produtoDto, fotosProduto); 
             var dto = Mapper.Map<ProdutoDto>(produto);
             dto.FotoUrls = fotoUrls;
             return dto;
@@ -133,18 +142,21 @@ public class ProdutoService : BaseService, IProdutoService
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
-    private async Task<List<string>> SalvarFotos(AdicionarProdutoDto dto)
+    private async Task<List<string>> SalvarFotos(AdicionarProdutoDto dto, List<Foto> photoName)
     {
-       
+
+        int contador = 0;
         var fotoReturn = new List<string>();
         foreach (var foto in dto.FotoFiles)
         {
-            var photoName = Guid.NewGuid().ToString().Replace("-", string.Empty) + Path.GetExtension(foto.FileName);
-            fotoReturn.Add(photoName);
-            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +  photoName))
+            var nome = photoName[contador].FotoUrl;
+            fotoReturn.Add(nome);
+            using (var stream = File.Create("../UZUSIS.Infra.Data/Uploads/FotoProduto/" +  nome))
             {
                 await foto.CopyToAsync(stream);
             }
+
+            contador++;
         }
         return fotoReturn;
     }

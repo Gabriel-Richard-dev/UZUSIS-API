@@ -7,12 +7,10 @@ namespace UZUSIS.Application.Dtos.Produto;
 
 public class AdicionarProdutoDto
 {
-    
-
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
     public List<TamanhoDto>? Tamanhos { get; set; }
-    public List<IFormFile> FotoFiles { get; set; } 
+    public List<IFormFile> FotoFiles { get; set; } = new();
     
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
