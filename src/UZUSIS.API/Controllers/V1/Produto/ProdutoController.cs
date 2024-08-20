@@ -35,10 +35,19 @@ public class ProdutoController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> ObterProdutos([FromQuery] ECategoriaProduto? categoriaProduto = null)
+    [HttpGet("{pagina}")]
+    public async Task<IActionResult> ObterProdutos(int pagina, [FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
-        return CustomResponse((await _produtoService.Obter(categoriaProduto)));
+        
+        var data = (await _produtoService.Obter(categoriaProduto));
+        var numeroPaginas = (int)data.Count()/6;
+        var response = data.Skip(pagina * 6).Take(6);
+        return CustomResponse(new RetornoPaginadoDto()
+        {
+            PaginaAtual = pagina,
+            QuantidadePaginas = numeroPaginas,
+            Produtos = response
+        });
     }
 
     [AllowAnonymous]
