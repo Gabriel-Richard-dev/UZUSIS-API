@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Dtos.Foto;
-using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Core.Enums;
 
 namespace UZUSIS.Application.Dtos.Produto;
 
 public class AdicionarProdutoDto
 {
+   
+    
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
     public List<TamanhoDto> Tamanhos { get; set; } = new();
@@ -14,4 +15,10 @@ public class AdicionarProdutoDto
     
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
+}
+
+public class TamanhoDto()
+{
+    public string Sigla { get; set; }
+    public int Quantidade { get; set; }
 }

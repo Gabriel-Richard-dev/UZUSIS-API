@@ -23,4 +23,8 @@
     <ProjectReference Include="..\UZUSIS.Infra.Data\UZUSIS.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Tamanho\" />
+  </ItemGroup>
+
 </Project>

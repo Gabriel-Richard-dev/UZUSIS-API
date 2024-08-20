@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using Microsoft.VisualBasic;
 using UZUSIS.Application.Dtos.Foto;
-using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Core.Enums;
 
 namespace UZUSIS.Application.Dtos.Produto;

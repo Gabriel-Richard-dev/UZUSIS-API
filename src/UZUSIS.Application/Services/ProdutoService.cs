@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Produto;
-using UZUSIS.Application.Dtos.Tamanho;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
 using UZUSIS.Core.ViewModel;
@@ -28,10 +27,6 @@ public class ProdutoService : BaseService, IProdutoService
     public async Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto)
     {
         
-        foreach (var tamanho in produtoDto.Tamanhos)
-        {
-            Console.WriteLine(tamanho.Sigla);
-        }
         var produto = Mapper.Map<Produto>(produtoDto);
         
         if (produto is null)
