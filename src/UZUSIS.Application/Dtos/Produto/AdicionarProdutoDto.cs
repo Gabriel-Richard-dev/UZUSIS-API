@@ -10,7 +10,10 @@ public class AdicionarProdutoDto
     
     public string Nome { get; set; } = null!;
     public decimal Preco { get; set; }
-    public List<TamanhoDto> Tamanhos { get; set; } = new();
+
+    public int QuantidadeP { get; set; } = 0;
+    public int QuantidadeM { get; set; } = 0;
+    public int QuantidadeG { get; set; } = 0;
     public List<IFormFile> FotoFiles { get; set; } = new();
     
     public ECategoriaProduto Categoria { get; set; }

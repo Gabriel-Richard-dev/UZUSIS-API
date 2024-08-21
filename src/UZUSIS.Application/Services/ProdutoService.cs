@@ -34,9 +34,18 @@ public class ProdutoService : BaseService, IProdutoService
             Notificator.HandleNotFoundResource();
             return null;
         }
+        
+        var tamanhos = new List<TamanhoDto>()
+        {
+            new TamanhoDto()
+            { Sigla = "P", Quantidade = produtoDto.QuantidadeP },
+            new TamanhoDto()
+            { Sigla = "M", Quantidade = produtoDto.QuantidadeM },
+            new TamanhoDto()
+            { Sigla = "G", Quantidade = produtoDto.QuantidadeG }
+        };
 
-        List<Tamanho> tamanhos = Mapper.Map<List<Tamanho>>(produtoDto.Tamanhos);
-        produto.Tamanhos= tamanhos;
+        produto.Tamanhos = Mapper.Map<List<Tamanho>>(tamanhos);
 
         List<Foto> fotosProduto = new();
         foreach (var foto in produtoDto.FotoFiles)
