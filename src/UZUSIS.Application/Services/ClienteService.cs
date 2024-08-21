@@ -37,9 +37,6 @@ public class ClienteService : BaseService, IClienteService
             Notificator.HandleNotFoundResource();
             return null;
         }
-
-
-       
         
         await _clienteRepository.Adicionar(cliente);
 

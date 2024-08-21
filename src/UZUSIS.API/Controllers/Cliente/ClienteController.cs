@@ -15,10 +15,12 @@ namespace UZUSIS.API.Controllers.Cliente;
 public class ClienteController : BaseController
 {
     private readonly IClienteService _clienteService;
+    private readonly ICarrinhoService _carrinhoService;
     
-    public ClienteController(INotificator notificator, IClienteService clienteService) : base(notificator)
+    public ClienteController(INotificator notificator, IClienteService clienteService, ICarrinhoService carrinhoService) : base(notificator)
     {
         _clienteService = clienteService;
+        _carrinhoService = carrinhoService;
     }
 
     [AllowAnonymous]
@@ -26,7 +28,9 @@ public class ClienteController : BaseController
     public async Task<IActionResult> Adicionar(AdicionarClienteDto usuarioDto)
     {
         var clienteDto = await _clienteService.AdicionarCliente(usuarioDto);
-        return CustomResponse();
+        
+        await _carrinhoService.Adicionar(clienteDto);
+        return CustomResponse(true);
     }
     
     [AllowAnonymous]

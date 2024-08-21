@@ -21,9 +21,29 @@ public class CarrinhoService : BaseService, ICarrinhoService
     }
 
 
-    public async Task Adicionar(ClienteDto cliente)
+    public async Task Adicionar(ClienteDto dto)
     {
+        var cliente = await _clienteRepository.Obter(dto.Email);
 
+
+        var carrinho = new Carrinho()
+        {
+            Cliente = cliente,
+            ClienteId = cliente.Id
+        };
+        
+        await _carrinhoRepository.Adicionar(carrinho);
+
+        if (await _carrinhoRepository.UnitOfWork.Commit())
+            return;
+        
+        Notificator.Handle("Carrinho não adicionado");
+        return;
 
     }
+    
+    
+    
+    
+    
 }
