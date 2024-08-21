@@ -38,13 +38,12 @@ public class ProdutoController : BaseController
     [HttpGet("{pagina}")]
     public async Task<IActionResult> ObterProdutos(int pagina, [FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
-        
         var data = (await _produtoService.Obter(categoriaProduto));
-        var numeroPaginas = (int)data.Count()/6;
+        var num = (int)Math.Round(data.Count()/6f);
+        var numeroPaginas =  num == 0 ? 1 : (int)Math.Round(data.Count()/6f);
         var response = data.Skip(pagina * 6).Take(6);
         return CustomResponse(new RetornoPaginadoDto()
         {
-            PaginaAtual = pagina,
             QuantidadePaginas = numeroPaginas,
             Produtos = response
         });
@@ -57,7 +56,21 @@ public class ProdutoController : BaseController
        
         return CustomResponse( await _produtoService.Atualizar(produtoId, produtoDto));
     }
+
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("categorias")]
+    public async Task<IActionResult> ObterCategorias()
+    {
+        return CustomResponse(await _produtoService.ObterCategorias());
+    }
     
+    [AllowAnonymous]
+    [HttpPatch]
+    public async Task<IActionResult> AtualizarParcial(int produtoId, AtualizarProdutoDto produtoDto)
+    {
+        return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
+    }
     
     [AllowAnonymous]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -76,18 +89,5 @@ public class ProdutoController : BaseController
         return File(fotos[index]!, "image/png");
 
     }
-
     
-   
-    
-
-    [AllowAnonymous]
-    [HttpPatch]
-    public async Task<IActionResult> AtualizarParcial(int produtoId, AtualizarProdutoDto produtoDto)
-    {
-        return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
-    }
-
-    
-
 }

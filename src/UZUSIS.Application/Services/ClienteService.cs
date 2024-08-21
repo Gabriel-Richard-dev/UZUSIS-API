@@ -1,5 +1,6 @@
 using AutoMapper;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 using UZUSIS.Domain.Contracts.Repositories;
@@ -17,7 +18,7 @@ public class ClienteService : BaseService, IClienteService
         _clienteRepository = clienteRepository;
     }
     
-    public async Task<AdicionarUsuarioDto?> AdicionarCliente(AdicionarUsuarioDto usuarioDto)
+    public async Task<ClienteDto?> AdicionarCliente(AdicionarUsuarioDto usuarioDto)
     {
 
         var userExists = (await _clienteRepository.Obter(usuarioDto.Email));
@@ -29,20 +30,22 @@ public class ClienteService : BaseService, IClienteService
         }
         
         
-        var usuario = Mapper.Map<Cliente>(usuarioDto);
+        var cliente = Mapper.Map<Cliente>(usuarioDto);
 
-        if (usuario is null)
+        if (cliente is null)
         {
             Notificator.HandleNotFoundResource();
             return null;
         }
+
+
+       
         
-        
-        await _clienteRepository.Adicionar(usuario);
+        await _clienteRepository.Adicionar(cliente);
 
         if (await CommitChanges())
         {
-            return usuarioDto;
+            return Mapper.Map<ClienteDto>(usuarioDto);
         }
         
         Notificator.Handle("Não foi possivel criar o usuário");

@@ -17,11 +17,12 @@ public class ClienteMap : IEntityTypeConfiguration<Cliente>
         builder.Property(c => c.Nome);
         builder.Property(c => c.Senha);
         builder.Property(c => c.AtualizadoEm);
-
+        builder.Property(c => c.CarrinhoId);
 
         builder.HasOne(c => c.Carrinho)
-            .WithOne(c => c.Cliente);
-
+            .WithOne(c => c.Cliente)
+            .HasForeignKey<Cliente>(c => c.CarrinhoId);
+        
         builder.HasMany(c => c.Compras)
             .WithOne(c => c.Cliente);
 

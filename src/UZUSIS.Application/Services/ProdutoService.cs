@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Categoria;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
@@ -146,6 +147,22 @@ public class ProdutoService : BaseService, IProdutoService
 
     }
 
+    public async Task<List<CategoriaDto>> ObterCategorias()
+    {
+        var categorias = new List<CategoriaDto>();
+        var enumCategoria = Enum.GetValues(typeof(ECategoriaProduto));
+
+        foreach (var c in enumCategoria)
+        {
+            categorias.Add(new CategoriaDto()
+            {
+                Categoria = (ECategoriaProduto)c,
+                NomeCategoria = c.ToString()!
+            });
+        }
+
+        return categorias;
+    }
 
 
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();

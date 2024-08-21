@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using UZUSIS.Application.Dtos.Categoria;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Core.Enums;
 
@@ -11,4 +12,6 @@ public interface IProdutoService
     Task<List<byte[]?>> ObterFoto(long produtoId);
   
     Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);
+    Task<List<CategoriaDto>> ObterCategorias();
+    
 }

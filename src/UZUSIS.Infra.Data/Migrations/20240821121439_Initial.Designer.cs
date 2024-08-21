@@ -12,8 +12,8 @@ using UZUSIS.Infra.Data.Context;
 namespace UZUSIS.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240809201431_Bd_Solves")]
-    partial class Bd_Solves
+    [Migration("20240821121439_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,10 @@ namespace UZUSIS.Infra.Data.Migrations
             modelBuilder.Entity("UZUSIS.Domain.Entities.Cliente", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
@@ -125,6 +128,9 @@ namespace UZUSIS.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarrinhoId")
+                        .IsUnique();
 
                     b.ToTable("Cliente", (string)null);
                 });
@@ -203,6 +209,28 @@ namespace UZUSIS.Infra.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Endereco", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Foto", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("FotoUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("Foto", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Pedido", b =>
@@ -313,7 +341,7 @@ namespace UZUSIS.Infra.Data.Migrations
                 {
                     b.HasOne("UZUSIS.Domain.Entities.Carrinho", "Carrinho")
                         .WithOne("Cliente")
-                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "Id")
+                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "CarrinhoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -340,6 +368,17 @@ namespace UZUSIS.Infra.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Foto", b =>
+                {
+                    b.HasOne("UZUSIS.Domain.Entities.Produto", "Produto")
+                        .WithMany("Fotos")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Pedido", b =>
@@ -413,6 +452,8 @@ namespace UZUSIS.Infra.Data.Migrations
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Produto", b =>
                 {
+                    b.Navigation("Fotos");
+
                     b.Navigation("Pedidos");
 
                     b.Navigation("Tamanhos");

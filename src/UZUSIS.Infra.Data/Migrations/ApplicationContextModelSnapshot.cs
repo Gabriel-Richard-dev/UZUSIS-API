@@ -81,7 +81,10 @@ namespace UZUSIS.Infra.Data.Migrations
             modelBuilder.Entity("UZUSIS.Domain.Entities.Cliente", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
@@ -122,6 +125,9 @@ namespace UZUSIS.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarrinhoId")
+                        .IsUnique();
 
                     b.ToTable("Cliente", (string)null);
                 });
@@ -332,7 +338,7 @@ namespace UZUSIS.Infra.Data.Migrations
                 {
                     b.HasOne("UZUSIS.Domain.Entities.Carrinho", "Carrinho")
                         .WithOne("Cliente")
-                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "Id")
+                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "CarrinhoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

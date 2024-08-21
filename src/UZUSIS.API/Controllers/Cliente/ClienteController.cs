@@ -25,7 +25,8 @@ public class ClienteController : BaseController
     [HttpPost]
     public async Task<IActionResult> Adicionar(AdicionarClienteDto usuarioDto)
     {
-        return CustomResponse(await _clienteService.AdicionarCliente(usuarioDto));
+        var clienteDto = await _clienteService.AdicionarCliente(usuarioDto);
+        return CustomResponse();
     }
     
     [AllowAnonymous]
