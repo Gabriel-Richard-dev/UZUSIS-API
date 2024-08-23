@@ -13,9 +13,6 @@ public class CarrinhoMap : IEntityTypeConfiguration<Carrinho>
         
         builder.HasKey(c => c.Id);
 
-        builder.HasOne<Cliente>()
-            .WithOne(c => c.Carrinho)
-            .HasForeignKey<Cliente>(c => c.CarrinhoId);
         
         builder.HasMany(c => c.Pedidos)
             .WithOne(c => c.Carrinho);

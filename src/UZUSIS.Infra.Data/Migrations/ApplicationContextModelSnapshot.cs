@@ -67,9 +67,6 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("ClienteId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
 
@@ -126,8 +123,7 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarrinhoId")
-                        .IsUnique();
+                    b.HasIndex("CarrinhoId");
 
                     b.ToTable("Cliente", (string)null);
                 });
@@ -337,8 +333,8 @@ namespace UZUSIS.Infra.Data.Migrations
             modelBuilder.Entity("UZUSIS.Domain.Entities.Cliente", b =>
                 {
                     b.HasOne("UZUSIS.Domain.Entities.Carrinho", "Carrinho")
-                        .WithOne("Cliente")
-                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "CarrinhoId")
+                        .WithMany()
+                        .HasForeignKey("CarrinhoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -426,9 +422,6 @@ namespace UZUSIS.Infra.Data.Migrations
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Carrinho", b =>
                 {
-                    b.Navigation("Cliente")
-                        .IsRequired();
-
                     b.Navigation("Pedidos");
                 });
 

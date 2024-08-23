@@ -43,7 +43,6 @@ namespace UZUSIS.Infra.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ClienteId = table.Column<long>(type: "bigint", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -260,8 +259,7 @@ namespace UZUSIS.Infra.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Cliente_CarrinhoId",
                 table: "Cliente",
-                column: "CarrinhoId",
-                unique: true);
+                column: "CarrinhoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Compra_ClienteId",

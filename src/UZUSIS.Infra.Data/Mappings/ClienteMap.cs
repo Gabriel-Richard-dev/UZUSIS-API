@@ -19,9 +19,7 @@ public class ClienteMap : IEntityTypeConfiguration<Cliente>
         builder.Property(c => c.AtualizadoEm);
         builder.Property(c => c.CarrinhoId);
 
-        builder.HasOne(c => c.Carrinho)
-            .WithOne(c => c.Cliente)
-            .HasForeignKey<Cliente>(c => c.CarrinhoId);
+        builder.HasOne(c => c.Carrinho);
         
         builder.HasMany(c => c.Compras)
             .WithOne(c => c.Cliente);

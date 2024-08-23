@@ -9,12 +9,13 @@ public class Cliente : Usuario
 {
     public Cliente()
     {
+        Carrinho = new Carrinho();
         TipoUsuario = ETipoUsuario.Cliente;
     }
 
     public long CarrinhoId { get; set; }
 
-    public Carrinho Carrinho { get; set; }
+    public Carrinho? Carrinho { get; set; }
     public List<Compra> Compras { get; set; }
     public List<Pedido> Pedidos { get; set;  }
     public long EnderecoId { get; set; }

@@ -26,14 +26,6 @@ public class CarrinhoService : BaseService, ICarrinhoService
         var cliente = await _clienteRepository.Obter(dto.Email);
 
 
-        var carrinho = new Carrinho()
-        {
-            Cliente = cliente,
-            ClienteId = cliente.Id
-        };
-        
-        await _carrinhoRepository.Adicionar(carrinho);
-
         if (await _carrinhoRepository.UnitOfWork.Commit())
             return;
         

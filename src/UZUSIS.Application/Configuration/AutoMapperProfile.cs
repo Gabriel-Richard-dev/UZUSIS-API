@@ -25,6 +25,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Cliente, AdicionarUsuarioDto>().ReverseMap();
         CreateMap<Cliente, AdicionarClienteDto>().ReverseMap();
+        CreateMap<ClienteDto, AdicionarClienteDto>().ReverseMap();
 
         #endregion
         

@@ -27,10 +27,7 @@ public class ClienteController : BaseController
     [HttpPost]
     public async Task<IActionResult> Adicionar(AdicionarClienteDto usuarioDto)
     {
-        var clienteDto = await _clienteService.AdicionarCliente(usuarioDto);
-        
-        await _carrinhoService.Adicionar(clienteDto);
-        return CustomResponse(true);
+        return CustomResponse(await _clienteService.AdicionarCliente(usuarioDto));
     }
     
     [AllowAnonymous]
