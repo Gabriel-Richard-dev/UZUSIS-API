@@ -56,7 +56,7 @@ public class ClienteService : BaseService, IClienteService
         // clienteDb.Carrinho = new Carrinho { ClienteId = cliente.Id };
         //
         // await _clienteRepository.Atualizar(clienteDb);
-        // var carrinho = await _carrinhoRepository.Obter(clienteDb.CarrinhoId);
+        // var carrinho = await _carrinhoRepository.ObterPorId(clienteDb.CarrinhoId);
         //
         // carrinho.ClienteId = clienteDb.Id;
         //

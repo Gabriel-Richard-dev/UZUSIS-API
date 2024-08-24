@@ -17,9 +17,6 @@ public class CompraMap : IEntityTypeConfiguration<Compra>
         builder.HasOne(c => c.Cliente)
             .WithMany(c => c.Compras);
 
-        builder.HasMany(c => c.Pedidos)
-            .WithOne(c => c.Compra)
-            .HasForeignKey(c => c.CompraId);
         
         
     }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Dtos.Categoria;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Core.Enums;
+using UZUSIS.Domain.Entities;
 
 namespace UZUSIS.Application.Contracts.Services;
 
@@ -9,6 +10,7 @@ public interface IProdutoService
 {
     Task<ProdutoDto?> Adicionar(AdicionarProdutoDto produtoDto);
     Task<List<ProdutoDto>> Obter(ECategoriaProduto? categoriaProduto = null);
+    Task<ProdutoDto?> ObterPorId(long produtoId);
     Task<List<byte[]?>> ObterFoto(long produtoId);
   
     Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);

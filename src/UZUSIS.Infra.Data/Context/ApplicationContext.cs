@@ -16,6 +16,7 @@ public class ApplicationContext : DbContext, IUnitOfWork
     public DbSet<Foto> Fotos { get; set; }
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Carrinho> Carrinhos { get; set; }
+    public DbSet<Pedido> Pedidos { get; set; }
 
     public async Task<bool> Commit() => await SaveChangesAsync() > 0;
 

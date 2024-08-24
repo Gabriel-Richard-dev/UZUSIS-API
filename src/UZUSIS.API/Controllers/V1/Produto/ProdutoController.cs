@@ -19,8 +19,10 @@ namespace UZUSIS.API.Controllers.V1.Produto;
 public class ProdutoController : BaseController
 {
     private readonly IProdutoService _produtoService;
-    private readonly IHttpContextAccessor _httpContextAccessor; 
-    public ProdutoController(INotificator notificator, IProdutoService produtoService, IHttpContextAccessor httpContextAccessor) : base(notificator)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public ProdutoController(INotificator notificator, IProdutoService produtoService,
+        IHttpContextAccessor httpContextAccessor) : base(notificator)
     {
         _produtoService = produtoService;
         _httpContextAccessor = httpContextAccessor;
@@ -39,14 +41,21 @@ public class ProdutoController : BaseController
     public async Task<IActionResult> ObterProdutos(int pagina, [FromQuery] ECategoriaProduto? categoriaProduto = null)
     {
         var data = (await _produtoService.Obter(categoriaProduto));
-        var num = (int)Math.Round(data.Count()/6f);
-        var numeroPaginas =  num == 0 ? 1 : (int)Math.Round(data.Count()/6f);
+        var num = (int)Math.Round(data.Count() / 6f);
+        var numeroPaginas = num == 0 ? 1 : (int)Math.Round(data.Count() / 6f);
         var response = data.Skip(pagina * 6).Take(6);
         return CustomResponse(new RetornoPaginadoDto()
         {
             QuantidadePaginas = numeroPaginas,
             Produtos = response
         });
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("id")]
+    public async Task<IActionResult> ObterPorId(long produtoId)
+    {
+        return CustomResponse(await _produtoService.ObterPorId(produtoId));
     }
 
     [AllowAnonymous]

@@ -1,0 +1,30 @@
+﻿using Microsoft.EntityFrameworkCore;
+using UZUSIS.Domain.Contracts.Repositories;
+using UZUSIS.Domain.Entities;
+using UZUSIS.Infra.Data.Context;
+
+namespace UZUSIS.Infra.Data.Repositories;
+
+public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
+{
+    public PedidoRepository(ApplicationContext context) : base(context)
+    {
+    }
+
+    public async Task<List<Pedido>> ObterPedidosCliente(long clienteId)
+    {
+
+        var cliente = Context.Clientes.AsNoTrackingWithIdentityResolution()
+            .Where(c => c.Id == clienteId).FirstOrDefault();
+
+        var pedidos =
+            Context.Pedidos.AsNoTrackingWithIdentityResolution()
+                .Where(c => c.CarrinhoId == cliente.CarrinhoId).ToList();
+
+
+        return pedidos;
+
+
+    }
+        
+}

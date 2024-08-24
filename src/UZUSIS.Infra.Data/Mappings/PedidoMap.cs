@@ -11,12 +11,10 @@ public class PedidoMap : IEntityTypeConfiguration<Pedido>
         
         builder.ToTable("Pedido");
 
-        
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.ProdutoId);
         builder.Property(c => c.ClienteId);
-        builder.Property(c => c.CompraId);
 
         builder.Property(c => c.Quantidade);
         builder.Property(c => c.ValorPedido);
@@ -25,9 +23,6 @@ public class PedidoMap : IEntityTypeConfiguration<Pedido>
             .WithMany(c => c.Pedidos);
 
         builder.HasOne(c => c.Produto)
-            .WithMany(c => c.Pedidos);
-        
-        builder.HasOne(c => c.Compra)
             .WithMany(c => c.Pedidos);
 
         builder.HasOne(c => c.Carrinho)

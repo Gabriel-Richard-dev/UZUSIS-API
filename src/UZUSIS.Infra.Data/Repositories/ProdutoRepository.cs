@@ -58,4 +58,15 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         return produto;
 
     }
+    public async Task<Produto> ObterPorId(long id)
+    {
+        var produto  = await Context.Produtos.FirstOrDefaultAsync(c=> c.Id == id);
+        
+        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+        produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
+        
+        
+        return produto;
+
+    }
 }

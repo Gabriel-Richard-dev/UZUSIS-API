@@ -92,6 +92,37 @@ public class ProdutoService : BaseService, IProdutoService
         return produtoRetorno;
     }
 
+    public async Task<ProdutoDto?> ObterPorId(long produtoId)
+    {
+        var produto = await _produtoRepository.ObterPorId(produtoId);
+    
+        if (produto is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+    
+        var produtoDto = Mapper.Map<ProdutoDto>(produto);
+        Console.WriteLine("CHEGUEI AQUI");
+        Console.WriteLine("CHEGUEI AQUI");
+        Console.WriteLine("CHEGUEI AQUI");
+        Console.WriteLine("CHEGUEI AQUI");
+        Console.WriteLine("CHEGUEI AQUI");
+        var fotosUrls = await GetUrlsFotos(produtoId);
+        
+       
+        
+        
+        
+        foreach (var url in fotosUrls.Urls)
+        {
+            produtoDto.FotoUrls.Add(url);
+        }
+        
+    
+        return produtoDto;
+    }
+
     public async Task<List<byte[]?>> ObterFoto(long produtoId)
     {
         var produto = await _produtoRepository.Obter(produtoId);

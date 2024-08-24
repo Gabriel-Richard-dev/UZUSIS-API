@@ -1,8 +1,11 @@
+using UZUSIS.Application.Dtos.Carrinho;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Pedido;
 
 namespace UZUSIS.Application.Contracts.Services;
 
 public interface ICarrinhoService
 {
-    Task Adicionar(ClienteDto dto);
+    Task<PedidoDto?> AdicionarAoCarrinho(RequisicaoCarrinhoDto requisicaoCarrinhoDto);
+    Task<List<PedidoDto>> ObterPedidos(int clienteId);
 }
