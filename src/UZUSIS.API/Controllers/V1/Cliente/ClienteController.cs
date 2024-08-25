@@ -20,13 +20,7 @@ public class ClienteController : BaseController
         _clienteService = clienteService;
         _carrinhoService = carrinhoService;
     }
-
-    [AllowAnonymous]
-    [HttpPost]
-    public async Task<IActionResult> Adicionar(AdicionarClienteDto usuarioDto)
-    {
-        return CustomResponse(await _clienteService.AdicionarCliente(usuarioDto));
-    }
+    
     
     [AllowAnonymous]
     [HttpGet]

@@ -22,6 +22,15 @@ public class ClienteService : BaseService, IClienteService
         _carrinhoRepository = carrinhoRepository;
         _hasher = hasher;
     }
+
+
+    public async Task<bool> ValidarCodigoConfirmacao(string email, string codigoConfirmacao)
+    {
+
+        return true;
+
+
+    }
     
     public async Task<ClienteDto?> AdicionarCliente(AdicionarUsuarioDto usuarioDto)
     {
