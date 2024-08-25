@@ -20,4 +20,23 @@ public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
         
         return cliente;
     }
+
+    public async Task<ConfirmacaoEmail?> ObterPedidoDeConfirmacao(string email)
+    {
+        var confirmacao = await Context.ConfirmacoesDeEmails.AsNoTracking()
+            .Where(c => c.FoiConfirmado == false)
+            .Where(c => c.Expiracao <= DateTime.Now)
+            .FirstOrDefaultAsync(c => c.Email.Equals(email));
+
+        return confirmacao;
+    }
+
+
+    public async Task GerarConfirmacaoEmail(ConfirmacaoEmail confirmacaoEmail)
+    {
+        Context.ConfirmacoesDeEmails.Add(confirmacaoEmail);
+    }
+    
+    
+    
 }

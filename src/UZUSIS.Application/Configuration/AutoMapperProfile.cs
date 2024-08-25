@@ -1,6 +1,7 @@
 using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.ConfirmacaoEmail;
 using UZUSIS.Application.Dtos.Foto;
 using UZUSIS.Application.Dtos.Pedido;
 using UZUSIS.Application.Dtos.Produto;
@@ -34,6 +35,12 @@ public class AutoMapperProfile : Profile
 
         CreateMap<Pedido, PedidoDto>().ReverseMap();
         
+        #endregion
+
+        #region ConfirmacaoEmail
+
+        CreateMap<ConfirmacaoEmail, ConfirmacaoEmailDto>().ReverseMap();
+
         #endregion
         
         #region Tamanho

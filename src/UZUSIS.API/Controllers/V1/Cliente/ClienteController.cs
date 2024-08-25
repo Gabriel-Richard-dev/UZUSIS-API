@@ -2,11 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
-using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 
-
-namespace UZUSIS.API.Controllers.Cliente;
+namespace UZUSIS.API.Controllers.V1.Cliente;
 
 
 

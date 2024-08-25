@@ -44,11 +44,13 @@ public static class DependencyInjection
 
         services
             .AddScoped<INotificator, Notificator>();
-        
+
         services
-            .AddScoped<IPasswordHasher<Administrador>, Argon2PasswordHasher<Administrador>>();
-        
-        
+            .AddScoped<IPasswordHasher<Administrador>, Argon2PasswordHasher<Administrador>>()
+            .AddScoped<IPasswordHasher<Cliente>, Argon2PasswordHasher<Cliente>>()
+            .AddScoped<IPasswordHasher<ConfirmacaoEmail>, Argon2PasswordHasher<ConfirmacaoEmail>>();
+
+        services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services
@@ -56,6 +58,7 @@ public static class DependencyInjection
             .AddScoped<IAdminAuthService, AdminAuthService>()
             .AddScoped<IProdutoService, ProdutoService>()
             .AddScoped<IClienteService, ClienteService>()
-            .AddScoped<ICarrinhoService, CarrinhoService>();
+            .AddScoped<ICarrinhoService, CarrinhoService>()
+            .AddScoped<IClienteAuthService, ClienteAuthService>();
     }
 }

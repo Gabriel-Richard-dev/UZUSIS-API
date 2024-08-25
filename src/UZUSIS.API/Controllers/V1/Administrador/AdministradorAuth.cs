@@ -8,12 +8,12 @@ using UZUSIS.Application.Notification;
 namespace UZUSIS.API.Controllers.V1.Administrador;
 
 [AllowAnonymous]
-public class AdministradorAuthService : BaseController
+public class AdministradorAuth : BaseController
 {
 
     private readonly IAdministradorService _administradorService;
     private readonly IAdminAuthService _adminAuth;
-    public AdministradorAuthService(INotificator notificator, IAdministradorService administradorService, IAdminAuthService adminAuth) : base(notificator)
+    public AdministradorAuth(INotificator notificator, IAdministradorService administradorService, IAdminAuthService adminAuth) : base(notificator)
     {
         _administradorService = administradorService;
         _adminAuth = adminAuth;
