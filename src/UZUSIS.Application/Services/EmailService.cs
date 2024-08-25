@@ -52,20 +52,31 @@ public class EmailService : BaseService, IEmailService
         if (await _clienteRepository.UnitOfWork.Commit())
         {
 
-//             var body =
-//                 $"""
-//                  <h1>Confirme seu email com o codigo abaixo</h1>
-//
-//                  <br>
-//
-//                  <h1>{code}</h1>
-//
-//                  <br>
-//
-//                  <h6>Compre com qualidade, sys.</h6>
-//                  """;
-            var body = "teste";
-
+             var body =
+                 $"""
+                   
+                   <center><h1>UZUSIS</h1></center>
+                   <br>
+                   
+                   <center><h1>Confirme seu email com o codigo abaixo</h1></center>
+                   
+                   <br>
+                   <center><p>Uzusis é uma loja feita de irmãs para as nossas 'Sis', sintam-se bem vindas a melhor<br>e com maior qualidade loja de roupas, acessórios e artigos femininos do Brasil.<br> Ser sis é ser mais mulher sz.</p></center>
+                   
+                   <br>
+                   <center>
+                   <h1>Código de Confirmação:</h1>
+                   </center>
+                   
+                   <center style="letter-spacing: 2rem; background-color:#f1f1f1;"><h1><span style="text-decoration: underline;">{code[0]}</span><span style="text-decoration: underline;">{code[1]}</style><span style="text-decoration: underline;">{code[2]}</span><span style="text-decoration: underline;">{code[3]}</span><span style="text-decoration: underline;">{code[4]}</span></h1></center>
+                   
+                   
+                   <br>
+                   
+                   <h4>Compre com qualidade, Sis.</h4>
+                                
+                   """;
+            
 
 
 
@@ -86,16 +97,17 @@ public class EmailService : BaseService, IEmailService
     }
     public async Task SendEmailAsync(MailData mailData)
     {
-        var emailConfiguration = _configuration.GetSection("EmailConfiguration");
-        
+        var emailSettings = _configuration.GetSection("EmailConfiguration");
         
         var toEmail = mailData.EmailToId;
-        var user = emailConfiguration["User"]!;
-        var password = emailConfiguration["Password"]!;
-
-        var smtpClient = new SmtpClient(emailConfiguration["Server"])
+        var user = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(emailSettings["User"]!));
+        var password = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(emailSettings["Password"]!));
+        Console.WriteLine(user);
+        Console.WriteLine(password);
+        Console.WriteLine(toEmail);
+        var smtpClient = new SmtpClient(emailSettings["Server"]!)
         {
-            Port = int.Parse(emailConfiguration["Port"]!),
+            Port = 587,
             Credentials = new NetworkCredential(user, password),
             EnableSsl = true,
         };
@@ -109,12 +121,11 @@ public class EmailService : BaseService, IEmailService
 
         try
         {
-            await Task.Run(() => smtpClient.Send(mailMessage));
+            smtpClient.Send(mailMessage);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            var notificator = new Notificator();
-            notificator.Handle("Ocorreu um erro ao enviar o e-mail");
+            Notificator.Handle("Ocorreu um erro ao enviar o e-mail: "  + e.Message);
         }
     }
 }

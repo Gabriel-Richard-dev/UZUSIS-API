@@ -24,8 +24,8 @@ public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
     public async Task<ConfirmacaoEmail?> ObterPedidoDeConfirmacao(string email)
     {
         var confirmacao = await Context.ConfirmacoesDeEmails.AsNoTracking()
+            .Where(c => c.Expiracao >= DateTime.Now)
             .Where(c => c.FoiConfirmado == false)
-            .Where(c => c.Expiracao <= DateTime.Now)
             .FirstOrDefaultAsync(c => c.Email.Equals(email));
 
         return confirmacao;
