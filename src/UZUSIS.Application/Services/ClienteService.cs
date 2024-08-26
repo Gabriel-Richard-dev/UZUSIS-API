@@ -52,7 +52,7 @@ public class ClienteService : BaseService, IClienteService
             return null;
         }
 
-        Endereco endereco = Mapper.Map<Endereco>(usuarioDto.EnderecoDto);
+        Endereco endereco = Mapper.Map<Endereco>(usuarioDto.Endereco);
 
         cliente.Endereco = endereco;
         cliente.Senha = _hasher.HashPassword(cliente, cliente.Senha);

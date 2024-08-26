@@ -7,4 +7,5 @@ public interface IProdutoRepository : IBaseRepository<Produto>
 {
     Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null);
     Task<Produto> ObterPorId(long id);
+    Task<List<Produto>> ObterPorNome(string nome);
 }

@@ -69,4 +69,18 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         return produto;
 
     }
+
+    public async Task<List<Produto>> ObterPorNome(string nome)
+    {
+        var produtos = Context.Produtos.Where(c => c.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+
+        foreach (var produto in produtos)
+        {
+            produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+            produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
+            
+        }
+
+        return produtos;
+    }
 }

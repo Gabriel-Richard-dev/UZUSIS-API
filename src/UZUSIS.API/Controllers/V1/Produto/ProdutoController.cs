@@ -57,6 +57,13 @@ public class ProdutoController : BaseController
     {
         return CustomResponse(await _produtoService.ObterPorId(produtoId));
     }
+    
+    [AllowAnonymous]
+    [HttpGet("nome")]
+    public async Task<IActionResult> ObterPorNome([FromQuery]string nome)
+    {
+        return CustomResponse(await _produtoService.ObterNome(nome));
+    }
 
     [AllowAnonymous]
     [HttpPut("atualizar")]

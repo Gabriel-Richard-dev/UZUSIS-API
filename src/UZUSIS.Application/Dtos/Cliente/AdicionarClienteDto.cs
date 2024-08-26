@@ -12,5 +12,5 @@ public class AdicionarClienteDto : AdicionarUsuarioDto
     public string CPF { get; set; }
     public string Celular { get; set; }
     public DateTime DataNascimento { get; set; }
-    public EnderecoDto EnderecoDto { get; set; }
+    public EnderecoDto Endereco { get; set; }
 }

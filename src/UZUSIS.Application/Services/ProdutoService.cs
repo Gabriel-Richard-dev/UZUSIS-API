@@ -123,6 +123,24 @@ public class ProdutoService : BaseService, IProdutoService
         return produtoDto;
     }
 
+    public async Task<List<ProdutoDto>> ObterNome(string nome)
+    {
+        var produtos = Mapper.Map<List<ProdutoDto>>(await _produtoRepository.ObterPorNome(nome));
+
+        foreach (var produto in produtos)
+        {
+            var fotos = await GetUrlsFotos(produto.Id);
+            
+
+            for (int i = 0; i < fotos.Urls.Count; i++)
+            {
+                produto.FotoUrls.Add(fotos.Urls[i]);
+            }
+        }
+
+        return produtos;
+    }
+
     public async Task<List<byte[]?>> ObterFoto(long produtoId)
     {
         var produto = await _produtoRepository.Obter(produtoId);
