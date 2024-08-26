@@ -17,6 +17,7 @@ public class ApplicationContext : DbContext, IUnitOfWork
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Carrinho> Carrinhos { get; set; }
     public DbSet<Pedido> Pedidos { get; set; }
+    public DbSet<Endereco> Enderecos { get; set; }
     public DbSet<ConfirmacaoEmail> ConfirmacoesDeEmails { get; set; }
 
     public async Task<bool> Commit() => await SaveChangesAsync() > 0;

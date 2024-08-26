@@ -9,5 +9,10 @@ public class ConfirmacaoEmail : Entity
     public DateTime Expiracao { get; set; } = DateTime.Now.AddMinutes(2);
     public bool FoiConfirmado { get; set; } = false;
 
-
+    public void Confirmado()
+    {
+        FoiConfirmado = true;
+    }
+    
+    
 }

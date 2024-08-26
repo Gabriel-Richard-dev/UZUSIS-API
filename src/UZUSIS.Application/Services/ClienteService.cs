@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 using UZUSIS.Domain.Contracts.Repositories;
@@ -32,7 +33,7 @@ public class ClienteService : BaseService, IClienteService
 
     }
     
-    public async Task<ClienteDto?> AdicionarCliente(AdicionarUsuarioDto usuarioDto)
+    public async Task<ClienteDto?> AdicionarCliente(AdicionarClienteDto usuarioDto)
     {
         
         var userExists = (await _clienteRepository.Obter(usuarioDto.Email));
@@ -51,7 +52,9 @@ public class ClienteService : BaseService, IClienteService
             return null;
         }
 
-       
+        Endereco endereco = Mapper.Map<Endereco>(usuarioDto.EnderecoDto);
+
+        cliente.Endereco = endereco;
         cliente.Senha = _hasher.HashPassword(cliente, cliente.Senha);
         var clienteDb = await _clienteRepository.Adicionar(cliente);
         
@@ -65,7 +68,10 @@ public class ClienteService : BaseService, IClienteService
         return null;
     }
 
-
+    public async Task<ClienteDto?> ObterCliente(long id)
+    {
+        return Mapper.Map<ClienteDto>(await _clienteRepository.Obter(id));
+    }
 
     private async Task<bool> CommitChanges() => await _clienteRepository.UnitOfWork.Commit();
 

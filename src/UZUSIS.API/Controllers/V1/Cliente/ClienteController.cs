@@ -24,9 +24,9 @@ public class ClienteController : BaseController
     
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> Obter()
+    public async Task<IActionResult> Obter([FromQuery]long id)
     {
-        return CustomResponse();
+        return CustomResponse(await _clienteService.ObterCliente(id));
     }
 
     [AllowAnonymous]

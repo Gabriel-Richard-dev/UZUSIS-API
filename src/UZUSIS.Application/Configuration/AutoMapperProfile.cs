@@ -2,6 +2,7 @@ using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.ConfirmacaoEmail;
+using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Foto;
 using UZUSIS.Application.Dtos.Pedido;
 using UZUSIS.Application.Dtos.Produto;
@@ -25,6 +26,7 @@ public class AutoMapperProfile : Profile
 
         #region Cliente
 
+        CreateMap<Cliente, ClienteDto>().ReverseMap();
         CreateMap<Cliente, AdicionarUsuarioDto>().ReverseMap();
         CreateMap<Cliente, AdicionarClienteDto>().ReverseMap();
         CreateMap<ClienteDto, AdicionarClienteDto>().ReverseMap();
@@ -37,6 +39,12 @@ public class AutoMapperProfile : Profile
         
         #endregion
 
+        #region Endereco
+
+        CreateMap<Endereco, EnderecoDto>().ReverseMap();
+
+        #endregion
+        
         #region ConfirmacaoEmail
 
         CreateMap<ConfirmacaoEmail, ConfirmacaoEmailDto>().ReverseMap();

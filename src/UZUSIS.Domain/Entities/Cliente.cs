@@ -18,7 +18,6 @@ public class Cliente : Usuario
     public Carrinho? Carrinho { get; set; }
     public List<Compra> Compras { get; set; }
     public List<Pedido> Pedidos { get; set;  }
-    public long EnderecoId { get; set; }
     public Endereco Endereco { get; set; }
     public string CPF { get; set; }
     public string Celular { get; set; }

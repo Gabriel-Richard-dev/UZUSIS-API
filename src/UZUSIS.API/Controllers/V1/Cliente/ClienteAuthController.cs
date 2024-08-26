@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 
@@ -39,7 +40,14 @@ public class ClienteAuth : BaseController
     }
     
     [AllowAnonymous]
-    [HttpPost]
+    [HttpGet("codigo-valido")]
+    public async Task<IActionResult> ValidarCodigo(string email, string codigo)
+    {
+        return CustomResponse(await _clienteAuthService.CodigoValido(email, codigo));
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("cadastrar")]
     public async Task<IActionResult> Adicionar(AdicionarClienteDto usuarioDto)
     {
         return CustomResponse(await _clienteService.AdicionarCliente(usuarioDto));

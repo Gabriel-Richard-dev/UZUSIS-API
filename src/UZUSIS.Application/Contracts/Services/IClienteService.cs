@@ -1,9 +1,11 @@
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Usuario;
 
 namespace UZUSIS.Application.Contracts.Services;
 
 public interface IClienteService
 {
-    Task<ClienteDto?> AdicionarCliente(AdicionarUsuarioDto usuarioDto);
+    Task<ClienteDto?> ObterCliente(long id);
+    Task<ClienteDto?> AdicionarCliente(AdicionarClienteDto usuarioDto);
 }

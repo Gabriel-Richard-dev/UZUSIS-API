@@ -22,14 +22,16 @@ public class ClienteAuthService : BaseService, IClienteAuthService
     private readonly IJwtService _jwtService;
     private readonly JwtSettings _jwtSettings;
     private readonly IPasswordHasher<Cliente> _hasher;
+    private readonly IPasswordHasher<ConfirmacaoEmail> _hasherConfirmacaoEmail;
 
     public ClienteAuthService(INotificator notificator, IMapper mapper,
         IClienteRepository clienteRepository, IPasswordHasher<Cliente> hasher,
-        IJwtService jwtService, IOptions<JwtSettings> jwtSettings) : base(notificator, mapper)
+        IJwtService jwtService, IOptions<JwtSettings> jwtSettings, IPasswordHasher<ConfirmacaoEmail> hasherConfirmacaoEmail) : base(notificator, mapper)
     {
         _clienteRepository = clienteRepository;
         _hasher = hasher;
         _jwtService = jwtService;
+        _hasherConfirmacaoEmail = hasherConfirmacaoEmail;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -57,9 +59,41 @@ public class ClienteAuthService : BaseService, IClienteAuthService
         Notificator.Handle("Não foi possivel realizar o login");
         return null;
     }
-    
-    
-    
+
+
+    public async Task<bool> CodigoValido(string email, string codigo)
+    {
+        var cliente = await _clienteRepository.Obter(email);
+
+        if (cliente is not null)
+        {
+            return false;
+        }
+        
+        var confirmacao = await _clienteRepository.ObterPedidoDeConfirmacao(email);
+
+        if (confirmacao is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+
+        bool codigoCorreto = _hasherConfirmacaoEmail
+            .VerifyHashedPassword(confirmacao, confirmacao.Codigo, codigo) != PasswordVerificationResult.Failed;
+
+        if (codigoCorreto)
+        {
+            confirmacao.Confirmado();
+            await _clienteRepository.ConfirmacaoValidada(confirmacao);
+           
+            if(await _clienteRepository.UnitOfWork.Commit())
+                return true;
+        }
+        
+        Notificator.Handle("Código expirado ou incorreto");
+        return false;
+
+    }
     
     
     

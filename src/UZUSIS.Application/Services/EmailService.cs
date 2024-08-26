@@ -29,7 +29,13 @@ public class EmailService : BaseService, IEmailService
     public async Task EnviarConfirmacao(string email)
     {
         var pedido = await _clienteRepository.ObterPedidoDeConfirmacao(email);
+        var cliente = await _clienteRepository.Obter(email);
 
+        if (cliente is not null)
+        {
+            return;
+        }
+        
         if (pedido is not null)
         {
             Notificator.Handle("Um código de confirmação já foi gerado para esse email.");
@@ -68,7 +74,7 @@ public class EmailService : BaseService, IEmailService
                    <h1>Código de Confirmação:</h1>
                    </center>
                    
-                   <center style="letter-spacing: 2rem; background-color:#f1f1f1;"><h1><span style="text-decoration: underline;">{code[0]}</span><span style="text-decoration: underline;">{code[1]}</style><span style="text-decoration: underline;">{code[2]}</span><span style="text-decoration: underline;">{code[3]}</span><span style="text-decoration: underline;">{code[4]}</span></h1></center>
+                   <center style="letter-spacing: 1rem; background-color:#f1f1f1;"><h1><span style="text-decoration: underline;"> {code[0]}</span><span style="text-decoration: underline;">{code[1]}</style><span style="text-decoration: underline;">{code[2]}</span><span style="text-decoration: underline;">{code[3]}</span><span style="text-decoration: underline;">{code[4]}</span></h1></center>
                    
                    
                    <br>
@@ -102,9 +108,7 @@ public class EmailService : BaseService, IEmailService
         var toEmail = mailData.EmailToId;
         var user = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(emailSettings["User"]!));
         var password = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(emailSettings["Password"]!));
-        Console.WriteLine(user);
-        Console.WriteLine(password);
-        Console.WriteLine(toEmail);
+        
         var smtpClient = new SmtpClient(emailSettings["Server"]!)
         {
             Port = 587,

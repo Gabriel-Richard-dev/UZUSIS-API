@@ -18,7 +18,32 @@ public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
             Context.Clientes
                 .FirstOrDefaultAsync(c => c.Email.Equals(email));
         
+        if(cliente is not null)
+        {
+            var endereco = Context.Enderecos.FirstOrDefault(c => c.ClienteId == cliente.Id);
+            if(endereco is not null)
+                cliente.Endereco = endereco;
+        }
+        
         return cliente;
+    }
+
+    public async Task<Cliente?> Obter(long id)
+    {
+       
+        var cliente = await 
+                Context.Clientes
+                    .FirstOrDefaultAsync(c => c.Id == id);
+        
+        if(cliente is not null)
+        {
+            var endereco = Context.Enderecos.FirstOrDefault(c => c.ClienteId == cliente.Id);
+            
+            if(endereco is not null) cliente.Endereco = endereco;
+        }
+        
+        return cliente;
+      
     }
 
     public async Task<ConfirmacaoEmail?> ObterPedidoDeConfirmacao(string email)
@@ -35,6 +60,11 @@ public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
     public async Task GerarConfirmacaoEmail(ConfirmacaoEmail confirmacaoEmail)
     {
         Context.ConfirmacoesDeEmails.Add(confirmacaoEmail);
+    }
+
+    public async Task ConfirmacaoValidada(ConfirmacaoEmail confirmacaoEmail)
+    {
+        Context.ConfirmacoesDeEmails.Update(confirmacaoEmail);
     }
     
     

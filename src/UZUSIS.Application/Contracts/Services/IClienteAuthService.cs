@@ -6,4 +6,5 @@ namespace UZUSIS.Application.Contracts.Services;
 public interface IClienteAuthService
 {
     Task<TokenDto?> Login(LoginUsuarioDto loginUsuarioDto);
+    Task<bool> CodigoValido(string email, string codigo);
 }
