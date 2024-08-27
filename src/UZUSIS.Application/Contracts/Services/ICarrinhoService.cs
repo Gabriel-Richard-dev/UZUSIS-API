@@ -7,5 +7,5 @@ namespace UZUSIS.Application.Contracts.Services;
 public interface ICarrinhoService
 {
     Task<PedidoDto?> AdicionarAoCarrinho(RequisicaoCarrinhoDto requisicaoCarrinhoDto);
-    Task<List<PedidoDto>> ObterPedidos(int clienteId);
+    Task<List<PedidoDto>> ObterPedidos();
 }

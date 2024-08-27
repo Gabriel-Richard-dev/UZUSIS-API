@@ -6,6 +6,6 @@ namespace UZUSIS.Application.Contracts.Services;
 
 public interface IClienteService
 {
-    Task<ClienteDto?> ObterCliente(long id);
+    Task<ClienteDto?> ObterCliente();
     Task<ClienteDto?> AdicionarCliente(AdicionarClienteDto usuarioDto);
 }

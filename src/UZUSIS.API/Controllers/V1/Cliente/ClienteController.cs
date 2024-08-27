@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Notification;
+using UZUSIS.Core.Enums;
 
 namespace UZUSIS.API.Controllers.V1.Cliente;
 
@@ -22,12 +24,13 @@ public class ClienteController : BaseController
     }
     
     
-    [AllowAnonymous]
+    [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpGet]
-    public async Task<IActionResult> Obter([FromQuery]long id)
+    public async Task<IActionResult> Obter()
     {
-        return CustomResponse(await _clienteService.ObterCliente(id));
+        return CustomResponse(await _clienteService.ObterCliente());
     }
+    
 
     [AllowAnonymous]
     [HttpPut]

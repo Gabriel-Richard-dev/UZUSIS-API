@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -100,9 +101,9 @@ public class ClienteAuthService : BaseService, IClienteAuthService
     private async Task<string> GenerateToken(Cliente cliente)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = await _jwtService.GetCurrentSigningCredentials();
+        var key = Encoding.ASCII.GetBytes(_jwtSettings.Key); // Use a chave diretamente
 
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
@@ -110,11 +111,10 @@ public class ClienteAuthService : BaseService, IClienteAuthService
                 new Claim(ClaimTypes.Role, ETipoUsuario.Cliente.ToString())
             }),
             Expires = DateTime.UtcNow.AddHours((int)_jwtSettings.ExpiracaoHoras),
-            SigningCredentials = key
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256) 
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-
         return tokenHandler.WriteToken(token);
     }
 

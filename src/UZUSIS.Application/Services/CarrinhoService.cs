@@ -1,9 +1,11 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Carrinho;
 using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.Pedido;
 using UZUSIS.Application.Notification;
+using UZUSIS.Core.Extensions;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
 
@@ -14,21 +16,29 @@ public class CarrinhoService : BaseService, ICarrinhoService
     private readonly ICarrinhoRepository _carrinhoRepository;   
     private readonly IClienteRepository _clienteRepository;   
     private readonly IProdutoRepository _produtoRepository;   
-    private readonly IPedidoRepository _pedidoRepository;   
+    private readonly IPedidoRepository _pedidoRepository;
+    private readonly IHttpContextAccessor _httpContext;
     
-    
-    public CarrinhoService(INotificator notificator, IMapper mapper, ICarrinhoRepository carrinhoRepository, IClienteRepository clienteRepository, IProdutoRepository produtoRepository, IPedidoRepository pedidoRepository) 
+    public CarrinhoService(INotificator notificator, IMapper mapper, ICarrinhoRepository carrinhoRepository, IClienteRepository clienteRepository, IProdutoRepository produtoRepository, IPedidoRepository pedidoRepository, IHttpContextAccessor httpContextAccessor) 
         : base(notificator, mapper)
     {
         _carrinhoRepository = carrinhoRepository;
         _clienteRepository = clienteRepository;
         _produtoRepository = produtoRepository;
         _pedidoRepository = pedidoRepository;
+        _httpContext = httpContextAccessor;
     }
 
     public async Task<PedidoDto?> AdicionarAoCarrinho(RequisicaoCarrinhoDto requisicao)
     {
-        var cliente = await _clienteRepository.Obter(requisicao.ClienteId);
+
+        var clienteId = await ObterIdUsuarioAutenticado();
+
+        if (Notificator.HasNotification)
+            return null;
+        
+        
+        var cliente = await _clienteRepository.Obter(clienteId);
         var produto = await _produtoRepository.Obter(requisicao.ProdutoId);
 
         if (cliente is null || produto is null)
@@ -73,9 +83,36 @@ public class CarrinhoService : BaseService, ICarrinhoService
 
     }
 
-    public async Task<List<PedidoDto>> ObterPedidos(int clienteId)
+    public async Task<List<PedidoDto>> ObterPedidos()
     {
-        var pedidos = await _pedidoRepository.ObterPedidosCliente(clienteId);
+        var id = await ObterIdUsuarioAutenticado();
+
+        if (Notificator.HasNotification)
+            return null;
+        
+        var pedidos = await _pedidoRepository.ObterPedidosCliente(id);
         return Mapper.Map<List<PedidoDto>>(pedidos);
     }
+    
+    
+    private async Task<long> ObterIdUsuarioAutenticado()
+    {
+        if (_httpContext is null)
+        {
+            Notificator.Handle("Impossivel encontrar o httpContext");
+            return 0;
+        }
+
+        long? usuarioId = _httpContext.ObterUsuarioId();
+        if (usuarioId == null)
+        {
+            Notificator.HandleNotFoundResource();
+            return 0;
+        }
+
+        long id = usuarioId.Value;
+
+        return id;
+    }
+    
 }

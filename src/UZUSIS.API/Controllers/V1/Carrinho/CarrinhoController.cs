@@ -14,17 +14,17 @@ public class CarrinhoController : BaseController
         _carrinhoService = carrinhoService;
     }
     
-    [AllowAnonymous]
+    [Authorize(Roles = "Cliente")]
     [HttpPost("Adicionar-ao-Carrinho")]
     public async Task<IActionResult> AdicionarAoCarrinho(RequisicaoCarrinhoDto requisicaoCarrinhoDto)
     {
         return CustomResponse(await _carrinhoService.AdicionarAoCarrinho(requisicaoCarrinhoDto));
     }
 
-    [AllowAnonymous]
+    [Authorize(Roles = "Cliente")]
     [HttpGet("pedidos")]
-    public async Task<IActionResult> ObterPedidos(int clienteId)
+    public async Task<IActionResult> ObterPedidos()
     {
-        return CustomResponse(await _carrinhoService.ObterPedidos(clienteId));
+        return CustomResponse(await _carrinhoService.ObterPedidos());
     }
 }

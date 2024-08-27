@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetDevPack.Security.Jwt.Core.Interfaces;
 using UZUSIS.Application.Notification;
 using UZUSIS.Infra.Data.Configuration;
 using UZUSIS.Infra.Data.Context;
@@ -41,7 +42,7 @@ public static class DependencyInjection
     public static void ConfigurarDependencias(this IServiceCollection services)
     {
         services.AdicionarDependenciasRepository();
-
+        
         services
             .AddScoped<INotificator, Notificator>();
 

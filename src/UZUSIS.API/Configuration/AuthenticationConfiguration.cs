@@ -25,7 +25,8 @@ public static class AuthenticationConfiguration
             {
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JwtSettings")["Key"]!))
             };
         });
 
