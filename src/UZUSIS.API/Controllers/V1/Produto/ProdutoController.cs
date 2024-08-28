@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Swagger.Api;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Categoria;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
@@ -76,9 +77,19 @@ public class ProdutoController : BaseController
     [AllowAnonymous]
     [HttpGet]
     [Route("categorias")]
-    public async Task<IActionResult> ObterCategorias()
+    public async Task<IActionResult> ObterCategorias([FromQuery] int? categoriaId)
     {
-        return CustomResponse(await _produtoService.ObterCategorias());
+        var categorias = await _produtoService.ObterCategorias();
+
+        if (categoriaId is null)
+            return CustomResponse(categorias);   
+        
+        List<string> categoriaNome = new List<string>();
+        
+        var cat = categorias
+            .Where(c => (int)c.Categoria == categoriaId);
+        
+        return cat.Count() != 0 ? CustomResponse(new CategoriaViewModel { Nome = cat.First().NomeCategoria }) : NotFound();
     }
     
     [AllowAnonymous]

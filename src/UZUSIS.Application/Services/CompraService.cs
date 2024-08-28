@@ -43,7 +43,15 @@ public class CompraService : BaseService, ICompraService
 
         Compra compra = new Compra();
         compra.Pedidos = pedidos;
-        compra.Cliente = cliente;
+        compra.ClienteId = cliente.Id;
+        decimal valor = 0;
+        foreach (var pedido in pedidos)
+        {
+            valor += pedido.ValorPedido;
+        }
+
+        compra.ValorTotal = valor;
+        
         
         await _compraRepository.Adicionar(compra);
         if (await _compraRepository.UnitOfWork.Commit())
