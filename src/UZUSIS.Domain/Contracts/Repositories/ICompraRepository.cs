@@ -4,5 +4,5 @@ namespace UZUSIS.Domain.Contracts.Repositories;
 
 public interface ICompraRepository : IBaseRepository<Compra>
 {
-    
+    Task Comprar(Compra compra);
 }

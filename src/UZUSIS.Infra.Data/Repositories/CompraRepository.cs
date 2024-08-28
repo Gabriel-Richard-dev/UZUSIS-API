@@ -10,4 +10,10 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
     public CompraRepository(ApplicationContext context) : base(context)
     {
     }
+
+    public async Task Comprar(Compra compra)
+    {
+        Context.Compras.Add(compra);
+    }
+    
 }

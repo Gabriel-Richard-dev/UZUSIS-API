@@ -14,6 +14,7 @@ public class ApplicationContext : DbContext, IUnitOfWork
     public DbSet<Tamanho> Tamanhos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Foto> Fotos { get; set; }
+    public DbSet<Compra> Compras { get; set; }
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Carrinho> Carrinhos { get; set; }
     public DbSet<Pedido> Pedidos { get; set; }

@@ -33,9 +33,9 @@ public class ClienteAuth : BaseController
 
     [AllowAnonymous]
     [HttpPost("enviar-confirmacao-email")]
-    public async Task<IActionResult> Cadastrar(string email)
+    public async Task<IActionResult> Cadastrar([FromBody]ClienteEnviarEmailConfirmacaoDto email)
     {
-        await _emailService.EnviarConfirmacao(email);
+        await _emailService.EnviarConfirmacao(email.Email);
         return CustomResponse("Um código de confirmação foi enviado para o email em questão.");
     }
     

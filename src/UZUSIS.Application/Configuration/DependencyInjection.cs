@@ -60,6 +60,7 @@ public static class DependencyInjection
             .AddScoped<IProdutoService, ProdutoService>()
             .AddScoped<IClienteService, ClienteService>()
             .AddScoped<ICarrinhoService, CarrinhoService>()
-            .AddScoped<IClienteAuthService, ClienteAuthService>();
+            .AddScoped<IClienteAuthService, ClienteAuthService>()
+            .AddScoped<ICompraService, CompraService>();
     }
 }
