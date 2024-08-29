@@ -15,6 +15,7 @@ using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Services;
 using UZUSIS.Core.Settings;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Application.Configuration;
 

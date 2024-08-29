@@ -14,6 +14,7 @@ using UZUSIS.Core.Enums;
 using UZUSIS.Core.Settings;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Application.Services;
 

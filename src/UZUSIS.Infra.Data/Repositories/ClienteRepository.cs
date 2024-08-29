@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 using UZUSIS.Infra.Data.Context;
 
 namespace UZUSIS.Infra.Data.Repositories;

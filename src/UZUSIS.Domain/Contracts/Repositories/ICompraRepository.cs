@@ -1,8 +1,9 @@
 ﻿using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Domain.Contracts.Repositories;
 
 public interface ICompraRepository : IBaseRepository<Compra>
 {
-    Task Comprar(Compra compra);
+    Task Comprar(CompraPedido compra);
 }

@@ -9,6 +9,7 @@ using UZUSIS.Application.Notification;
 using UZUSIS.Core.EmailAssets;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Application.Services;
 

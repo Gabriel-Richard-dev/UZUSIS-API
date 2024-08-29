@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UZUSIS.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using UZUSIS.Infra.Data.Context;
 namespace UZUSIS.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240829121741_minimal-changes")]
+    partial class minimalchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,10 +41,6 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("PedidosId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -301,6 +300,9 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<long>("ClienteId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("CompraPedidoId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
 
@@ -321,6 +323,8 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.HasIndex("CarrinhoId");
 
                     b.HasIndex("ClienteId");
+
+                    b.HasIndex("CompraPedidoId");
 
                     b.HasIndex("ProdutoId");
 
@@ -453,6 +457,10 @@ namespace UZUSIS.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UZUSIS.Domain.Entities.Acessories.CompraPedido", null)
+                        .WithMany("Pedidos")
+                        .HasForeignKey("CompraPedidoId");
+
                     b.HasOne("UZUSIS.Domain.Entities.Produto", "Produto")
                         .WithMany("Pedidos")
                         .HasForeignKey("ProdutoId")
@@ -475,6 +483,11 @@ namespace UZUSIS.Infra.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.CompraPedido", b =>
+                {
+                    b.Navigation("Pedidos");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Carrinho", b =>

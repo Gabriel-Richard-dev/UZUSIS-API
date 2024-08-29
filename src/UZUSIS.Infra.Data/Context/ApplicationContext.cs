@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UZUSIS.Domain.Abstractions;
 using UZUSIS.Domain.Contracts;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Infra.Data.Context;
 
@@ -15,6 +16,7 @@ public class ApplicationContext : DbContext, IUnitOfWork
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Foto> Fotos { get; set; }
     public DbSet<Compra> Compras { get; set; }
+    public DbSet<CompraPedido> CompraPedidos { get; set; }
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Carrinho> Carrinhos { get; set; }
     public DbSet<Pedido> Pedidos { get; set; }

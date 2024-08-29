@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 using UZUSIS.Infra.Data.Context;
 
 namespace UZUSIS.Infra.Data.Repositories;
@@ -11,9 +12,9 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
     {
     }
 
-    public async Task Comprar(Compra compra)
+    public async Task Comprar(CompraPedido compra)
     {
-        Context.Compras.Add(compra);
+        Context.CompraPedidos.Add(compra);
     }
     
 }

@@ -10,6 +10,7 @@ using UZUSIS.Application.Notification;
 using UZUSIS.Core.Extensions;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Application.Services;
 

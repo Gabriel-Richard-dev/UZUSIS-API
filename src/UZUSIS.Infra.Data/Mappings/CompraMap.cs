@@ -17,7 +17,7 @@ public class CompraMap : IEntityTypeConfiguration<Compra>
         builder.HasOne(c => c.Cliente)
             .WithMany(c => c.Compras);
 
-        
-        
+
+
     }
 }

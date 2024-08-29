@@ -1,4 +1,5 @@
 ﻿using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Domain.Contracts.Repositories;
 

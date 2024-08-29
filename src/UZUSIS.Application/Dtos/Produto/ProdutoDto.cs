@@ -16,5 +16,14 @@ public class ProdutoDto
     public List<string> FotoUrls { get; set; } = new();
     
     public ECategoriaProduto Categoria { get; set; }
+
+    public string CategoriaNome
+    {
+        get
+        {
+            return Categoria.ToString();
+        }
+    }
+
     public string Descricao { get; set; } = null!;
 }

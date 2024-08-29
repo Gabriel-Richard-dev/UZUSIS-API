@@ -8,6 +8,7 @@ using UZUSIS.Application.Dtos.Pedido;
 using UZUSIS.Application.Dtos.Produto;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
 
 namespace UZUSIS.Application.Configuration;
 

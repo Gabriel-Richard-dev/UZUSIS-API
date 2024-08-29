@@ -28,8 +28,7 @@ public class CompraController : BaseController
     [HttpPost("cliente/carrinho")]
     public async Task<IActionResult> ComprarCarrinho()
     {
-        await _compraService.ComprarCarrinho();
-        return CustomResponse( );
+        return CustomResponse(await _compraService.ComprarCarrinho());
     }
 
 }

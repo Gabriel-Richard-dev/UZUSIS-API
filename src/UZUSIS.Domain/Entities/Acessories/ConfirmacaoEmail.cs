@@ -1,6 +1,6 @@
 ﻿using UZUSIS.Domain.Abstractions;
 
-namespace UZUSIS.Domain.Entities;
+namespace UZUSIS.Domain.Entities.Acessories;
 
 public class ConfirmacaoEmail : Entity
 {
