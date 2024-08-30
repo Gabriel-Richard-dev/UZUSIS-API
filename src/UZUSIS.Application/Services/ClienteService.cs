@@ -23,12 +23,13 @@ public class ClienteService : BaseService, IClienteService
     private readonly IPasswordHasher<ConfirmacaoEmail> _hasherConfirmacao;
     private readonly IHttpContextAccessor _httpContext;
        
-    public ClienteService(INotificator notificator, IMapper mapper, IAdministradorRepository administradorRepository, IClienteRepository clienteRepository, ICarrinhoRepository carrinhoRepository, IPasswordHasher<Cliente> hasher, IHttpContextAccessor httpContext) : base(notificator, mapper)
+    public ClienteService(INotificator notificator, IMapper mapper, IAdministradorRepository administradorRepository, IClienteRepository clienteRepository, ICarrinhoRepository carrinhoRepository, IPasswordHasher<Cliente> hasher, IHttpContextAccessor httpContext, IPasswordHasher<ConfirmacaoEmail> hasherConfirmacao) : base(notificator, mapper)
     {
         _clienteRepository = clienteRepository;
         _carrinhoRepository = carrinhoRepository;
         _hasher = hasher;
         _httpContext = httpContext;
+        _hasherConfirmacao = hasherConfirmacao;
     }
 
 

@@ -40,30 +40,38 @@ public class CompraService : BaseService, ICompraService
         }
         
         var carrinho = await _carrinhoRepository.Obter(cliente.CarrinhoId);
-        var pedidos = await _pedidoRepository.ObterPedidosCliente(usuarioId);
 
-        Compra compra = new Compra();
-        compra.ClienteId = cliente.Id;
-        decimal valor = 0;
+        if (carrinho is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+        
+        var pedidos = await _pedidoRepository.ObterPedidosCliente(usuarioId);
+        var compra = new Compra();
+        decimal valorTotal = 0;
+
         foreach (var pedido in pedidos)
         {
-            valor += pedido.ValorPedido;
+            valorTotal += pedido.ValorPedido;
         }
-        compra.ValorTotal = valor;
-        CompraPedido compraPedido = new CompraPedido();
         
-        compraPedido.PedidosId.AddRange(pedidos.Select(p => p.Id)); 
+        compra.ClienteId = cliente.Id;
+        compra.ValorTotal = valorTotal;
+
+        await _compraRepository.Adicionar(compra);
+        carrinho.FlushCarrinho();
+        await _carrinhoRepository.Atualizar(carrinho);
         
-        compraPedido.Id = compra.Id;
-        compraPedido.Compra = compra;
-        await _compraRepository.Comprar(compraPedido);
         if (await _compraRepository.UnitOfWork.Commit())
         {
-            carrinho.FlushCarrinho();
-            await _carrinhoRepository.Atualizar(carrinho);
-            await _carrinhoRepository.UnitOfWork.Commit();
+            
+            
+            
             return true;
         }
+        
+        
         
         Notificator.Handle("Não foi possivel terminar a compra");
         return false;
