@@ -1,6 +1,7 @@
 using AutoMapper;
 using UZUSIS.Application.Dtos.Administrador;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Compra;
 using UZUSIS.Application.Dtos.ConfirmacaoEmail;
 using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Foto;
@@ -70,6 +71,13 @@ public class AutoMapperProfile : Profile
         #region Foto
 
         CreateMap<Foto, FotoProdutoDto>().ReverseMap();
+
+        #endregion
+
+        #region Compra
+
+        CreateMap<CompraDto, Compra>().ReverseMap();
+        CreateMap<ItemCompraDto, ItemCompra>().ReverseMap();
 
         #endregion
 

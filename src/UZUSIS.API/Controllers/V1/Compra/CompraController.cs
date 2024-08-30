@@ -30,5 +30,37 @@ public class CompraController : BaseController
     {
         return CustomResponse(await _compraService.ComprarCarrinho());
     }
+    
+    [Authorize(Roles = "Cliente")]
+    [HttpGet("cliente/historico")]
+    public async Task<IActionResult> HistoricoCliente()
+    {
+        return CustomResponse(await _compraService.ObterHistorico());
+    } 
+    
+    [Authorize(Roles = "Cliente")]
+    [HttpGet("cliente/em-andamento")]
+    public async Task<IActionResult> EmAndamentoCliente()
+    {
+        return CustomResponse(await _compraService.ObterEmAndamento());
+    }
+    
+    [Authorize(Roles = "Administrador")]
+    [HttpGet("administrador/dashboard")]
+    public async Task<IActionResult> HistoricoAdministrador()
+    {
+        return CustomResponse(await _compraService.ObterTodosOsPedidos());
+    }
+    
+    [Authorize(Roles = "Administrador")]
+    [HttpPatch("administrador/dashboard/enviar-produto")]
+    public async Task<IActionResult> EnviarItem([FromQuery] long itemCompraId)
+    {
+        return CustomResponse(await _compraService.EnviarItemCompra(itemCompraId));
+    }
+    
+    
+    
+    
 
 }

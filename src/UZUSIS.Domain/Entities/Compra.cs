@@ -10,5 +10,5 @@ public class Compra : Entity
 
     public long ClienteId { get; set; }
     public decimal ValorTotal { get; set; }
-    
+    public List<ItemCompra> Itens { get; set; }
 }

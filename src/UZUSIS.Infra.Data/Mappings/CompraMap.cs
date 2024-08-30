@@ -18,6 +18,6 @@ public class CompraMap : IEntityTypeConfiguration<Compra>
             .WithMany(c => c.Compras);
 
 
-
+        builder.HasMany(c => c.Itens);
     }
 }

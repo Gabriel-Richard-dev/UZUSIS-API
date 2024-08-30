@@ -12,7 +12,17 @@ public class Pedido : Entity
 
 
     public int Quantidade { get; set; }
-    public decimal ValorPedido { get; set; }
+
+    public decimal ValorPedido
+    {
+        get
+        {
+            return Produto.Preco * Quantidade;   
+        }
+
+        set { ValorPedido = value;  }
+    }
+
     public Produto Produto { get; set; }
     public Carrinho Carrinho { get; set; }
     public Cliente Cliente { get; set; }

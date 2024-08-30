@@ -5,5 +5,8 @@ namespace UZUSIS.Domain.Contracts.Repositories;
 
 public interface ICompraRepository : IBaseRepository<Compra>
 {
-    Task Comprar(CompraPedido compra);
+    Task<List<Compra>> ObterPeloCliente(long clienteId, bool pesquisarEmAndamento = false);
+    Task<List<ItemCompra>> ObterItens();
+
+    Task<ItemCompra?> EnviarItem(long itemCompraId);
 }

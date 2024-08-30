@@ -58,24 +58,23 @@ public class AdminAuthService : BaseService, IAdminAuthService
         return null;
     }
 
-    public async Task<string> GenerateToken(Administrador administrador)
+    private async Task<string> GenerateToken(Administrador admin)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_jwtSettings.Key); // Use a chave diretamente
 
-        var claimsIdentity = new ClaimsIdentity();
-        claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, administrador.Id.ToString()));
-        claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, administrador.Nome));
-        claimsIdentity.AddClaim(new Claim(ClaimTypes.Email, administrador.Email));
-        
-        var key = await _jwtService.GetCurrentSigningCredentials();
-        var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Issuer = _jwtSettings.Emissor,
-            Subject = claimsIdentity,
-            Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpiracaoHoras),
-            SigningCredentials = key,
-        });
+            Subject = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()),
+                new Claim(ClaimTypes.Role, ETipoUsuario.Administrador.ToString())
+            }),
+            Expires = DateTime.UtcNow.AddHours((int)_jwtSettings.ExpiracaoHoras),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256) 
+        };
 
+        var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
     

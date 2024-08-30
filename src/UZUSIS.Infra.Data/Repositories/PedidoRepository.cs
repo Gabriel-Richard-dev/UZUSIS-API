@@ -21,7 +21,12 @@ public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
             Context.Pedidos.AsNoTrackingWithIdentityResolution()
                 .Where(c => c.CarrinhoId == cliente.CarrinhoId).ToList();
 
-
+        foreach (var pedido in pedidos)
+        {
+            pedido.Produto = Context.Produtos.FirstOrDefault(c => c.Id == pedido.ProdutoId)!;
+        }
+        
+        
         return pedidos;
 
 
