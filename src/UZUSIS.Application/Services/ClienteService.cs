@@ -1,11 +1,9 @@
-using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.Endereco;
-using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Extensions;
 using UZUSIS.Domain.Contracts.Repositories;
@@ -53,7 +51,89 @@ public class ClienteService : BaseService, IClienteService
         }
         return false;
     }
+
+    public async Task<ClienteDto?> AtualizarCliente(AtualizarCadastroClienteDto clienteDto)
+    {
+        
+        var clienteId = _httpContext.ObterUsuarioId();
+
+        if (clienteId is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+        
+        var cliente = await _clienteRepository.Obter((long)clienteId!);
+
+        if (cliente is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
     
+        if (clienteDto.Nome is not null)
+            cliente.Nome = clienteDto.Nome;
+        if (clienteDto.CPF is not null)
+            cliente.CPF = clienteDto.CPF;
+        if (clienteDto.DataNascimento is not null)
+            cliente.DataNascimento = (DateTime)clienteDto.DataNascimento;
+        if (clienteDto.Celular is not null)
+            cliente.Celular = clienteDto.Celular;
+
+
+        await _clienteRepository.Atualizar(cliente);
+        if (await CommitChanges())
+        {
+            return Mapper.Map<ClienteDto>(cliente);
+        }
+
+        Notificator.Handle("Não foi possível atualizar o cliente");
+        return null;
+    }
+
+    public async Task<EnderecoDto?> AtualizarEndereco(AtualizarEnderecoDto enderecoDto)
+    {
+        var userId = _httpContext.ObterUsuarioId();
+        
+        if (userId is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+        
+        var cliente = await _clienteRepository.Obter((long)userId!);
+
+        if (cliente is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+
+        if (enderecoDto.CEP is not null)
+            cliente.Endereco.CEP = enderecoDto.CEP;
+        if (enderecoDto.Rua is not null)
+            cliente.Endereco.Rua = enderecoDto.Rua;
+        if (enderecoDto.Numero is not null)
+            cliente.Endereco.Numero = enderecoDto.Numero;
+        if (enderecoDto.Bairro is not null)
+            cliente.Endereco.Bairro = enderecoDto.Bairro;
+        if (enderecoDto.Cidade is not null)
+            cliente.Endereco.Cidade = enderecoDto.Cidade;
+        if (enderecoDto.Estado is not null)
+            cliente.Endereco.Estado = enderecoDto.Estado;
+
+        await _clienteRepository.Atualizar(cliente);
+        
+        if (await CommitChanges())
+            return Mapper.Map<EnderecoDto>(cliente.Endereco);
+    
+
+
+        Notificator.Handle("Não foi possivel atualizar o endereco");
+        return null;
+
+    }
+
     public async Task<ClienteDto?> AdicionarCliente(AdicionarClienteDto usuarioDto)
     {
         

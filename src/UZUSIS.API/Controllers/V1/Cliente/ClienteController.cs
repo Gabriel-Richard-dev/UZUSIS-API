@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Cliente;
+using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
 
 namespace UZUSIS.API.Controllers.V1.Cliente;
-
-
 
 [ApiController]
 [Route("[controller]")]
@@ -33,10 +32,17 @@ public class ClienteController : BaseController
     
 
     [AllowAnonymous]
-    [HttpPut]
-    public async Task<IActionResult> Atualizar()
+    [HttpPatch]
+    public async Task<IActionResult> Atualizar(AtualizarCadastroClienteDto cadastroClienteDto)
     {
-        return CustomResponse();
+        return CustomResponse(await _clienteService.AtualizarCliente(cadastroClienteDto));
+    }
+    
+    [AllowAnonymous]
+    [HttpPatch("endereco")]
+    public async Task<IActionResult> Atualizar(AtualizarEnderecoDto enderecoDto)
+    {
+        return CustomResponse(await _clienteService.AtualizarEndereco(enderecoDto));
     }
     
 }

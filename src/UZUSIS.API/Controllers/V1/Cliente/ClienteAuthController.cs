@@ -40,10 +40,10 @@ public class ClienteAuth : BaseController
     }
     
     [AllowAnonymous]
-    [HttpGet("codigo-valido")]
-    public async Task<IActionResult> ValidarCodigo(string email, string codigo)
+    [HttpPost("codigo-valido")]
+    public async Task<IActionResult> ValidarCodigo(ValidarCodigoClienteDto dto)
     {
-        return CustomResponse(await _clienteAuthService.CodigoValido(email, codigo));
+        return CustomResponse(await _clienteAuthService.CodigoValido(dto.Email, dto.Codigo));
     }
     
     [AllowAnonymous]
