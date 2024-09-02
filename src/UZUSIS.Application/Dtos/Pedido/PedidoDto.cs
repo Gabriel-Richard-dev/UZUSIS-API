@@ -7,4 +7,5 @@ public class PedidoDto
     public long TamanhoId { get; set; }
     public long ClienteId { get; set; }
     public int Quantidade { get; set; }
+    public decimal ValorPedido { get; set; }
 }

@@ -60,7 +60,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
         }
 
         var tamanho = produto.Tamanhos.FirstOrDefault(c => c.Sigla.ToUpper().Equals(requisicao.Sigla.ToUpper()));
-
+        
         if (tamanho.Quantidade < requisicao.Quantidade)
         {
             Notificator.Handle("Pedido excede a quantidade total de produtos");
@@ -73,7 +73,8 @@ public class CarrinhoService : BaseService, ICarrinhoService
             CarrinhoId = carrinho!.Id,
             Quantidade = requisicao.Quantidade,
             ProdutoId = produto.Id,
-            TamanhoId = tamanho.Id
+            TamanhoId = tamanho.Id,
+            ValorPedido = requisicao.Quantidade * produto.Preco
         };
 
     await _pedidoRepository.Adicionar(Mapper.Map<Pedido>(pedido));
