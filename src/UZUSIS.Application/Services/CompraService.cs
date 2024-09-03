@@ -17,15 +17,17 @@ public class CompraService : BaseService, ICompraService
     private readonly IClienteRepository _clienteRepository;
     private readonly ICarrinhoRepository _carrinhoRepository;
     private readonly IPedidoRepository _pedidoRepository;
+    private readonly IProdutoRepository _produtoRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public CompraService(INotificator notificator, IMapper mapper, ICompraRepository compraRepository, IHttpContextAccessor httpContextAccessor, IClienteRepository clienteRepository, ICarrinhoRepository carrinhoRepository, IPedidoRepository pedidoRepository) : base(notificator, mapper)
+    public CompraService(INotificator notificator, IMapper mapper, ICompraRepository compraRepository, IHttpContextAccessor httpContextAccessor, IClienteRepository clienteRepository, ICarrinhoRepository carrinhoRepository, IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository) : base(notificator, mapper)
     {
         _compraRepository = compraRepository;
         _httpContextAccessor = httpContextAccessor;
         _clienteRepository = clienteRepository;
         _carrinhoRepository = carrinhoRepository;
         _pedidoRepository = pedidoRepository;
+        _produtoRepository = produtoRepository;
     }
 
     public async Task<bool> ComprarCarrinho()
@@ -36,7 +38,7 @@ public class CompraService : BaseService, ICompraService
 
         if (cliente is null)
         {
-            Notificator.Handle("message");
+            Notificator.Handle("Cliente inexistente.");
             return false;
         }
         
@@ -62,6 +64,7 @@ public class CompraService : BaseService, ICompraService
                 Quantidade = pedido.Quantidade,
                 ValorItem = pedido.ValorPedido,
                 ClienteId = pedido.ClienteId,
+                TamanhoId = pedido.TamanhoId
             });
         }
         

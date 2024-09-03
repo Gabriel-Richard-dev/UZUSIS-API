@@ -11,7 +11,22 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
     public CompraRepository(ApplicationContext context) : base(context)
     {
     }
+    public async Task<Compra?> Adicionar(Compra compra)
+    {
+        await Context.Compras.AddAsync(compra);
 
+        foreach (var item in compra.Itens)
+        {
+            var tamanho = Context.Tamanhos.FirstOrDefault(c => c.Id == item.TamanhoId);
+            if (tamanho is not null)
+            {
+                tamanho.Quantidade -= item.Quantidade;
+                Context.Tamanhos.Update(tamanho);
+            }
+        }
+        
+        return compra;
+    }
 
     public async Task<List<Compra>> Obter()
     {
