@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.Jwt.Core.Interfaces;
 using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.Token;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
@@ -119,5 +120,39 @@ public class ClienteAuthService : BaseService, IClienteAuthService
         return tokenHandler.WriteToken(token);
     }
 
+
+    public async Task<bool> RecuperarSenha(RecuperarSenhaClienteDto dto)
+    {
+        var pedido = await _clienteRepository.ObterPedidoRecuperacao(dto.Email);
+        var cliente = await _clienteRepository.Obter(dto.Email);
+        
+        if (pedido is null || cliente is null) 
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+
+        if (!dto.NovaSenha.Equals(dto.ConfirmarSenha))
+        {
+            Notificator.Handle("Senhas não coincidem");
+            return false;
+        }
+
+        cliente.Senha = _hasher.HashPassword(cliente, dto.NovaSenha);
+
+        await _clienteRepository.Atualizar(cliente);
+        
+        if (await _clienteRepository.UnitOfWork.Commit())
+        {
+            return true;
+        }
+
+        Notificator.Handle("Não foi possivel recuperar sua senha");
+        return false;
+
+
+    }
+    
+    
     
 }

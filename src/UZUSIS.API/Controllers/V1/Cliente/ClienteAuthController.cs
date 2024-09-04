@@ -53,5 +53,20 @@ public class ClienteAuth : BaseController
         return CustomResponse(await _clienteService.AdicionarCliente(usuarioDto));
     }
     
+    [AllowAnonymous]
+    [HttpPost("enviar-recuperacao-senha")]
+    public async Task<IActionResult> EnviarRecuperacao([FromBody]ClienteEnviarEmailConfirmacaoDto email)
+    {
+        await _emailService.EnviarRecuperacao(email.Email);
+        return CustomResponse("Um código de recuperação foi enviado para o email em questão.");
+    }
+    
+     [AllowAnonymous]
+    [HttpPost("recuperar-senha")]
+    public async Task<IActionResult> RecuperarSenha([FromBody] RecuperarSenhaClienteDto dto)
+    {
+        return CustomResponse(await _clienteAuthService.RecuperarSenha(dto));
+    }
+    
 
 }

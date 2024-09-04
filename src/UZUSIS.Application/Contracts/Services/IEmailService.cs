@@ -3,4 +3,5 @@
 public interface IEmailService
 {
     Task EnviarConfirmacao(string email);
+    Task EnviarRecuperacao(string email);
 }

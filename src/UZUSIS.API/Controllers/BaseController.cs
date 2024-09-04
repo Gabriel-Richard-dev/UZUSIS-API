@@ -10,12 +10,11 @@ namespace UZUSIS.API.Controllers;
 public abstract class BaseController : ControllerBase
 {
     private readonly INotificator _notificator;
-
+  
     public BaseController(INotificator notificator)
     {
         _notificator = notificator;
     }
-    
     
     protected ActionResult CustomResponse(object? reponse = null)
     {

@@ -50,7 +50,8 @@ public static class DependencyInjection
         services
             .AddScoped<IPasswordHasher<Administrador>, Argon2PasswordHasher<Administrador>>()
             .AddScoped<IPasswordHasher<Cliente>, Argon2PasswordHasher<Cliente>>()
-            .AddScoped<IPasswordHasher<ConfirmacaoEmail>, Argon2PasswordHasher<ConfirmacaoEmail>>();
+            .AddScoped<IPasswordHasher<ConfirmacaoEmail>, Argon2PasswordHasher<ConfirmacaoEmail>>()
+            .AddScoped<IPasswordHasher<RecuperacaoSenhaEmail>, Argon2PasswordHasher<RecuperacaoSenhaEmail>>();
 
         services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

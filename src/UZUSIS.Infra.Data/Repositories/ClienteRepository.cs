@@ -57,10 +57,24 @@ public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
         return confirmacao;
     }
 
+    public async Task<RecuperacaoSenhaEmail?> ObterPedidoRecuperacao(string email)
+    {
+        var recuperacao = await Context.RecuperacaoSenha.AsNoTracking()
+            .Where(c => c.Expiracao >= DateTime.Now)
+            .Where(c => c.FoiConfirmado == false)
+            .FirstOrDefaultAsync(c => c.Email.Equals(email));
+
+        return recuperacao;
+    }
+
 
     public async Task GerarConfirmacaoEmail(ConfirmacaoEmail confirmacaoEmail)
     {
         Context.ConfirmacoesDeEmails.Add(confirmacaoEmail);
+    }
+    public async Task GerarRecuperacaoSenha(RecuperacaoSenhaEmail recuperacaoSenhaEmail)
+    {
+        Context.RecuperacaoSenha.Add(recuperacaoSenhaEmail);
     }
 
     public async Task ConfirmacaoValidada(ConfirmacaoEmail confirmacaoEmail)
