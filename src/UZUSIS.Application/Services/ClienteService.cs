@@ -183,6 +183,15 @@ public class ClienteService : BaseService, IClienteService
             return null;
 
         return Mapper.Map<ClienteDto>(cliente);
+    }   
+    
+    public async Task<ClienteDto?> ObterCliente(long id)
+    {
+        var cliente = await _clienteRepository.Obter(id);
+        if (cliente == null)
+            return null;
+
+        return Mapper.Map<ClienteDto>(cliente);
     }
        
     private async Task<long> ObterIdUsuarioAutenticado()

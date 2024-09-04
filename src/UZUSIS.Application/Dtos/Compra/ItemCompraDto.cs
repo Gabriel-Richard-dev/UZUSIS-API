@@ -9,5 +9,6 @@ public class ItemCompraDto
     public long ClienteId { get; set; }
     public decimal ValorItem { get; set; }
     public bool FoiRecebico { get; set; } = false;
+    public bool FoiEnviado { get; set; } = false;
     public int Quantidade { get; set; }
 }

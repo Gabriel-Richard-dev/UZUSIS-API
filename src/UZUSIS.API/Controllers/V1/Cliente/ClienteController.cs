@@ -30,6 +30,14 @@ public class ClienteController : BaseController
         return CustomResponse(await _clienteService.ObterCliente());
     }
     
+    
+    [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
+    [HttpGet("admin/obter-cliente")]
+    public async Task<IActionResult> Obter([FromQuery] long id)
+    {
+        return CustomResponse(await _clienteService.ObterCliente(id));
+    }
+    
 
     [AllowAnonymous]
     [HttpPatch]

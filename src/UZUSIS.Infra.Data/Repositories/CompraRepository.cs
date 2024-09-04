@@ -58,6 +58,8 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
         return await Context.ItemCompras.AsNoTracking().ToListAsync();
     }
 
+
+
     public async Task<ItemCompra?> EnviarItem(long itemCompraId)
     {
         var item = await Context.ItemCompras.FirstOrDefaultAsync(c => c.Id == itemCompraId);
@@ -65,7 +67,7 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
         if(item is null)
             return null;
         
-        item.FoiRecebico = true;
+        item.FoiEnviado = true;
         item.AtualizadoEm = DateTime.Now;
         
         Context.ItemCompras.Update(item);

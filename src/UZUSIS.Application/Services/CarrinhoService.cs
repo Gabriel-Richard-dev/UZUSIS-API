@@ -49,7 +49,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
 
 
         var carrinho = await _carrinhoRepository.Obter(cliente.CarrinhoId);
-
+        
         bool tamanhoForaDoPadrao = !(requisicao.Sigla.ToUpper().Equals("P") || requisicao.Sigla.ToUpper().Equals("M") ||
                                      requisicao.Sigla.ToUpper().Equals("G"));
 
@@ -60,27 +60,42 @@ public class CarrinhoService : BaseService, ICarrinhoService
         }
 
         var tamanho = produto.Tamanhos.FirstOrDefault(c => c.Sigla.ToUpper().Equals(requisicao.Sigla.ToUpper()));
+
+        var pedidosExistentesDoCliente = await _pedidoRepository.ObterAtivos(clienteId, tamanho.Id);
+        int contadorDePedidos = 0;
+
+        foreach (var p in pedidosExistentesDoCliente)
+        {
+            contadorDePedidos += p.Quantidade;
+        }
+
+        if (contadorDePedidos >= tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
+        {
+            Notificator.Handle("Você já tem pedidos que excedem a quantidade total desse tamanho");
+            return null;
+        }
+        
         
         if (tamanho.Quantidade < requisicao.Quantidade)
         {
             Notificator.Handle("Pedido excede a quantidade total de produtos");
             return null;
         }
-
-    var pedido = new PedidoDto
+        
+        var pedido = new PedidoDto
         {
             ClienteId = cliente.Id,
             CarrinhoId = carrinho!.Id,
             Quantidade = requisicao.Quantidade,
             ProdutoId = produto.Id,
             TamanhoId = tamanho.Id,
-            ValorPedido = requisicao.Quantidade * produto.Preco
+            ValorPedido = (decimal)(requisicao.Quantidade * produto.Preco)
         };
 
-    await _pedidoRepository.Adicionar(Mapper.Map<Pedido>(pedido));
-    await _pedidoRepository.UnitOfWork.Commit();
+        await _pedidoRepository.Adicionar(Mapper.Map<Pedido>(pedido));
+        await _pedidoRepository.UnitOfWork.Commit();
 
-    return pedido;
+        return pedido;
 
     }
 

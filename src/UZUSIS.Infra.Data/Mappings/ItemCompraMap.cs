@@ -19,6 +19,7 @@ public class ItemCompraMap : IEntityTypeConfiguration<ItemCompra>
         builder.Property(c => c.Quantidade);
         builder.Property(c => c.ValorItem);
         builder.Property(c => c.FoiRecebico);
+        builder.Property(c => c.FoiEnviado);
 
         builder.HasOne(c => c.Compra);
     }

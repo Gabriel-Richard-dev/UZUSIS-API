@@ -29,7 +29,7 @@ public class ProdutoController : BaseController
         _httpContextAccessor = httpContextAccessor;
     }
 
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrador")]
     [HttpPost("adicionar")]
     public async Task<IActionResult> AdicionarProduto([FromForm] AdicionarProdutoDto produtoDto)
     {
