@@ -64,7 +64,8 @@ public class CompraService : BaseService, ICompraService
                 Quantidade = pedido.Quantidade,
                 ValorItem = pedido.ValorPedido,
                 ClienteId = pedido.ClienteId,
-                TamanhoId = pedido.TamanhoId
+                TamanhoId = pedido.TamanhoId,
+                Sigla = pedido.Sigla
             });
         }
         

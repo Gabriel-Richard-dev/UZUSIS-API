@@ -89,7 +89,8 @@ public class CarrinhoService : BaseService, ICarrinhoService
             Quantidade = requisicao.Quantidade,
             ProdutoId = produto.Id,
             TamanhoId = tamanho.Id,
-            ValorPedido = (decimal)(requisicao.Quantidade * produto.Preco)
+            ValorPedido = (decimal)(requisicao.Quantidade * produto.Preco),
+            Sigla = tamanho.Sigla
         };
 
         await _pedidoRepository.Adicionar(Mapper.Map<Pedido>(pedido));
@@ -99,7 +100,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
 
     }
 
-    public async Task<List<PedidoDto>> ObterPedidos()
+    public async Task<List<PedidoCarrinhoDto>> ObterPedidos()
     {
         var id = await ObterIdUsuarioAutenticado();
 
@@ -107,7 +108,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
             return null;
         
         var pedidos = await _pedidoRepository.ObterPedidosCliente(id);
-        return Mapper.Map<List<PedidoDto>>(pedidos);
+        return Mapper.Map<List<PedidoCarrinhoDto>>(pedidos);
     }
     
     

@@ -8,7 +8,7 @@ public class ItemCompra : Entity
     public long CompraId { get; set; }
     public long TamanhoId { get; set; }
     public long ClienteId { get; set; }
-
+    public string Sigla { get; set; }
     public bool FoiRecebico { get; set; } = false;
     public bool FoiEnviado { get; set; } = false;
     public int Quantidade { get; set; }

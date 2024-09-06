@@ -38,6 +38,8 @@ public class AutoMapperProfile : Profile
         #region Pedido
 
         CreateMap<Pedido, PedidoDto>().ReverseMap();
+        CreateMap<Pedido, PedidoCarrinhoDto>().ReverseMap();
+        CreateMap<PedidoDto, PedidoCarrinhoDto>().ReverseMap();
         
         #endregion
 
