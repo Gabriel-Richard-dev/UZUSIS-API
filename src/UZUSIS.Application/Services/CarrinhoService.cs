@@ -50,8 +50,9 @@ public class CarrinhoService : BaseService, ICarrinhoService
 
         var carrinho = await _carrinhoRepository.Obter(cliente.CarrinhoId);
         
-        bool tamanhoForaDoPadrao = !(requisicao.Sigla.ToUpper().Equals("P") || requisicao.Sigla.ToUpper().Equals("M") ||
-                                     requisicao.Sigla.ToUpper().Equals("G"));
+        bool tamanhoForaDoPadrao =   !( requisicao.Sigla.ToUpper().Equals("P") 
+                                     || requisicao.Sigla.ToUpper().Equals("M") 
+                                     || requisicao.Sigla.ToUpper().Equals("G"));
 
         if (tamanhoForaDoPadrao)
         {
@@ -62,6 +63,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
         var tamanho = produto.Tamanhos.FirstOrDefault(c => c.Sigla.ToUpper().Equals(requisicao.Sigla.ToUpper()));
 
         var pedidosExistentesDoCliente = await _pedidoRepository.ObterAtivos(clienteId, tamanho.Id);
+        
         int contadorDePedidos = 0;
 
         foreach (var p in pedidosExistentesDoCliente)
@@ -69,12 +71,13 @@ public class CarrinhoService : BaseService, ICarrinhoService
             contadorDePedidos += p.Quantidade;
         }
 
-        if (contadorDePedidos >= tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
+        if (contadorDePedidos > tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
         {
             Notificator.Handle("Você já tem pedidos que excedem a quantidade total desse tamanho");
             return null;
         }
-        
+
+        contadorDePedidos = 0;
         
         if (tamanho.Quantidade < requisicao.Quantidade)
         {

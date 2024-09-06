@@ -29,20 +29,19 @@ public class EmailService : BaseService, IEmailService
         _hasherRecuperacao = hasherRecuperacao;
     }
 
-    public async Task EnviarConfirmacao(string email)
+    public async Task<bool> EnviarConfirmacao(string email)
     {
         var pedido = await _clienteRepository.ObterPedidoDeConfirmacao(email);
         var cliente = await _clienteRepository.Obter(email);
 
         if (cliente is not null)
         {
-            return;
+            return false;
         }
         
         if (pedido is not null)
         {
-            Notificator.Handle("Um código de confirmação já foi gerado para esse email.");
-            return;
+            return true;
         }
 
         var code = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 5);
@@ -97,29 +96,27 @@ public class EmailService : BaseService, IEmailService
             };
 
             await SendEmailAsync(mail);
-            return;
+            return true;
         }
 
 
-        Notificator.Handle("Não foi possivel gerar o codigo de confirmação.");
-      
+        return false;
     }
     
     
-    public async Task EnviarRecuperacao(string email)
+    public async Task<bool> EnviarRecuperacao(string email)
     {
         var pedido = await _clienteRepository.ObterPedidoRecuperacao(email);
         var cliente = await _clienteRepository.Obter(email);
 
         if (cliente is null)
         {
-            return;
+            return false;
         }
         
         if (pedido is not null)
         {
-            Notificator.Handle("Um código de recuperação já foi gerado para esse email.");
-            return;
+            return true;
         }
 
         var code = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 5);
@@ -174,12 +171,11 @@ public class EmailService : BaseService, IEmailService
             };
 
             await SendEmailAsync(mail);
-            return;
+            return true;
         }
 
+        return false;
 
-        Notificator.Handle("Não foi possivel gerar o codigo de recuperação.");
-      
     }
     
     

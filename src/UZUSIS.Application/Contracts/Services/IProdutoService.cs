@@ -16,5 +16,6 @@ public interface IProdutoService
   
     Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);
     Task<List<CategoriaDto>> ObterCategorias();
-    
+    Task<List<ProdutoDto>> DashBoardAdmin();
+
 }

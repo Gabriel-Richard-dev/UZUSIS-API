@@ -156,6 +156,11 @@ public class ClienteService : BaseService, IClienteService
         Endereco endereco = Mapper.Map<Endereco>(usuarioDto.Endereco);
 
         cliente.Endereco = endereco;
+
+        Notificator.Handle(cliente.Validate());
+        if(Notificator.HasNotification)
+            return null;
+        
         cliente.Senha = _hasher.HashPassword(cliente, cliente.Senha);
         var clienteDb = await _clienteRepository.Adicionar(cliente);
         

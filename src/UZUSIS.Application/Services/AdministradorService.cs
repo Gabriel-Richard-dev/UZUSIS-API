@@ -32,6 +32,11 @@ public class AdministradorService : BaseService, IAdministradorService
         }
         
         var admin = Mapper.Map<Administrador>(addAdminDto);
+        
+        Notificator.Handle(admin.Validate());
+        if(Notificator.HasNotification)
+            return null;
+        
         admin.Senha = _hasher.HashPassword(admin, admin.Senha);
         
         var adminCriado = await _administradorRepository.Adicionar(admin);

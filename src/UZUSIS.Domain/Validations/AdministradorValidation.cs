@@ -17,7 +17,7 @@ public class AdministradorValidation : AbstractValidator<Administrador>
         RuleFor(admin => admin.Email)
             .NotEmpty().WithMessage("O email é obrigatório.")
             .EmailAddress().WithMessage("O email informado é inválido.")
-            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").WithMessage("O email informado é inválido.");
+            .EmailAddress().WithMessage("O email informado é inválido.");
 
         RuleFor(admin => admin.Senha)
             .NotEmpty().WithMessage("A senha é obrigatória.")

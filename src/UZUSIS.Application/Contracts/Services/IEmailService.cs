@@ -2,6 +2,6 @@
 
 public interface IEmailService
 {
-    Task EnviarConfirmacao(string email);
-    Task EnviarRecuperacao(string email);
+    Task<bool> EnviarConfirmacao(string email);
+    Task<bool> EnviarRecuperacao(string email);
 }

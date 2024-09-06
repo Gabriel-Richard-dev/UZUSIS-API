@@ -98,6 +98,13 @@ public class ProdutoController : BaseController
     {
         return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
     }
+
+    [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
+    [HttpGet("admin/dashboard")]
+    public async Task<IActionResult> DashBoardAdmin()
+    {
+        return CustomResponse(await _produtoService.DashBoardAdmin());
+    }
     
     [AllowAnonymous]
     [ApiExplorerSettings(IgnoreApi = true)]

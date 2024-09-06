@@ -58,7 +58,12 @@ public class ProdutoService : BaseService, IProdutoService
         }
 
         produto.Fotos = fotosProduto;
-    
+        Notificator.Handle(produto.Validate());
+        
+        if(Notificator.HasNotification)
+            return null;
+        
+        
         await _produtoRepository.Adicionar(produto);
         
         if (await CommitChanges())
@@ -203,6 +208,24 @@ public class ProdutoService : BaseService, IProdutoService
         }
 
         return categorias;
+    }
+
+    public async Task<List<ProdutoDto>> DashBoardAdmin()
+    {
+        var produtos = await _produtoRepository.Obter();
+        var produtoRetorno =  Mapper.Map<List<ProdutoDto>>(produtos);
+        foreach (var produto in produtoRetorno)
+        {
+            var fotos = await GetUrlsFotos(produto.Id);
+            
+
+            for (int i = 0; i < fotos.Urls.Count; i++)
+            {
+                produto.FotoUrls.Add(fotos.Urls[i]);
+            }
+        }
+        
+        return produtoRetorno;
     }
 
 

@@ -14,18 +14,13 @@ public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
     public async Task<List<Pedido>> ObterPedidosCliente(long clienteId)
     {
         
-        var cliente = Context.Clientes.AsNoTrackingWithIdentityResolution()
-            .Where(c => c.Id == clienteId).FirstOrDefault();
+        var cliente = Context.Clientes
+            .AsNoTrackingWithIdentityResolution().FirstOrDefault(c => c.Id == clienteId);
 
         var pedidos =
             Context.Pedidos.AsNoTrackingWithIdentityResolution()
+                .Include(c => c.Produto)
                 .Where(c => c.CarrinhoId == cliente.CarrinhoId).ToList();
-
-        foreach (var pedido in pedidos)
-        {
-            pedido.Produto = Context.Produtos.FirstOrDefault(c => c.Id == pedido.ProdutoId)!;
-        }
-        
         
         return pedidos;
 
@@ -35,7 +30,9 @@ public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
      
     public async Task<List<Pedido>> ObterAtivos(long clienteId, long tamanhoId)
     {
-        var pedidos = await Context.Pedidos.Where(c => c.ClienteId == clienteId && c.TamanhoId == tamanhoId).ToListAsync();
+        var pedidos = await Context.Pedidos
+            .Where(c => c.ClienteId == clienteId && c.TamanhoId == tamanhoId).ToListAsync();
+        
         return pedidos;
     }
 

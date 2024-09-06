@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentValidation.Results;
 using UZUSIS.Core.Enums;
 using UZUSIS.Domain.Abstractions;
+using UZUSIS.Domain.Validations;
 
 namespace UZUSIS.Domain.Entities;
 
@@ -22,5 +24,18 @@ public class Cliente : Usuario
     public string CPF { get; set; }
     public string Celular { get; set; }
     public DateTime DataNascimento { get; set; }
+
+
+    public List<ValidationFailure> Validate()
+    {
+        List<string> Erros = new List<string>();
+        var validateHandler = new ClienteValidation();
+
+        var response = validateHandler.Validate(this);
+
+        return response.Errors;
+    }
+    
+    
 
 }

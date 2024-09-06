@@ -30,7 +30,7 @@ public class ClienteValidation : AbstractValidator<Cliente>
         RuleFor(cliente => cliente.Email)
             .NotEmpty().WithMessage("O email é obrigatório.")
             .EmailAddress().WithMessage("O email informado é inválido.")
-            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").WithMessage("O email informado é inválido.");
+            .EmailAddress().WithMessage("O email informado é inválido.");
 
         RuleFor(cliente => cliente.Senha)
             .NotEmpty().WithMessage("A senha é obrigatória.")

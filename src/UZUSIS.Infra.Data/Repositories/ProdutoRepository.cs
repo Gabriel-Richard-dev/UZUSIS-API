@@ -20,7 +20,7 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
     public async Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null)
     {
-
+        List<Produto> produtosForaDeEstoque = new List<Produto>();
         List<Produto> produtos;
         var prods = Context.Produtos;
 
@@ -37,10 +37,28 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
             var tamanhos = Context.Tamanhos.Where(c 
                 => c.ProdutoId == produto.Id)
                 .OrderByDescending(c => c.Sigla);
-            
-            produto.Tamanhos = tamanhos.ToList();
 
+            int quantidadeDeZero = 0;
+            foreach (var tamanho in tamanhos)
+            {
+                if (tamanho.Quantidade == 0)
+                    quantidadeDeZero++;
+            }
+
+            if (quantidadeDeZero == 3)
+            {
+                produtosForaDeEstoque.Add(produto);
+            }
+            produto.Tamanhos = tamanhos.ToList();
+            
+            
         }
+
+        foreach (var foraEstoque in produtosForaDeEstoque)
+        {
+            produtos.Remove(foraEstoque);
+        }
+        
         
         return produtos;
 
@@ -82,5 +100,10 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         }
 
         return produtos;
+    }
+
+    public Task<List<Produto>> DashboardAdmin()
+    {
+        throw new NotImplementedException();
     }
 }

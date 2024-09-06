@@ -4,6 +4,7 @@ using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Carrinho;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
+using UZUSIS.Core.ViewModel;
 
 namespace UZUSIS.API.Controllers.V1.Carrinho;
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
+using UZUSIS.Core.ViewModel;
 
 namespace UZUSIS.API.Controllers.V1.Compra;
 
@@ -17,13 +18,7 @@ public class CompraController : BaseController
         _carrinhoService = carrinhoService;
         _compraService = compraService;
     }
-
-    [Authorize(Roles = "Cliente")]
-    [HttpPost]
-    public async Task<IActionResult> ComprarUnico()
-    {
-        return CustomResponse();
-    }
+    
 
     [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpPost("cliente/carrinho")]
@@ -31,7 +26,13 @@ public class CompraController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> ComprarCarrinho()
     {
-        return CustomResponse(await _compraService.ComprarCarrinho());
+        var foiComprado = await _compraService.ComprarCarrinho();
+
+        return CustomResponse(new CarrinhoCompraViewModel()
+        {
+            FoiComprado = foiComprado
+        });
+
     }
     
     [Authorize(Roles = nameof(ETipoUsuario.Cliente))]

@@ -5,6 +5,7 @@ using UZUSIS.Application.Dtos.Cliente;
 using UZUSIS.Application.Dtos.Endereco;
 using UZUSIS.Application.Dtos.Usuario;
 using UZUSIS.Application.Notification;
+using UZUSIS.Core.ViewModel;
 
 namespace UZUSIS.API.Controllers.V1.Cliente;
 
@@ -35,8 +36,11 @@ public class ClienteAuth : BaseController
     [HttpPost("enviar-confirmacao-email")]
     public async Task<IActionResult> Cadastrar([FromBody]ClienteEnviarEmailConfirmacaoDto email)
     {
-        await _emailService.EnviarConfirmacao(email.Email);
-        return CustomResponse("Um código de confirmação foi enviado para o email em questão.");
+        var foiEnviado  = await _emailService.EnviarConfirmacao(email.Email);
+        return Ok(new EmailViewModelResponse
+        {
+            FoiEnviado = foiEnviado
+        });
     }
     
     [AllowAnonymous]
@@ -57,8 +61,11 @@ public class ClienteAuth : BaseController
     [HttpPost("enviar-recuperacao-senha")]
     public async Task<IActionResult> EnviarRecuperacao([FromBody]ClienteEnviarEmailConfirmacaoDto email)
     {
-        await _emailService.EnviarRecuperacao(email.Email);
-        return CustomResponse("Um código de recuperação foi enviado para o email em questão.");
+        var foiEnviado = await _emailService.EnviarRecuperacao(email.Email);
+        return CustomResponse(new EmailViewModelResponse
+        {
+            FoiEnviado = foiEnviado
+        });
     }
     
      [AllowAnonymous]

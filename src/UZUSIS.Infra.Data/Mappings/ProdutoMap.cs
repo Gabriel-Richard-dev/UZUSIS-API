@@ -14,6 +14,8 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
         
         builder.HasKey(c => c.Id);
 
+        builder.Ignore(c => c.Status);
+        
         builder.Property(c => c.Nome)
             .HasColumnType("VARCHAR(120)");
         builder.Property(c => c.Preco);
