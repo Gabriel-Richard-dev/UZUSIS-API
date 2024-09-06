@@ -16,7 +16,12 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
         Context = context;
         _dbSet = context.Set<T>();
     }
-    
+
+    public async Task Excluir(T entity)
+    {
+        _dbSet.Remove(entity);
+    }
+
     public IUnitOfWork UnitOfWork => Context;
 
     public async Task<T> Adicionar(T entity)

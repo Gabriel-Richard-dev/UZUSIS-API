@@ -25,6 +25,8 @@ public class ClienteController : BaseController
     
     [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Obter()
     {
         return CustomResponse(await _clienteService.ObterCliente());
@@ -33,6 +35,8 @@ public class ClienteController : BaseController
     
     [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
     [HttpGet("admin/obter-cliente")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Obter([FromQuery] long id)
     {
         return CustomResponse(await _clienteService.ObterCliente(id));

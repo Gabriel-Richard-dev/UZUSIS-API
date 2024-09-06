@@ -13,7 +13,7 @@ public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
 
     public async Task<List<Pedido>> ObterPedidosCliente(long clienteId)
     {
-
+        
         var cliente = Context.Clientes.AsNoTrackingWithIdentityResolution()
             .Where(c => c.Id == clienteId).FirstOrDefault();
 

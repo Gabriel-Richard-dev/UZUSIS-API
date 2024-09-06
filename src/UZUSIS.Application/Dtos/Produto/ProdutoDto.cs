@@ -21,7 +21,7 @@ public class ProdutoDto
     {
         get
         {
-            return Categoria.ToString();
+            return Categoria.ToString().Equals("Calca") ? "Calça" : Categoria.ToString();
         }
     }
 

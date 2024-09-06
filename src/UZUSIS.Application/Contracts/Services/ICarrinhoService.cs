@@ -8,4 +8,5 @@ public interface ICarrinhoService
 {
     Task<PedidoDto?> AdicionarAoCarrinho(RequisicaoCarrinhoDto requisicaoCarrinhoDto);
     Task<List<PedidoCarrinhoDto>> ObterPedidos();
+    Task<bool> RemoverPedido(int pedidoId);
 }

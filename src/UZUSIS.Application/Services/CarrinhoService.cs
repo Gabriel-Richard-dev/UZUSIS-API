@@ -110,8 +110,30 @@ public class CarrinhoService : BaseService, ICarrinhoService
         var pedidos = await _pedidoRepository.ObterPedidosCliente(id);
         return Mapper.Map<List<PedidoCarrinhoDto>>(pedidos);
     }
-    
-    
+
+    public async Task<bool> RemoverPedido(int pedidoId)
+    {
+        var user = await ObterIdUsuarioAutenticado();
+        var pedido = (await _pedidoRepository.ObterPedidosCliente(user)).FirstOrDefault(c => c.Id == pedidoId);
+
+        if (pedido is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+
+        await _pedidoRepository.Excluir(pedido);
+        if (await _pedidoRepository.UnitOfWork.Commit())
+        {
+            return true;
+        }
+
+        Notificator.Handle("Não foi possivel remover o pedido");
+        return false;
+
+    }
+
+
     private async Task<long> ObterIdUsuarioAutenticado()
     {
         if (_httpContext is null)

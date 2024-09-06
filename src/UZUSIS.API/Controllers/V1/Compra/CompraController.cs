@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Notification;
+using UZUSIS.Core.Enums;
 
 namespace UZUSIS.API.Controllers.V1.Compra;
 
@@ -24,36 +25,46 @@ public class CompraController : BaseController
         return CustomResponse();
     }
 
-    [Authorize(Roles = "Cliente")]
+    [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpPost("cliente/carrinho")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> ComprarCarrinho()
     {
         return CustomResponse(await _compraService.ComprarCarrinho());
     }
     
-    [Authorize(Roles = "Cliente")]
+    [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpGet("cliente/historico")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> HistoricoCliente()
     {
         return CustomResponse(await _compraService.ObterHistorico());
     } 
     
-    [Authorize(Roles = "Cliente")]
+    [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
     [HttpGet("cliente/em-andamento")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> EmAndamentoCliente()
     {
         return CustomResponse(await _compraService.ObterEmAndamento());
     }
     
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
     [HttpGet("administrador/dashboard")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> HistoricoAdministrador()
     {
         return CustomResponse(await _compraService.ObterTodosOsPedidos());
     }
     
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
     [HttpPatch("administrador/dashboard/enviar-produto")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> EnviarItem([FromQuery] long itemCompraId)
     {
         return CustomResponse(await _compraService.EnviarItemCompra(itemCompraId));
