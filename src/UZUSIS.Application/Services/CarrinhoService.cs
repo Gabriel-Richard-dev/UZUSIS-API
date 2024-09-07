@@ -70,20 +70,33 @@ public class CarrinhoService : BaseService, ICarrinhoService
         {
             contadorDePedidos += p.Quantidade;
         }
-
-        if (contadorDePedidos > tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
+    
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        if (tamanho.Quantidade < requisicao.Quantidade)
+        {
+            Notificator.Handle("Pedido excede a quantidade total do tamanho do produto");
+            return null;
+        }
+        
+        if (contadorDePedidos > tamanho.Quantidade |
+            contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
         {
             Notificator.Handle("Você já tem pedidos que excedem a quantidade total desse tamanho");
             return null;
         }
 
         contadorDePedidos = 0;
-        
-        if (tamanho.Quantidade < requisicao.Quantidade)
-        {
-            Notificator.Handle("Pedido excede a quantidade total de produtos");
-            return null;
-        }
         
         var pedido = new PedidoDto
         {

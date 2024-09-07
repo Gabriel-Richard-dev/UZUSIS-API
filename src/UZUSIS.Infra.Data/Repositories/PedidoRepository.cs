@@ -31,7 +31,8 @@ public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
     public async Task<List<Pedido>> ObterAtivos(long clienteId, long tamanhoId)
     {
         var pedidos = await Context.Pedidos
-            .Where(c => c.ClienteId == clienteId && c.TamanhoId == tamanhoId).ToListAsync();
+            .Where(c=> c.ClienteId == clienteId && c.TamanhoId == tamanhoId &&  c.CarrinhoId != null)
+            .ToListAsync();
         
         return pedidos;
     }

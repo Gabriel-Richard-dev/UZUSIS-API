@@ -53,7 +53,9 @@ public class ProdutoService : BaseService, IProdutoService
         {
             fotosProduto.Add(new Foto()
             {
-                FotoUrl = Guid.NewGuid().ToString().Replace("-", string.Empty) + Path.GetExtension(foto.FileName)
+                FotoUrl = Guid.NewGuid()
+                    .ToString()
+                    .Replace("-", string.Empty) + Path.GetExtension(foto.FileName)
             });
         }
 
