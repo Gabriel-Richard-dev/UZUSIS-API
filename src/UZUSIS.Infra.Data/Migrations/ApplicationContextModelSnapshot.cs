@@ -22,6 +22,153 @@ namespace UZUSIS.Infra.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.CompraPedido", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("CompraId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PedidosId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompraId");
+
+                    b.ToTable("CompraPedido", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.ConfirmacaoEmail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Expiracao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("FoiConfirmado")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConfirmacaoEmail", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.ItemCompra", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("ClienteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CompraId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("FoiEnviado")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("FoiRecebico")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<long>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("TamanhoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("ValorItem")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("CompraId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("ItemCompra", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.RecuperacaoSenhaEmail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Expiracao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("FoiConfirmado")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RecuperacaoSenha", (string)null);
+                });
+
             modelBuilder.Entity("UZUSIS.Domain.Entities.Administrador", b =>
                 {
                     b.Property<long>("Id")
@@ -53,7 +200,7 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Administradores");
+                    b.ToTable("Administrador", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Carrinho", b =>
@@ -67,21 +214,21 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("ClienteId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carrinhos");
+                    b.ToTable("Carrinho", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Cliente", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
@@ -107,9 +254,6 @@ namespace UZUSIS.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("EnderecoId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -123,10 +267,9 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
+                    b.HasIndex("CarrinhoId");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Cliente", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Compra", b =>
@@ -153,7 +296,7 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Compra");
+                    b.ToTable("Compra", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Endereco", b =>
@@ -199,7 +342,32 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Endereco");
+                    b.HasIndex("ClienteId")
+                        .IsUnique();
+
+                    b.ToTable("Endereco", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Foto", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("FotoUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("Foto", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Pedido", b =>
@@ -213,13 +381,10 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<DateTime>("AtualizadoEm")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("CarrinhoId")
+                    b.Property<long?>("CarrinhoId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ClienteId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CompraId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CriadoEm")
@@ -231,6 +396,13 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("TamanhoId")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("ValorPedido")
                         .HasColumnType("decimal(65,30)");
 
@@ -240,11 +412,9 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("CompraId");
-
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Pedido");
+                    b.ToTable("Pedido", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Produto", b =>
@@ -278,7 +448,7 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produtos");
+                    b.ToTable("Produto", (string)null);
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Tamanho", b =>
@@ -303,26 +473,56 @@ namespace UZUSIS.Infra.Data.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Tamanho");
+                    b.ToTable("Tamanho", (string)null);
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.CompraPedido", b =>
+                {
+                    b.HasOne("UZUSIS.Domain.Entities.Compra", "Compra")
+                        .WithMany()
+                        .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compra");
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Acessories.ItemCompra", b =>
+                {
+                    b.HasOne("UZUSIS.Domain.Entities.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UZUSIS.Domain.Entities.Compra", "Compra")
+                        .WithMany("Itens")
+                        .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UZUSIS.Domain.Entities.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Compra");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Cliente", b =>
                 {
-                    b.HasOne("UZUSIS.Domain.Entities.Endereco", "Endereco")
-                        .WithOne("Cliente")
-                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("UZUSIS.Domain.Entities.Carrinho", "Carrinho")
-                        .WithOne("Cliente")
-                        .HasForeignKey("UZUSIS.Domain.Entities.Cliente", "Id")
+                        .WithMany()
+                        .HasForeignKey("CarrinhoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Carrinho");
-
-                    b.Navigation("Endereco");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Compra", b =>
@@ -336,23 +536,37 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Navigation("Cliente");
                 });
 
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Endereco", b =>
+                {
+                    b.HasOne("UZUSIS.Domain.Entities.Cliente", "Cliente")
+                        .WithOne("Endereco")
+                        .HasForeignKey("UZUSIS.Domain.Entities.Endereco", "ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("UZUSIS.Domain.Entities.Foto", b =>
+                {
+                    b.HasOne("UZUSIS.Domain.Entities.Produto", "Produto")
+                        .WithMany("Fotos")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Produto");
+                });
+
             modelBuilder.Entity("UZUSIS.Domain.Entities.Pedido", b =>
                 {
                     b.HasOne("UZUSIS.Domain.Entities.Carrinho", "Carrinho")
                         .WithMany("Pedidos")
-                        .HasForeignKey("CarrinhoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarrinhoId");
 
                     b.HasOne("UZUSIS.Domain.Entities.Cliente", "Cliente")
                         .WithMany("Pedidos")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UZUSIS.Domain.Entities.Compra", "Compra")
-                        .WithMany("Pedidos")
-                        .HasForeignKey("CompraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -365,8 +579,6 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Navigation("Carrinho");
 
                     b.Navigation("Cliente");
-
-                    b.Navigation("Compra");
 
                     b.Navigation("Produto");
                 });
@@ -384,9 +596,6 @@ namespace UZUSIS.Infra.Data.Migrations
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Carrinho", b =>
                 {
-                    b.Navigation("Cliente")
-                        .IsRequired();
-
                     b.Navigation("Pedidos");
                 });
 
@@ -394,22 +603,21 @@ namespace UZUSIS.Infra.Data.Migrations
                 {
                     b.Navigation("Compras");
 
+                    b.Navigation("Endereco")
+                        .IsRequired();
+
                     b.Navigation("Pedidos");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Compra", b =>
                 {
-                    b.Navigation("Pedidos");
-                });
-
-            modelBuilder.Entity("UZUSIS.Domain.Entities.Endereco", b =>
-                {
-                    b.Navigation("Cliente")
-                        .IsRequired();
+                    b.Navigation("Itens");
                 });
 
             modelBuilder.Entity("UZUSIS.Domain.Entities.Produto", b =>
                 {
+                    b.Navigation("Fotos");
+
                     b.Navigation("Pedidos");
 
                     b.Navigation("Tamanhos");

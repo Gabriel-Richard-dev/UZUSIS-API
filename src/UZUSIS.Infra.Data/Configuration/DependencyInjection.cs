@@ -11,13 +11,14 @@ public static class DependencyInjection
 {
     public static void AdicionarDependenciasRepository(this IServiceCollection services)
     {
-       
+
         services
             .AddScoped<IAdministradorRepository, AdministradorRepository>()
             .AddScoped<ICompraRepository, CompraRepository>()
             .AddScoped<IProdutoRepository, ProdutoRepository>()
             .AddScoped<IClienteRepository, ClienteRepository>()
-            .AddScoped<ICarrinhoRepository, CarrinhoRepository>();
+            .AddScoped<ICarrinhoRepository, CarrinhoRepository>()
+            .AddScoped<IPedidoRepository, PedidoRepository>();
     }
     
     

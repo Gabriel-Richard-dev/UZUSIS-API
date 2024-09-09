@@ -8,6 +8,9 @@ public class AdministradorMap : IEntityTypeConfiguration<Administrador>
 {
     public void Configure(EntityTypeBuilder<Administrador> builder)
     {
+
+        builder.ToTable("Administrador");
+        
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Email);

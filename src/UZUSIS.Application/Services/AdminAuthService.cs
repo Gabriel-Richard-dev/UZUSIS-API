@@ -61,9 +61,9 @@ public class AdminAuthService : BaseService, IAdminAuthService
     private async Task<string> GenerateToken(Administrador admin)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = await _jwtService.GetCurrentSigningCredentials();
+        var key = Encoding.ASCII.GetBytes(_jwtSettings.Key); // Use a chave diretamente
 
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
@@ -71,13 +71,11 @@ public class AdminAuthService : BaseService, IAdminAuthService
                 new Claim(ClaimTypes.Role, ETipoUsuario.Administrador.ToString())
             }),
             Expires = DateTime.UtcNow.AddHours((int)_jwtSettings.ExpiracaoHoras),
-            SigningCredentials = key
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256) 
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-
         return tokenHandler.WriteToken(token);
     }
-    
     
 }

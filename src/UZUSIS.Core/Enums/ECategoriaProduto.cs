@@ -2,7 +2,13 @@ namespace UZUSIS.Core.Enums;
 
 public enum ECategoriaProduto
 {
-    Blusa,
     Calca,
-    Short
+    Short,
+    Saia,
+    Cropped,
+    Conjuntos,
+    Blusao,
+    Body,
+    Blusa,
+    Acessorios
 }

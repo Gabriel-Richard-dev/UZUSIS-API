@@ -1,0 +1,136 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using UZUSIS.Application.Contracts.Services;
+using UZUSIS.Application.Dtos.Compra;
+using UZUSIS.Application.Notification;
+using UZUSIS.Core.Extensions;
+using UZUSIS.Domain.Contracts.Repositories;
+using UZUSIS.Domain.Entities;
+using UZUSIS.Domain.Entities.Acessories;
+
+namespace UZUSIS.Application.Services;
+
+public class CompraService : BaseService, ICompraService
+{
+    
+    private readonly ICompraRepository _compraRepository;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly ICarrinhoRepository _carrinhoRepository;
+    private readonly IPedidoRepository _pedidoRepository;
+    private readonly IProdutoRepository _produtoRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    
+    public CompraService(INotificator notificator, IMapper mapper, ICompraRepository compraRepository, IHttpContextAccessor httpContextAccessor, IClienteRepository clienteRepository, ICarrinhoRepository carrinhoRepository, IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository) : base(notificator, mapper)
+    {
+        _compraRepository = compraRepository;
+        _httpContextAccessor = httpContextAccessor;
+        _clienteRepository = clienteRepository;
+        _carrinhoRepository = carrinhoRepository;
+        _pedidoRepository = pedidoRepository;
+        _produtoRepository = produtoRepository;
+    }
+
+    public async Task<bool> ComprarCarrinho()
+    {
+        var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
+        
+        var cliente = await _clienteRepository.Obter(usuarioId);
+
+        if (cliente is null)
+        {
+            Notificator.Handle("Cliente inexistente.");
+            return false;
+        }
+        
+        var carrinho = await _carrinhoRepository.Obter(cliente.CarrinhoId);
+
+        if (carrinho is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+        
+        var pedidos = await _pedidoRepository.ObterPedidosCliente(usuarioId);
+        var compra = new Compra();
+        decimal valorTotal = 0;
+        List<ItemCompra> items = new List<ItemCompra>();
+        foreach (var pedido in pedidos)
+        {
+            valorTotal += pedido.ValorPedido;
+            
+            items.Add(new ItemCompra()
+            {
+                ProdutoId = pedido.ProdutoId,
+                Quantidade = pedido.Quantidade,
+                ValorItem = pedido.ValorPedido,
+                ClienteId = pedido.ClienteId,
+                TamanhoId = pedido.TamanhoId,
+                Sigla = pedido.Sigla
+            });
+        }
+        
+        compra.ClienteId = cliente.Id;
+        compra.ValorTotal = valorTotal;
+        compra.Itens = items;
+
+        await _compraRepository.Adicionar(compra);
+        carrinho.FlushCarrinho();
+        await _carrinhoRepository.Atualizar(carrinho);
+        
+        if (await _compraRepository.UnitOfWork.Commit())
+        {
+            return true;
+        }
+        
+        Notificator.Handle("Não foi possivel terminar a compra");
+        return false;
+    }
+
+    public async Task<List<CompraDto>> ObterHistorico()
+    {
+        var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
+        
+        var cliente = await _clienteRepository.Obter(usuarioId);
+
+        if (cliente is null)
+        {
+            Notificator.Handle("Cliente inexistente");
+            return null!;
+        }
+
+        var compras = await _compraRepository.ObterPeloCliente(cliente.Id);
+        
+        
+        return Mapper.Map<List<CompraDto>>(compras);
+    }
+
+    public async Task<List<CompraDto>> ObterEmAndamento()
+    {
+        var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
+        
+        var cliente = await _clienteRepository.Obter(usuarioId);
+
+        if (cliente is null)
+        {
+            Notificator.Handle("Cliente inexistente");
+            return null!;
+        }
+
+        var compras = await _compraRepository.ObterPeloCliente(cliente.Id, true);
+        
+        
+        return Mapper.Map<List<CompraDto>>(compras);
+    }
+
+    public async Task<List<ItemCompraDto>> ObterTodosOsPedidos()
+    {
+        return Mapper.Map<List<ItemCompraDto>>(await _compraRepository.ObterItens());
+    }
+
+    public async Task<ItemCompraDto?> EnviarItemCompra(long itemCompraId)
+    {
+        var item = await _compraRepository.EnviarItem(itemCompraId);
+        await _compraRepository.UnitOfWork.Commit();
+        return Mapper.Map<ItemCompraDto>(item);
+    }
+}

@@ -8,6 +8,7 @@ public interface IBaseRepository<T> where T : Entity
     Task Atualizar(T entity);
     Task<List<T>> Obter();
     Task<T?> Obter(long id);
+    Task Excluir(T entity);
 
     IUnitOfWork UnitOfWork { get; }
 }

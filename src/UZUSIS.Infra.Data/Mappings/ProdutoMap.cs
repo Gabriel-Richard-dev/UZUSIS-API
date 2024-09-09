@@ -8,8 +8,14 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
 {
     public void Configure(EntityTypeBuilder<Produto> builder)
     {
+        
+        builder.ToTable("Produto");
+
+        
         builder.HasKey(c => c.Id);
 
+        builder.Ignore(c => c.Status);
+        
         builder.Property(c => c.Nome)
             .HasColumnType("VARCHAR(120)");
         builder.Property(c => c.Preco);
@@ -24,6 +30,10 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
 
         builder.HasMany(c => c.Tamanhos)
             .WithOne(c => c.Produto);
+
+        builder.HasMany(c => c.Fotos)
+            .WithOne(c => c.Produto);
+
 
     }
 }
