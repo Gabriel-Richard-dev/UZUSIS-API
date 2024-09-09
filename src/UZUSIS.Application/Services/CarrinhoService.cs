@@ -75,21 +75,7 @@ public class CarrinhoService : BaseService, ICarrinhoService
             Console.WriteLine("Quantidade= " + p.Quantidade);
             contadorDePedidos = contadorDePedidos + p.Quantidade;
         }
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
-        Console.WriteLine(contadorDePedidos);
+
        
         if (tamanho.Quantidade < requisicao.Quantidade)
         {
@@ -97,7 +83,6 @@ public class CarrinhoService : BaseService, ICarrinhoService
             return null;
         }
 
-        Console.WriteLine("Tamanho QUantidade = " + tamanho.Quantidade);
         
         if (contadorDePedidos > tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
         {
