@@ -22,7 +22,8 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     {
         List<Produto> produtosForaDeEstoque = new List<Produto>();
         List<Produto> produtos;
-        var prods = Context.Produtos;
+        var prods = Context.Produtos
+            .OrderByDescending(c => c.CriadoEm);
 
         
         if (categoriaProduto is not null)
@@ -36,7 +37,7 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         {
             var tamanhos = Context.Tamanhos.Where(c 
                 => c.ProdutoId == produto.Id)
-                .OrderByDescending(c => c.Sigla);
+                .OrderBy(c => c.Sigla);
 
             int quantidadeDeZero = 0;
             foreach (var tamanho in tamanhos)
@@ -67,7 +68,8 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
     public async Task<Produto> Obter(long id)
     {
-        var produto  = await Context.Produtos.FirstOrDefaultAsync(c=> c.Id == id);
+        var produto  = await Context.Produtos
+            .FirstOrDefaultAsync(c=> c.Id == id);
         
         produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
         produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
@@ -90,7 +92,9 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
     public async Task<List<Produto>> ObterPorNome(string nome)
     {
-        var produtos = Context.Produtos.Where(c => c.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+        var produtos = Context.Produtos
+            .OrderByDescending(c=> c.CriadoEm)
+            .Where(c => c.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
 
         foreach (var produto in produtos)
         {

@@ -13,6 +13,7 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
     }
     public async Task<Compra?> Adicionar(Compra compra)
     {
+        compra.CriadoEm = DateTime.Now;
         await Context.Compras.AddAsync(compra);
 
         foreach (var item in compra.Itens)

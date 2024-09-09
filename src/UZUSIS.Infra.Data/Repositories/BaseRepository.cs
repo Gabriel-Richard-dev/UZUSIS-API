@@ -26,12 +26,14 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
 
     public async Task<T> Adicionar(T entity)
     {
+        entity.CriadoEm = DateTime.Now;
         await _dbSet.AddAsync(entity);
         return entity;
     }
 
     public async Task Atualizar(T entity)
     {
+        entity.CriadoEm = DateTime.Now;
         _dbSet.Entry(entity).State = EntityState.Modified;
         _dbSet.Update(entity);
     }
