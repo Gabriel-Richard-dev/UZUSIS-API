@@ -13,8 +13,8 @@ public interface IProdutoService
     Task<ProdutoDto?> ObterPorId(long produtoId);
     Task<List<ProdutoDto>> ObterNome(string nome);
     Task<List<byte[]?>> ObterFoto(long produtoId);
-  
-    Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto);
+
+    Task<ProdutoDto?> Atualizar(long produtoId, AtualizarProdutoDto atualizarProdutoDto);
     Task<List<CategoriaDto>> ObterCategorias();
     Task<List<ProdutoDto>> DashBoardAdmin();
 

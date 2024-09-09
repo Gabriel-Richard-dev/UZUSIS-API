@@ -13,11 +13,10 @@ public class CarrinhoRepository : BaseRepository<Carrinho>, ICarrinhoRepository
 
     public async  Task<Carrinho?> Obter(long id)
     {
-        var carrinho = Context.Carrinhos.FirstOrDefault(c => c.Id == id);
-        var pedidos = Context.Pedidos.Where(c => c.CarrinhoId == id).ToList();
-
-        carrinho.Pedidos = pedidos;
-
+        var carrinho = await Context.Carrinhos
+            .Include(c => c.Pedidos)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
         return carrinho;
 
     }

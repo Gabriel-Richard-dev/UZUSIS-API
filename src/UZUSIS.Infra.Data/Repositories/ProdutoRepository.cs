@@ -37,7 +37,7 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         {
             var tamanhos = Context.Tamanhos.Where(c 
                 => c.ProdutoId == produto.Id)
-                .OrderBy(c => c.Sigla);
+                .OrderByDescending(c => c.Sigla);
 
             int quantidadeDeZero = 0;
             foreach (var tamanho in tamanhos)
@@ -71,20 +71,19 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         var produto  = await Context.Produtos
             .FirstOrDefaultAsync(c=> c.Id == id);
         
-        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).OrderByDescending(c=> c.Sigla).ToList();
         produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
         
         
         return produto;
 
     }
-    public async Task<Produto> ObterPorId(long id)
+    public async Task<Produto?> ObterPorId(long id)
     {
         var produto  = await Context.Produtos.FirstOrDefaultAsync(c=> c.Id == id);
         
-        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+        produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).OrderByDescending(c=> c.Sigla).ToList();
         produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
-        
         
         return produto;
 
@@ -98,7 +97,8 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 
         foreach (var produto in produtos)
         {
-            produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id).ToList();
+            produto.Tamanhos = Context.Tamanhos.Where(c => c.ProdutoId == produto.Id)
+                .OrderByDescending(c=> c.Sigla).ToList();
             produto.Fotos = Context.Fotos.Where(c => c.ProdutoId == produto.Id).ToList();
             
         }

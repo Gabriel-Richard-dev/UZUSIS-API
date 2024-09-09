@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Categoria;
 using UZUSIS.Application.Dtos.Produto;
+using UZUSIS.Application.Dtos.Produto.Acessories;
 using UZUSIS.Application.Notification;
 using UZUSIS.Core.Enums;
 using UZUSIS.Core.ViewModel;
@@ -71,9 +72,9 @@ public class ProdutoService : BaseService, IProdutoService
         if (await CommitChanges())
         {
             var fotoUrls = await SalvarFotos(produtoDto, fotosProduto); 
-            var dto = Mapper.Map<ProdutoDto>(produto);
-            dto.FotoUrls = fotoUrls;
-            return dto;
+            var atualizarProdutoDto = Mapper.Map<ProdutoDto>(produto);
+            atualizarProdutoDto.FotoUrls = fotoUrls;
+            return atualizarProdutoDto;
         }
 
         Notificator.Handle("Não foi possível adicionar o produto");
@@ -170,30 +171,7 @@ public class ProdutoService : BaseService, IProdutoService
 
     }
 
-
-    public async Task<AtualizarProdutoDto?> Atualizar(int produtoId, AtualizarProdutoDto produtoDto)
-    {
-
-        var produto = Mapper.Map<Produto>(produtoDto);
-        produto.Id = produtoId;
-        
-        if (produto is null)
-        {
-            Notificator.HandleNotFoundResource();
-            return null;
-        }
-        
-        await _produtoRepository.Atualizar(produto);
-
-        if (await CommitChanges())
-        {
-            return produtoDto;
-        }
-        
-        Notificator.Handle("Não foi possivel atualizar produto");
-        return null;
-
-    }
+    
 
     public async Task<List<CategoriaDto>> ObterCategorias()
     {
@@ -234,12 +212,12 @@ public class ProdutoService : BaseService, IProdutoService
     private async Task<bool> CommitChanges() => await _produtoRepository.UnitOfWork.Commit();
 
 
-    private async Task<List<string>> SalvarFotos(AdicionarProdutoDto dto, List<Foto> photoName)
+    private async Task<List<string>> SalvarFotos(IAgreggateFotoList atualizarProdutoDto, List<Foto> photoName)
     {
 
         int contador = 0;
         var fotoReturn = new List<string>();
-        foreach (var foto in dto.FotoFiles)
+        foreach (var foto in atualizarProdutoDto.FotoFiles)
         {
             var nome = photoName[contador].FotoUrl;
             fotoReturn.Add(nome);
@@ -274,5 +252,102 @@ public class ProdutoService : BaseService, IProdutoService
 
 
     }
+
+
+
+
+    public async Task<ProdutoDto?> Atualizar(long produtoId, AtualizarProdutoDto atualizarProdutoDto)
+    {
+        var produto = await _produtoRepository.ObterPorId(produtoId);
+
+        if (produto is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+        
+        if (!string.IsNullOrEmpty(atualizarProdutoDto.Nome))
+        {
+            produto.Nome = atualizarProdutoDto.Nome;
+        }
+
+
+        if (!string.IsNullOrEmpty(atualizarProdutoDto.Descricao))
+        {
+            produto.Descricao = atualizarProdutoDto.Descricao;
+        }
+
+
+        if (atualizarProdutoDto.QuantidadeP.HasValue || atualizarProdutoDto.QuantidadeM.HasValue || atualizarProdutoDto.QuantidadeG.HasValue)
+        {
+            var tamanhos = new List<TamanhoDto>();
+    
+            if (atualizarProdutoDto.QuantidadeP.HasValue)
+                tamanhos.Add(new TamanhoDto() { Quantidade = atualizarProdutoDto.QuantidadeP.Value, Sigla = "P" });
+        
+            if (atualizarProdutoDto.QuantidadeM.HasValue)
+                tamanhos.Add(new TamanhoDto() { Quantidade = atualizarProdutoDto.QuantidadeM.Value, Sigla = "M" });
+        
+            if (atualizarProdutoDto.QuantidadeG.HasValue)
+                tamanhos.Add(new TamanhoDto() { Quantidade = atualizarProdutoDto.QuantidadeG.Value, Sigla = "G" });
+    
+            produto.Tamanhos = Mapper.Map<List<Tamanho>>(tamanhos);
+        }
+
+
+        if (atualizarProdutoDto.Categoria is not null)
+        {
+            produto.Categoria = (ECategoriaProduto)atualizarProdutoDto.Categoria;
+        }
+        
+        if (atualizarProdutoDto.Preco.HasValue)
+        {
+            produto.Preco = atualizarProdutoDto.Preco.Value;
+        }
+        
+        
+
+        List<Foto> fotosProduto = new();
+        if (atualizarProdutoDto.FotoFiles != null && atualizarProdutoDto.FotoFiles.Any())
+        {
+    
+            foreach (var foto in atualizarProdutoDto.FotoFiles)
+            {
+                fotosProduto.Add(new Foto()
+                {
+                    FotoUrl = Guid.NewGuid()
+                        .ToString()
+                        .Replace("-", string.Empty) + Path.GetExtension(foto.FileName)
+                });
+            }
+
+            produto.Fotos = fotosProduto;
+        }
+        
+        Notificator.Handle(produto.Validate());
+
+        if (Notificator.HasNotification)
+            return null;
+
+        await _produtoRepository.Atualizar(produto);
+
+        if (await _produtoRepository.UnitOfWork.Commit())
+        {
+            var atualizadoProduto = Mapper.Map<ProdutoDto>(produto);
+            if(fotosProduto.Count() > 0)
+            {
+                var fotoUrls = await SalvarFotos(atualizarProdutoDto, fotosProduto);
+                atualizadoProduto.FotoUrls = fotoUrls;
+            } 
+            return atualizadoProduto;
+            
+        }
+
+        Notificator.Handle("Não foi possivel atualizar a produto.");
+        return null;
+
+    }
+    
+    
 
 }

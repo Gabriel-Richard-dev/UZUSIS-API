@@ -60,17 +60,21 @@ public class CarrinhoService : BaseService, ICarrinhoService
             return null;
         }
 
-        var tamanho = produto.Tamanhos.FirstOrDefault(c => c.Sigla.ToUpper().Equals(requisicao.Sigla.ToUpper()));
+        var tamanho = produto
+            .Tamanhos
+            .FirstOrDefault(c => 
+                c.Sigla.ToUpper()
+                    .Equals(requisicao.Sigla.ToUpper()));
 
-        var pedidosExistentesDoCliente = await _pedidoRepository.ObterAtivos(clienteId, tamanho.Id);
         
         int contadorDePedidos = 0;
 
-        foreach (var p in pedidosExistentesDoCliente)
+        foreach (var p in carrinho.Pedidos.Where(c=> c.ProdutoId == requisicao.ProdutoId 
+                                                     && c.CarrinhoId != null &&  c.TamanhoId == tamanho.Id))
         {
-            contadorDePedidos += p.Quantidade;
+            Console.WriteLine("Quantidade= " + p.Quantidade);
+            contadorDePedidos = contadorDePedidos + p.Quantidade;
         }
-    
         Console.WriteLine(contadorDePedidos);
         Console.WriteLine(contadorDePedidos);
         Console.WriteLine(contadorDePedidos);
@@ -83,16 +87,21 @@ public class CarrinhoService : BaseService, ICarrinhoService
         Console.WriteLine(contadorDePedidos);
         Console.WriteLine(contadorDePedidos);
         Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+        Console.WriteLine(contadorDePedidos);
+       
         if (tamanho.Quantidade < requisicao.Quantidade)
         {
             Notificator.Handle("Pedido excede a quantidade total do tamanho do produto");
             return null;
         }
+
+        Console.WriteLine("Tamanho QUantidade = " + tamanho.Quantidade);
         
-        if (contadorDePedidos > tamanho.Quantidade |
-            contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
+        if (contadorDePedidos > tamanho.Quantidade || contadorDePedidos + requisicao.Quantidade > tamanho.Quantidade)
         {
-            Notificator.Handle("Você já tem pedidos que excedem a quantidade total desse tamanho");
+            Notificator.Handle("Você já tem o limite de produtos por usuário no seu carrinho");
             return null;
         }
 

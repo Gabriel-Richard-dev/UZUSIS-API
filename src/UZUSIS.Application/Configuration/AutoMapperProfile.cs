@@ -28,7 +28,10 @@ public class AutoMapperProfile : Profile
 
         #region Cliente
 
-        CreateMap<Cliente, ClienteDto>().ReverseMap();
+        CreateMap<Cliente, ClienteDto>()
+            .ForMember(dest => dest.DataNascimento, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.DataNascimento)))
+            .ReverseMap()
+            .ForMember(dest => dest.DataNascimento, opt => opt.MapFrom(src => src.DataNascimento.ToDateTime(new TimeOnly())));
         CreateMap<Cliente, AdicionarUsuarioDto>().ReverseMap();
         CreateMap<Cliente, AdicionarClienteDto>().ReverseMap();
         CreateMap<ClienteDto, AdicionarClienteDto>().ReverseMap();

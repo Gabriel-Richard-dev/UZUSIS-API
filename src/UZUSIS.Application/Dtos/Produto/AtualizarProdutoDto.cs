@@ -1,12 +1,20 @@
+using Microsoft.AspNetCore.Http;
+using UZUSIS.Application.Dtos.Produto.Acessories;
 using UZUSIS.Core.Enums;
 
 namespace UZUSIS.Application.Dtos.Produto;
 
-public class AtualizarProdutoDto
+public class AtualizarProdutoDto : IAgreggateFotoList
 {
-    public string? Nome { get; set; } = null;
-    public decimal? Preco { get; set; } = null;
-    public int? Quantidade { get; set; } = null;
-    public ECategoriaProduto? Categoria { get; set; } = null;
-    public string? Descricao { get; set; } = null;
+    public long Id { get; set; }
+    public string? Nome { get; set; } = null!;
+    public decimal? Preco { get; set; }
+
+    public int? QuantidadeP { get; set; } = 0;
+    public int? QuantidadeM { get; set; } = 0;
+    public int? QuantidadeG { get; set; } = 0;
+    public List<IFormFile>? FotoFiles { get; set; } = new();
+    
+    public ECategoriaProduto? Categoria { get; set; }
+    public string? Descricao { get; set; } = null!;
 }

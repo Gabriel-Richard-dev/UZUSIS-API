@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Dtos.Foto;
+using UZUSIS.Application.Dtos.Produto.Acessories;
 using UZUSIS.Core.Enums;
 
 namespace UZUSIS.Application.Dtos.Produto;
 
-public class AdicionarProdutoDto
+public class AdicionarProdutoDto : IAgreggateFotoList
 {
    
     
@@ -14,10 +15,11 @@ public class AdicionarProdutoDto
     public int QuantidadeP { get; set; } = 0;
     public int QuantidadeM { get; set; } = 0;
     public int QuantidadeG { get; set; } = 0;
-    public List<IFormFile> FotoFiles { get; set; } = new();
+ 
     
     public ECategoriaProduto Categoria { get; set; }
     public string Descricao { get; set; } = null!;
+    public List<IFormFile> FotoFiles { get; set; }
 }
 
 public class TamanhoDto()

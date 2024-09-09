@@ -65,14 +65,7 @@ public class ProdutoController : BaseController
     {
         return CustomResponse(await _produtoService.ObterNome(nome));
     }
-
-    [AllowAnonymous]
-    [HttpPut("atualizar")]
-    public async Task<IActionResult> Atualizar(int produtoId, AtualizarProdutoDto produtoDto)
-    {
-       
-        return CustomResponse( await _produtoService.Atualizar(produtoId, produtoDto));
-    }
+    
 
     [AllowAnonymous]
     [HttpGet]
@@ -93,10 +86,10 @@ public class ProdutoController : BaseController
     }
     
     [AllowAnonymous]
-    [HttpPatch]
-    public async Task<IActionResult> AtualizarParcial(int produtoId, AtualizarProdutoDto produtoDto)
+    [HttpPatch("atualizar")]
+    public async Task<IActionResult> AtualizarParcial([FromForm]AtualizarProdutoDto produtoDto)
     {
-        return CustomResponse(await _produtoService.Atualizar(produtoId, produtoDto));
+        return CustomResponse(await _produtoService.Atualizar(produtoDto.Id, produtoDto));
     }
 
     [Authorize(Roles = nameof(ETipoUsuario.Administrador))]
