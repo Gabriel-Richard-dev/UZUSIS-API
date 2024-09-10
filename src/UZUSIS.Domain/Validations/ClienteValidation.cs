@@ -18,7 +18,7 @@ public class ClienteValidation : AbstractValidator<Cliente>
 
         RuleFor(cliente => cliente.DataNascimento)
             .NotEmpty().WithMessage("A data de nascimento é obrigatória.")
-            .Must(data => data < DateTime.Now).WithMessage("A data de nascimento deve ser anterior à data atual.");
+            .Must(data => data < DateOnly.FromDateTime(DateTime.Now)).WithMessage("A data de nascimento deve ser anterior à data atual.");
 
         RuleFor(cliente => cliente.TipoUsuario)
             .IsInEnum().WithMessage("O tipo de usuário é inválido.");

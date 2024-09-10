@@ -192,7 +192,7 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task<List<ProdutoDto>> DashBoardAdmin()
     {
-        var produtos = await _produtoRepository.Obter();
+        var produtos = await _produtoRepository.Obter(null, true);
         var produtoRetorno =  Mapper.Map<List<ProdutoDto>>(produtos);
         foreach (var produto in produtoRetorno)
         {

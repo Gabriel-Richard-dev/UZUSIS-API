@@ -76,7 +76,7 @@ public class ClienteService : BaseService, IClienteService
         if (clienteDto.CPF is not null)
             cliente.CPF = clienteDto.CPF;
         if (clienteDto.DataNascimento is not null)
-            cliente.DataNascimento = (DateTime)clienteDto.DataNascimento;
+            cliente.DataNascimento = (DateOnly)clienteDto.DataNascimento;
         if (clienteDto.Celular is not null)
             cliente.Celular = clienteDto.Celular;
 

@@ -247,8 +247,8 @@ namespace UZUSIS.Infra.Data.Migrations
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateOnly>("DataNascimento")
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()

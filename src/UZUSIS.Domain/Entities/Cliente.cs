@@ -23,7 +23,7 @@ public class Cliente : Usuario
     public Endereco Endereco { get; set; }
     public string CPF { get; set; }
     public string Celular { get; set; }
-    public DateTime DataNascimento { get; set; }
+    public DateOnly DataNascimento { get; set; }
 
 
     public List<ValidationFailure> Validate()

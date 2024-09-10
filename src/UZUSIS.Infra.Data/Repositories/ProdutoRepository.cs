@@ -18,7 +18,7 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     {
     }
 
-    public async Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null)
+    public async Task<List<Produto>> Obter(ECategoriaProduto? categoriaProduto = null, bool obterForaEstoque = false)
     {
         List<Produto> produtosForaDeEstoque = new List<Produto>();
         List<Produto> produtos;
@@ -54,12 +54,13 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
             
             
         }
-
-        foreach (var foraEstoque in produtosForaDeEstoque)
+        if(!obterForaEstoque)
         {
-            produtos.Remove(foraEstoque);
+            foreach (var foraEstoque in produtosForaDeEstoque)
+            {
+                produtos.Remove(foraEstoque);
+            }
         }
-        
         
         return produtos;
 

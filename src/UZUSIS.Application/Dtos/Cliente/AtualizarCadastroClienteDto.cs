@@ -5,5 +5,5 @@ public class AtualizarCadastroClienteDto
     public string? Nome { get; set; }
     public string? CPF { get; set; }
     public string? Celular { get; set; }
-    public DateTime? DataNascimento { get; set; }
+    public DateOnly? DataNascimento { get; set; }
 }
