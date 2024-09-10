@@ -12,4 +12,5 @@ public interface ICompraRepository : IBaseRepository<Compra>
   
 
     Task<ItemCompra?> EnviarItem(long itemCompraId);
+    Task<ItemCompra?> ReceberItem(long itemCompraId);
 }

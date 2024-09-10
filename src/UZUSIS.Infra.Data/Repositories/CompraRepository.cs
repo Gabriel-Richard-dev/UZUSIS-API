@@ -92,4 +92,19 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
         return item;
 
     }
+
+    public async Task<ItemCompra?> ReceberItem(long itemCompraId)
+    {
+        var item = await Context.ItemCompras.FirstOrDefaultAsync(c => c.Id == itemCompraId);
+
+        if(item is null)
+            return null;
+        
+        item.FoiRecebico = true;
+        item.AtualizadoEm = DateTime.Now;
+        
+        Context.ItemCompras.Update(item);
+
+        return item;
+    }
 }

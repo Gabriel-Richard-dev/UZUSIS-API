@@ -71,6 +71,15 @@ public class CompraController : BaseController
         return CustomResponse(await _compraService.EnviarItemCompra(itemCompraId));
     }
     
+    [Authorize(Roles = nameof(ETipoUsuario.Cliente))]
+    [HttpPatch("cliente/recebi-produto")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ReceberItem([FromQuery] long itemCompraId)
+    {
+        return CustomResponse(await _compraService.ReceberItemCompra(itemCompraId));
+    }
+    
     
     
     

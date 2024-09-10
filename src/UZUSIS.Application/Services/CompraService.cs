@@ -87,7 +87,47 @@ public class CompraService : BaseService, ICompraService
         return false;
     }
 
-    public async Task<List<CompraDto>> ObterHistorico()
+    public async Task<List<ItemCompraDto>> ObterHistorico()
+    {
+        var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
+        
+        var cliente = await _clienteRepository.Obter(usuarioId);
+
+        if (cliente is null)
+        {
+            Notificator.Handle("Cliente inexistente");
+            return null!;
+        }
+
+        List<ItemCompraDto> itensRetorno = new List<ItemCompraDto>();
+        List<ItemCompra> toRemoveItens = new List<ItemCompra>();
+        var compras = await _compraRepository.ObterPeloCliente(cliente.Id);
+
+        foreach (var compra in compras) 
+        {
+            foreach (var item in compra.Itens)
+            {
+                if (!item.FoiRecebico)
+                {
+                    toRemoveItens.Add(item);
+                }
+                else
+                {
+                    itensRetorno.Add(Mapper.Map<ItemCompraDto>(item));
+                }
+            }
+
+            foreach (var remove in toRemoveItens)
+            {
+                compra.Itens.Remove(remove);
+            }
+        }
+
+        return itensRetorno;
+
+    }
+
+    public async Task<List<ItemCompraDto>> ObterEmAndamento()
     {
         var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
         
@@ -100,27 +140,27 @@ public class CompraService : BaseService, ICompraService
         }
 
         var compras = await _compraRepository.ObterPeloCliente(cliente.Id);
-        
-        
-        return Mapper.Map<List<CompraDto>>(compras);
-    }
-
-    public async Task<List<CompraDto>> ObterEmAndamento()
-    {
-        var usuarioId = (int)_httpContextAccessor.ObterUsuarioId()!;
-        
-        var cliente = await _clienteRepository.Obter(usuarioId);
-
-        if (cliente is null)
+        List<ItemCompra> toRemoveItens = new List<ItemCompra>();
+        List<ItemCompraDto> itensRetorno = new List<ItemCompraDto>();
+        foreach (var compra in compras) 
         {
-            Notificator.Handle("Cliente inexistente");
-            return null!;
+            foreach (var item in compra.Itens)
+            {
+                if (item.FoiRecebico)
+                    toRemoveItens.Add(item);
+                else
+                {
+                    itensRetorno.Add(Mapper.Map<ItemCompraDto>(item));
+                }
+            }
+
+            foreach (var remove in toRemoveItens)
+            {
+                compra.Itens.Remove(remove);
+            }
         }
 
-        var compras = await _compraRepository.ObterPeloCliente(cliente.Id, true);
-        
-        
-        return Mapper.Map<List<CompraDto>>(compras);
+        return itensRetorno;
     }
 
     public async Task<List<ItemCompraDto>> ObterTodosOsPedidos(EPedidoQuery ePedidoQuery)
@@ -131,6 +171,39 @@ public class CompraService : BaseService, ICompraService
     public async Task<ItemCompraDto?> EnviarItemCompra(long itemCompraId)
     {
         var item = await _compraRepository.EnviarItem(itemCompraId);
+        await _compraRepository.UnitOfWork.Commit();
+        return Mapper.Map<ItemCompraDto>(item);
+    }
+
+    public async Task<ItemCompraDto?> ReceberItemCompra(long itemCompraId)
+    {
+        var userId = _httpContextAccessor.ObterUsuarioId()!;
+
+        if (userId is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return null;
+        }
+        
+        var compras = (await _compraRepository.ObterPeloCliente((long)userId));
+        ItemCompra? itemCompra = null;
+
+        foreach (var compra in compras)
+        {
+            foreach (var itm in compra.Itens)
+            {
+                if(itm.Id == itemCompraId && itm.FoiEnviado && !itm.FoiRecebico)
+                    itemCompra = itm;
+            }
+        }
+        
+        if (itemCompra is null)
+        {
+            Notificator.Handle("Produto ainda não foi enviado");
+            return null;
+        }
+        
+        var item = await _compraRepository.ReceberItem(itemCompraId);
         await _compraRepository.UnitOfWork.Commit();
         return Mapper.Map<ItemCompraDto>(item);
     }
