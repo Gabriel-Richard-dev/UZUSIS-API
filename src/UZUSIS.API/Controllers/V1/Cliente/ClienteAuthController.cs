@@ -68,7 +68,7 @@ public class ClienteAuth : BaseController
         });
     }
     
-     [AllowAnonymous]
+    [AllowAnonymous]
     [HttpPost("recuperar-senha")]
     public async Task<IActionResult> RecuperarSenha([FromBody] RecuperarSenhaClienteDto dto)
     {

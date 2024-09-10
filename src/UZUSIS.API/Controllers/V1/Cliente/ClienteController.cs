@@ -57,4 +57,10 @@ public class ClienteController : BaseController
         return CustomResponse(await _clienteService.AtualizarEndereco(enderecoDto));
     }
     
+    [AllowAnonymous]
+    [HttpPost("resetar-senha")]
+    public async Task<IActionResult> RecuperarSenha([FromBody] ResetarSenhaClienteDto dto)
+    {
+        return CustomResponse(await _clienteService.ResetarSenha(dto));
+    }
 }

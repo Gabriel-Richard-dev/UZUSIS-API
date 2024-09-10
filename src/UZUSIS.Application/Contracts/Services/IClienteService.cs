@@ -12,4 +12,5 @@ public interface IClienteService
     Task<ClienteDto?> AtualizarCliente(AtualizarCadastroClienteDto clienteDto);
     Task<EnderecoDto?> AtualizarEndereco(AtualizarEnderecoDto enderecoDto);
     Task<ClienteDto?> AdicionarCliente(AdicionarClienteDto usuarioDto);
+    Task<bool> ResetarSenha(ResetarSenhaClienteDto resetarSenhaDto);
 }

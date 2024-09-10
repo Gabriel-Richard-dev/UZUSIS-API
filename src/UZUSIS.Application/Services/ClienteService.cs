@@ -79,7 +79,7 @@ public class ClienteService : BaseService, IClienteService
             cliente.DataNascimento = (DateOnly)clienteDto.DataNascimento;
         if (clienteDto.Celular is not null)
             cliente.Celular = clienteDto.Celular;
-
+        
 
         await _clienteRepository.Atualizar(cliente);
         if (await CommitChanges())
@@ -172,6 +172,44 @@ public class ClienteService : BaseService, IClienteService
         
         Notificator.Handle("Não foi possivel criar o usuário");
         return null;
+    }
+
+    public async Task<bool> ResetarSenha(ResetarSenhaClienteDto resetarSenhaDto)
+    {
+        var clienteId = _httpContext.ObterUsuarioId();
+
+        if (clienteId is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+
+        var cliente = await _clienteRepository.Obter((long)clienteId);
+
+        if (cliente is null)
+        {
+            Notificator.HandleNotFoundResource();
+            return false;
+        }
+        
+        if (!resetarSenhaDto.NovaSenha.Equals(resetarSenhaDto.ConfirmarSenha))
+        {
+            Notificator.Handle("Senhas não coincidem");
+            return false;
+        }
+
+        cliente.Senha = _hasher.HashPassword(cliente, resetarSenhaDto.NovaSenha);
+
+        await _clienteRepository.Atualizar(cliente);
+        
+        if (await _clienteRepository.UnitOfWork.Commit())
+        {
+            return true;
+        }
+
+        Notificator.Handle("Não foi possivel recuperar sua senha");
+        return false;         
+        
     }
 
     public async Task<ClienteDto?> ObterCliente()
