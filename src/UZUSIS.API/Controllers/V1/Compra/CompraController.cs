@@ -57,9 +57,9 @@ public class CompraController : BaseController
     [HttpGet("administrador/dashboard")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> HistoricoAdministrador()
+    public async Task<IActionResult> HistoricoAdministrador([FromQuery] EPedidoQuery pedidoQuery)
     {
-        return CustomResponse(await _compraService.ObterTodosOsPedidos());
+        return CustomResponse(await _compraService.ObterTodosOsPedidos(pedidoQuery));
     }
     
     [Authorize(Roles = nameof(ETipoUsuario.Administrador))]

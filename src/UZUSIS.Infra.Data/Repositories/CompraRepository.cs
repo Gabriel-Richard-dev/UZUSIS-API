@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UZUSIS.Core.Enums;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
 using UZUSIS.Domain.Entities.Acessories;
@@ -54,9 +55,24 @@ public class CompraRepository : BaseRepository<Compra>, ICompraRepository
 
     }
 
-    public async Task<List<ItemCompra>> ObterItens()
+    public async Task<List<ItemCompra>> ObterItens(EPedidoQuery ePedidoQuery)
     {
-        return await Context.ItemCompras.AsNoTracking().ToListAsync();
+        var compras = Context.ItemCompras.AsNoTracking();
+
+        if (ePedidoQuery != EPedidoQuery.Enviados)
+        {
+
+            compras = compras.Where(c => c.FoiEnviado == false);
+
+        }
+        else
+        {
+            
+            compras = compras.Where(c => c.FoiEnviado == true);
+            
+        }
+        
+        return await compras.ToListAsync();
     }
 
 

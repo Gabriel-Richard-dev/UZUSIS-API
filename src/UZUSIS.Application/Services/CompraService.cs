@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using UZUSIS.Application.Contracts.Services;
 using UZUSIS.Application.Dtos.Compra;
 using UZUSIS.Application.Notification;
+using UZUSIS.Core.Enums;
 using UZUSIS.Core.Extensions;
 using UZUSIS.Domain.Contracts.Repositories;
 using UZUSIS.Domain.Entities;
@@ -122,9 +123,9 @@ public class CompraService : BaseService, ICompraService
         return Mapper.Map<List<CompraDto>>(compras);
     }
 
-    public async Task<List<ItemCompraDto>> ObterTodosOsPedidos()
+    public async Task<List<ItemCompraDto>> ObterTodosOsPedidos(EPedidoQuery ePedidoQuery)
     {
-        return Mapper.Map<List<ItemCompraDto>>(await _compraRepository.ObterItens());
+        return Mapper.Map<List<ItemCompraDto>>(await _compraRepository.ObterItens(ePedidoQuery));
     }
 
     public async Task<ItemCompraDto?> EnviarItemCompra(long itemCompraId)

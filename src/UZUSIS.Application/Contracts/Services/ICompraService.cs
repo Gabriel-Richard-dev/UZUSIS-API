@@ -1,4 +1,5 @@
 using UZUSIS.Application.Dtos.Compra;
+using UZUSIS.Core.Enums;
 
 namespace UZUSIS.Application.Contracts.Services;
 
@@ -8,7 +9,7 @@ public interface ICompraService
     Task<List<CompraDto>> ObterHistorico();
     Task<List<CompraDto>> ObterEmAndamento();
     
-    Task<List<ItemCompraDto>> ObterTodosOsPedidos();
+    Task<List<ItemCompraDto>> ObterTodosOsPedidos(EPedidoQuery pedidoQuery);
     
     Task<ItemCompraDto?> EnviarItemCompra(long itemCompraId);
     
